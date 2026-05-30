@@ -12,4 +12,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Placeholder
-        run: echo "CI pipeline — буде налаштований in Phase 11"
+        run: echo "CI pipeline - will be configured in Phase 11"
