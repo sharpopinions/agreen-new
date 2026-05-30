@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql \
+    libicu-dev \
+    && docker-php-ext-install pdo pdo_pgsql intl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
