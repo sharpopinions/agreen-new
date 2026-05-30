@@ -1,0 +1,78 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: agreen-app
+    volumes:
+      - .:/var/www/html
+      - /var/www/html/vendor
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - agreen
+
+  nginx:
+    image: nginx:alpine
+    container_name: agreen-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - agreen
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: agreen-postgres
+    environment:
+      POSTGRES_DB: agreen
+      POSTGRES_USER: agreen
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agreen"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - agreen
+
+  redis:
+    image: redis:7-alpine
+    container_name: agreen-redis
+    ports:
+      - "6380:6379"
+    networks:
+      - agreen
+
+  meilisearch:
+    image: getmeili/meilisearch:v1.6
+    container_name: agreen-meilisearch
+    environment:
+      MEILI_MASTER_KEY: "masterkey-local"
+      MEILI_ENV: "development"
+    ports:
+      - "7700:7700"
+    volumes:
+      - meilisearch_data:/meili_data
+    networks:
+      - agreen
+
+volumes:
+  postgres_data:
+  meilisearch_data:
+
+networks:
+  agreen:
+    driver: bridge
