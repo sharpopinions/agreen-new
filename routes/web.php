@@ -8,3 +8,11 @@ Route::get('/', function () {
         'title' => 'A-green',
     ]);
 });
+
+Route::get('/catalog', function(){
+    return Inertia::render('Catalog');
+})->name('catalog');
+
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->name('about');

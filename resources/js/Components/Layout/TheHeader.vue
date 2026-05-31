@@ -16,13 +16,15 @@
               </button>
 
               <nav class="header__nav">
-                  <button
+                  <Link
                       v-for="item in navLinks"
                       :key="item.key"
+                      :href="item.href"
                       class="header__nav-btn"
+                      :class="{ 'header__nav-btn--active': page.url.startsWith(item.href) }"
                   >
                       {{ item.label }}
-                  </button>
+                  </Link>
               </nav>
   
               <div class="header__actions">
@@ -59,12 +61,16 @@
 </template>
 
 <script setup>
+    import { Link, usePage } from '@inertiajs/vue3';
+    
+    const page = usePage();
+
     const navLinks = [
-        { label: 'Каталог',    key: 'catalog'  },
-        { label: 'Бренди',     key: 'brands'   },
-        { label: 'Послуги',    key: 'services' },
-        { label: 'Партнерам',  key: 'partners' },
-        { label: 'Про нас',    key: 'about'    },
-        { label: 'Блог',       key: 'blog'     },
+        { label: 'Каталог',   key: 'catalog',  href: '/catalog' },
+        { label: 'Бренди',    key: 'brands',   href: '/brands'  },
+        { label: 'Послуги',   key: 'services', href: '/services'},
+        { label: 'Партнерам', key: 'partners', href: '/partners'},
+        { label: 'Про нас',   key: 'about',    href: '/about'   },
+        { label: 'Блог',      key: 'blog',     href: '/blog'    },
     ];
-</script>
+  </script>
