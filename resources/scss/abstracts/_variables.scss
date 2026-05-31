@@ -1,0 +1,98 @@
+:root {
+      // Background
+      --color-bg: #ffffff;
+      --color-bg-alt: #f4f4f5;
+      --color-surface: #ffffff;
+
+      // Text
+      --color-text: #09090b;
+      --color-text-2: #71717a;
+      --color-text-3: #a1a1aa;
+
+      // Border
+      --color-border: #e4e4e7;
+      --color-border-2: #d4d4d8;
+
+      // Primary button (dark)
+      --color-inv-bg: #18181b;
+      --color-inv-text: #fafafa;
+
+      // Semantic
+      --color-danger: #dc2626;
+      --color-warn: #b45309;
+      --color-success: #16a34a;
+
+      // Muted
+      --color-muted: #f4f4f5;
+      --color-muted-fg: #71717a;
+
+      // Typography
+      --font-sans: 'Geist', 'Inter', system-ui, sans-serif;
+      --font-size-sm: 0.75rem;
+      --font-size-base: 0.875rem;
+      --font-size-lg: 1rem;
+      --font-size-xl: 1.125rem;
+      --font-size-2xl: 1.25rem;
+      --font-size-3xl: 1.5rem;
+  
+      // Spacing
+      --space-1: 0.25rem;
+      --color-muted-fg: #71717a;
+
+      // Typography
+      --font-sans: 'Geist', 'Inter', system-ui, sans-serif;
+      --font-size-sm: 0.75rem;
+      --font-size-base: 0.875rem;
+      --font-size-lg: 1rem;
+      --font-size-xl: 1.125rem;
+      --font-size-2xl: 1.25rem;
+      --font-size-3xl: 1.5rem;
+
+      // Spacing
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
+
+      // Borders
+      --radius-sm: 8px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-full: 9999px;
+
+      // Shadows
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+
+      // Transitions
+      --transition-fast: 150ms ease;
+      --transition-base: 250ms ease;
+  }
+
+  // Dark theme
+  [data-theme="dark"] {
+      --color-bg: #09090b;
+      --color-bg-alt: #18181b;
+      --color-surface: #09090b;
+
+      --color-text: #fafafa;
+      --color-text-2: #a1a1aa;
+      --color-text-3: #71717a;
+
+      --color-border: #27272a;
+      --color-border-2: #3f3f46;
+
+      --color-inv-bg: #fafafa;
+      --color-inv-text: #09090b;
+
+      --color-danger: #ef4444;
+      --color-warn: #f59e0b;
+
+      --color-muted: #18181b;
+      --color-muted-fg: #a1a1aa;
+  }
+

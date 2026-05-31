@@ -1,0 +1,19 @@
+// Convert px to rem
+  @function rem($px) {
+      @return calc($px / 16) * 1rem;
+  }
+  
+  // Clamp font size (fluid typography)
+  @function fluid($min, $max, $min-vw: 375px, $max-vw: 1280px) {
+      @return clamp(
+          #{$min},
+          calc(#{$min} + (#{strip-unit($max)} - #{strip-unit($min)}) *
+              ((100vw - #{$min-vw}) / (#{strip-unit($max-vw)} - #{strip-unit($min-vw)}))),
+          #{$max}
+      );
+  }
+  
+  // Strip unit (helper for fluid())
+  @function strip-unit($number) {
+      @return calc($number / ($number * 0 + 1));
+  }
