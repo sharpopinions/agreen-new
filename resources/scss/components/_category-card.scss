@@ -1,0 +1,41 @@
+@use '../abstracts' as *;
+
+.cat-card {
+    @extend %card;
+    cursor: pointer;
+    transition: box-shadow var(--transition-fast);
+    padding: var(--space-4);
+
+    &:hover {
+        box-shadow: var(--shadow-md);
+    }
+}
+
+.cat-card__name {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-1);
+}
+
+.cat-card__count {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-3);
+    margin-bottom: var(--space-3);
+}
+
+.cat-card__subs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.cat-card__sub {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-2);
+
+    &::before {
+        content: '— ';
+        color: var(--color-text-3);
+    }
+}
