@@ -43,12 +43,12 @@ composer:
 	$(APP) composer $(CMD)
 
 dev:
-	$(APP) npm run dev
+	npm run dev
 
 build:
-	$(APP) npm run build
+	npm run build
 
 npm:
-	$(APP) npm $(CMD)
+	npm $(CMD)
 
 .PHONY: up down rebuild ps logs shell psql migrate migrate-fresh test artisan composer dev build npm
