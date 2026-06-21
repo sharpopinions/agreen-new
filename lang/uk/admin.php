@@ -1,0 +1,46 @@
+<?php
+
+return [
+    'fields' => [
+        'name'        => 'Назва',
+        'slug'        => 'Slug (URL)',
+        'description' => 'Опис',
+        'is_active'   => 'Активний',
+        'sort_order'  => 'Порядок сортування',
+        'image'       => 'Зображення',
+        'logo'        => 'Логотип',
+        'color'       => 'Колір тексту',
+        'bg_color'    => 'Колір фону',
+        'code'        => 'Код',
+        'locale'      => 'Локаль',
+        'symbol'      => 'Символ',
+        'is_default'  => 'За замовчуванням',
+        'translations' => 'Переклади',
+    ],
+    'sections' => [
+        'main'         => 'Основне',
+        'media'        => 'Медіа',
+        'translations' => 'Переклади',
+        'settings'     => 'Налаштування',
+    ],
+    'resources' => [
+        'category'     => 'Категорія',
+        'categories'   => 'Категорії',
+        'brand'        => 'Бренд',
+        'brands'       => 'Бренди',
+        'badge'        => 'Бейдж',
+        'badges'       => 'Бейджі',
+        'product'      => 'Товар',
+        'products'     => 'Товари',
+        'stock_status' => 'Статус наявності',
+        'stock_statuses' => 'Статуси наявності',
+        'language'     => 'Мова',
+        'languages'    => 'Мови',
+        'currency'     => 'Валюта',
+        'currencies'   => 'Валюти',
+    ],
+    'groups' => [
+        'catalog'  => 'Каталог',
+        'settings' => 'Налаштування',
+    ],
+];

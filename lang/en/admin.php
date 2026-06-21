@@ -1,0 +1,46 @@
+<?php
+
+return [
+    'fields' => [
+        'name'        => 'Name',
+        'slug'        => 'Slug (URL)',
+        'description' => 'Description',
+        'is_active'   => 'Active',
+        'sort_order'  => 'Sort order',
+        'image'       => 'Image',
+        'logo'        => 'Logo',
+        'color'       => 'Text color',
+        'bg_color'    => 'Background color',
+        'code'        => 'Code',
+        'locale'      => 'Locale',
+        'symbol'      => 'Symbol',
+        'is_default'  => 'Default',
+        'translations' => 'Translations',
+    ],
+    'sections' => [
+        'main'         => 'General',
+        'media'        => 'Media',
+        'translations' => 'Translations',
+        'settings'     => 'Settings',
+    ],
+    'resources' => [
+        'category'     => 'Category',
+        'categories'   => 'Categories',
+        'brand'        => 'Brand',
+        'brands'       => 'Brands',
+        'badge'        => 'Badge',
+        'badges'       => 'Badges',
+        'product'      => 'Product',
+        'products'     => 'Products',
+        'stock_status' => 'Stock status',
+        'stock_statuses' => 'Stock statuses',
+        'language'     => 'Language',
+        'languages'    => 'Languages',
+        'currency'     => 'Currency',
+        'currencies'   => 'Currencies',
+    ],
+    'groups' => [
+        'catalog'  => 'Catalog',
+        'settings' => 'Settings',
+    ],
+];

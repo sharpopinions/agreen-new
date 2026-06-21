@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Filament\Resources\CategoryResource\Pages;
+
+use App\Filament\Actions\TranslateAction;
+use App\Filament\Concerns\HandlesTranslations;
+use App\Filament\Resources\CategoryResource;
+use Filament\Actions;
+use Filament\Resources\Pages\EditRecord;
+
+class EditCategory extends EditRecord
+{
+    use HandlesTranslations;
+
+    protected static string $resource = CategoryResource::class;
+
+    protected array $translationFields = ['name', 'slug', 'description'];
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            TranslateAction::makeForPage($this->translationFields),
+            Actions\DeleteAction::make(),
+        ];
+    }
+}

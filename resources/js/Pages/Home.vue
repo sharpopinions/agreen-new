@@ -54,9 +54,9 @@
                   <div class="home-brands__divider"></div>
                   <button
                       v-for="brand in brands"
-                      :key="brand"
+                      :key="brand.id"
                       class="home-brands__item"
-                  >{{ brand }}</button>
+                  >{{ brand.name }}</button>
                   <div class="home-brands__all">
                       <button class="btn btn--ghost">Дивитись усі бренди →</button>
                   </div>
@@ -120,49 +120,25 @@
   import AppLayout from '@/Layouts/AppLayout.vue';
   import ProductCard from '@/Components/ProductCard.vue';
   import CategoryCard from '@/Components/CategoryCard.vue';
-  
-    const activeTab = ref('popular');
 
-    const showAllCategories = ref(false);
-    const visibleCategories = computed(() =>
-        showAllCategories.value ? categories : categories.slice(0, 6)
-    );
+  const props = defineProps({
+      categories: Array,
+      brands:     Array,
+      products:   Array,
+  });
 
+  const activeTab = ref('popular');
+  const showAllCategories = ref(false);
 
   const tabs = [
-      { key: 'popular', label: 'Популярні'       },
-      { key: 'sale',    label: 'Акційні'          },
-      { key: 'new',     label: 'Передзамовлення'  },
-  ];
-
-  const categories = [
-      { id: 1, name: 'Витратні матеріали',      count: 1240, subs: ['Ганчірки та серветки', 'Засоби для прибирання', 'Паперова продукція', 'Мішки та пакети'] },
-      { id: 2, name: 'Абразивні матеріали',     count: 876,  subs: ['Шліфувальні диски', 'Абразивні круги', 'Шліфувальна шкурка', 'Полірувальні пасти'] },
-      { id: 3, name: 'Дозуюче обладнання',      count: 342,  subs: ['Диспенсери', 'Дозатори рідини', 'Автоматичні системи', 'Аксесуари'] },
-      { id: 4, name: 'Лакофарбові матеріали',   count: 2100, subs: ['Ґрунтовки', 'Автолаки', 'Фарби', 'Розчинники'] },
-      { id: 5, name: 'Гігієнічна продукція',    count: 560,  subs: ['Мило та антисептики', 'Паперові рушники', 'Туалетний папір', 'Засоби гігієни'] },
-      { id: 6, name: 'Захисні засоби',          count: 430,  subs: ['Рукавиці захисні', 'Захисні комбінезони', 'Маски та респіратори', 'Окуляри'] },
-      { id: 7, name: 'Клеї та герметики',       count: 280,  subs: ['Конструкційні клеї', 'Силіконові герметики', 'Монтажна піна', 'Двосторонні стрічки'] },
-      { id: 8, name: 'Полірувальне обладнання', count: 195,  subs: ['Полірувальні машини', 'Полірувальні круги', 'Паста для полірування', 'Мікрофібра'] },
-  ];
-
-
-  const brands = ['Kimberly-Clark', 'Mirka', 'DuPont', '3M', 'Sika', 'Dettol', 'Vika', 'Norton', 'Tork', 'Henkel'];
-
-  const products = [
-      { id: 1, name: 'Диспенсер паперових рушників Kimberly-Clark 9960', price: 1099, oldPrice: null, badge: 'Хіт',     sku: 'SE50281', rating: 4.2, reviews: 12,  inStock: 150 },
-      { id: 2, name: 'Активатор системи дозування X Pro 5л',              price: 450,  oldPrice: 580,  badge: 'Акція',   sku: 'AX-001',  rating: 4.8, reviews: 34,  inStock: 43  },
-      { id: 3, name: 'Абразивний диск Mirka Abranet P120 150мм',          price: 89,   oldPrice: null, badge: null,      sku: 'MA-120',  rating: 4.5, reviews: 67,  inStock: 280 },
-      { id: 4, name: 'Захисний комбінезон DuPont Tyvek 400 XL',           price: 320,  oldPrice: null, badge: null,      sku: 'DT-400',  rating: 4.1, reviews: 23,  inStock: 62  },
-      { id: 5, name: 'Поліроль 3M Perfect-It III 1000мл',                 price: 680,  oldPrice: 820,  badge: 'Акція',   sku: '3M-P3',   rating: 4.9, reviews: 89,  inStock: 15  },
-      { id: 6, name: 'Клей-герметик Sikaflex-221 чорний 300мл',           price: 520,  oldPrice: null, badge: null,      sku: 'SF-221',  rating: 4.3, reviews: 15,  inStock: 78  },
-      { id: 7, name: 'Рідке мило антибактеріальне Dettol 5л',             price: 290,  oldPrice: null, badge: 'Новинка', sku: 'DT-5L',   rating: 4.6, reviews: 45,  inStock: 120 },
-      { id: 8, name: 'Ґрунтовка епоксидна Vika П-ЕФ 0.8кг',              price: 185,  oldPrice: null, badge: null,      sku: 'VP-08',   rating: 4.0, reviews: 8,   inStock: 34  },
+      { key: 'popular', label: 'Популярні'      },
+      { key: 'sale',    label: 'Акційні'         },
+      { key: 'new',     label: 'Передзамовлення' },
   ];
 
   const filteredProducts = computed(() => {
-      if (activeTab.value === 'sale')    return products.filter(p => p.badge === 'Акція');
-      if (activeTab.value === 'new')     return products.filter(p => p.badge === 'Новинка');
-      return products;
+      if (activeTab.value === 'sale') return props.products.filter(p => p.badge === 'Акція');
+      if (activeTab.value === 'new')  return props.products.filter(p => p.badge === 'Новинка');
+      return props.products;
   });
   </script>

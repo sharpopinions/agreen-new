@@ -14,10 +14,11 @@
 .product-card__img {
     width: 100%;
     aspect-ratio: 4 / 3;
-    background: var(--color-muted);
+    background: #f0f5f0;
+    background-image:
+        radial-gradient(ellipse 55% 50% at 42% 38%, rgba(144, 195, 155, 0.45) 100%, transparent 100%),
+        radial-gradient(ellipse 38% 35% at 62% 62%, rgba(144, 195, 155, 0.28) 100%, transparent 100%);
     @include flex-center;
-    color: var(--color-text-3);
-    font-size: var(--font-size-sm);
     position: relative;
 }
 

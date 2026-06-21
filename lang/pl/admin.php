@@ -1,0 +1,46 @@
+<?php
+
+return [
+    'fields' => [
+        'name'        => 'Nazwa',
+        'slug'        => 'Slug (URL)',
+        'description' => 'Opis',
+        'is_active'   => 'Aktywny',
+        'sort_order'  => 'Kolejność sortowania',
+        'image'       => 'Zdjęcie',
+        'logo'        => 'Logo',
+        'color'       => 'Kolor tekstu',
+        'bg_color'    => 'Kolor tła',
+        'code'        => 'Kod',
+        'locale'      => 'Język',
+        'symbol'      => 'Symbol',
+        'is_default'  => 'Domyślny',
+        'translations' => 'Tłumaczenia',
+    ],
+    'sections' => [
+        'main'         => 'Ogólne',
+        'media'        => 'Media',
+        'translations' => 'Tłumaczenia',
+        'settings'     => 'Ustawienia',
+    ],
+    'resources' => [
+        'category'     => 'Kategoria',
+        'categories'   => 'Kategorie',
+        'brand'        => 'Marka',
+        'brands'       => 'Marki',
+        'badge'        => 'Etykieta',
+        'badges'       => 'Etykiety',
+        'product'      => 'Produkt',
+        'products'     => 'Produkty',
+        'stock_status' => 'Status dostępności',
+        'stock_statuses' => 'Statusy dostępności',
+        'language'     => 'Język',
+        'languages'    => 'Języki',
+        'currency'     => 'Waluta',
+        'currencies'   => 'Waluty',
+    ],
+    'groups' => [
+        'catalog'  => 'Katalog',
+        'settings' => 'Ustawienia',
+    ],
+];

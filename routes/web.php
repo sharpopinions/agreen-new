@@ -1,18 +1,13 @@
 <?php
 
+use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'title' => 'A-green',
-    ]);
-});
-
-Route::get('/catalog', function(){
-    return Inertia::render('Catalog');
-})->name('catalog');
-
-Route::get('/about', function () {
-    return Inertia::render('About');
-})->name('about');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
+Route::get('/catalog/{slug}', [CatalogController::class, 'show'])->name('catalog.category');
+Route::get('/p/{slug}', [ProductController::class, 'show'])->name('product');
+Route::get('/about', fn() => Inertia::render('About'))->name('about');
