@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMIÈRE — Premium Beauty UI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); }
+  ::selection { background: rgba(201,185,154,0.3); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+  .fade-up  { animation: fadeUp  0.9s cubic-bezier(0.16,1,0.3,1) both; }
+  .fade-in  { animation: fadeIn  0.7s ease both; }
+  .delay-1  { animation-delay: 0.1s; }
+  .delay-2  { animation-delay: 0.25s; }
+  .delay-3  { animation-delay: 0.4s; }
+  .delay-4  { animation-delay: 0.55s; }
+  .delay-5  { animation-delay: 0.7s; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+// ── PALETTE ──────────────────────────────────────────────────────
+const light = {
+  bg:       '#FAFAF8',
+  bgAlt:    '#F3F0EB',
+  surface:  '#FFFFFF',
+  border:   '#E4E0D9',
+  border2:  '#CEC9C0',
+  text:     '#1A1917',
+  text2:    '#6B6560',
+  text3:    '#ABA49B',
+  accent:   '#C4A882',
+  accentDk: '#A8895E',
+  inv:      '#1A1917',
+  invText:  '#FAFAF8',
+};
+const dark = {
+  bg:       '#0F0E0D',
+  bgAlt:    '#171512',
+  surface:  '#1C1A18',
+  border:   '#2A2824',
+  border2:  '#3D3A35',
+  text:     '#F0EDE8',
+  text2:    '#8A837B',
+  text3:    '#4A4640',
+  accent:   '#C4A882',
+  accentDk: '#D4BB97',
+  inv:      '#F0EDE8',
+  invText:  '#0F0E0D',
+};
+
+// ── SECTION WRAPPER ──────────────────────────────────────────────
+function Section({ children, style }) {
+  return (
+    <section style={{ padding: '100px 80px', ...style }}>
+      {children}
+    </section>
+  );
+}
+
+function Label({ children, T }) {
+  return (
+    <div style={{ fontFamily: 'Inter', fontSize: 10, fontWeight: 500,
+      letterSpacing: '0.2em', textTransform: 'uppercase', color: T.text3,
+      marginBottom: 20 }}>
+      {children}
+    </div>
+  );
+}
+
+function Divider({ T }) {
+  return <div style={{ height: 1, background: T.border, margin: '0 80px' }}/>;
+}
+
+// ── HERO ─────────────────────────────────────────────────────────
+function Hero({ T, dark: isDark, setDark }) {
+  return (
+    <section style={{ minHeight: '100vh', display: 'grid',
+      gridTemplateColumns: '1fr 1fr', background: T.bg, position: 'relative', overflow: 'hidden' }}>
+
+      {/* Left — text */}
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center',
+        padding: '80px 64px 80px 80px', position: 'relative', zIndex: 2 }}>
+
+        {/* Nav */}
+        <div className="fade-in delay-1" style={{ position: 'absolute', top: 40, left: 80, right: 64,
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div style={{ fontFamily: 'Cormorant Garamond', fontSize: 20, fontWeight: 500,
+            letterSpacing: '0.12em', color: T.text }}>LUMIÈRE</div>
+          <div style={{ display: 'flex', gap: 32, fontFamily: 'Inter', fontSize: 11,
+            fontWeight: 400, letterSpacing: '0.12em', color: T.text2 }}>
+            {['COLLECTION','RITUAL','ABOUT'].map(l => (
+              <span key={l} style={{ cursor: 'pointer', transition: 'color 0.2s' }}
+                onMouseEnter={e => e.target.style.color = T.text}
+                onMouseLeave={e => e.target.style.color = T.text2}>{l}</span>
+            ))}
+          </div>
+          <button onClick={() => setDark(!isDark)}
+            style={{ background: 'none', border: `1px solid ${T.border}`,
+              padding: '6px 14px', fontFamily: 'Inter', fontSize: 10,
+              letterSpacing: '0.1em', color: T.text2, cursor: 'pointer',
+              transition: 'all 0.2s' }}
+            onMouseEnter={e => { e.currentTarget.style.borderColor = T.border2; e.currentTarget.style.color = T.text; }}
+            onMouseLeave={e => { e.currentTarget.style.borderColor = T.border; e.currentTarget.style.color = T.text2; }}>
+            {isDark ? '○ LIGHT' : '● DARK'}
+          </button>
+        </div>
+
+        {/* Headline */}
+        <div style={{ marginTop: 40 }}>
+          <div className="fade-up delay-2" style={{ fontFamily: 'Inter', fontSize: 10, fontWeight: 400,
+            letterSpacing: '0.22em', textTransform: 'uppercase', color: T.accent, marginBottom: 24 }}>
+            New Collection — 2026
+          </div>
+          <h1 className="fade-up delay-3" style={{ fontFamily: 'Cormorant Garamond', fontWeight: 300,
+            fontSize: 'clamp(52px, 5vw, 80px)', lineHeight: 1.08,
+            letterSpacing: '-0.01em', color: T.text, marginBottom: 32 }}>
+            The Art of<br/>
+            <em style={{ fontStyle: 'italic', fontWeight: 300 }}>Effortless</em><br/>
+            Beauty
+          </h1>
+          <p className="fade-up delay-4" style={{ fontFamily: 'Inter', fontSize: 15, fontWeight: 300,
+            lineHeight: 1.8, color: T.text2, maxWidth: 380, marginBottom: 48 }}>
+            Crafted from rare botanicals and modern science.
+            Each ritual designed to reveal what was always there —
+            your most luminous self.
+          </p>
+          <div className="fade-up delay-5" style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            <PrimaryBtn T={T}>Discover Ritual</PrimaryBtn>
+            <span style={{ fontFamily: 'Inter', fontSize: 12, letterSpacing: '0.12em',
+              color: T.text2, cursor: 'pointer', borderBottom: `1px solid ${T.border2}`,
+              paddingBottom: 2, transition: 'all 0.2s' }}
+              onMouseEnter={e => e.target.style.borderColor = T.text2}
+              onMouseLeave={e => e.target.style.borderColor = T.border2}>
+              VIEW ALL
+            </span>
+          </div>
+        </div>
+
+        {/* Bottom meta */}
+        <div className="fade-in delay-5" style={{ position: 'absolute', bottom: 40, left: 80,
+          display: 'flex', gap: 48 }}>
+          {[['94%', 'Skin satisfaction'], ['12', 'Botanicals'], ['0', 'Harmful agents']].map(([n, l]) => (
+            <div key={l}>
+              <div style={{ fontFamily: 'Cormorant Garamond', fontSize: 28, fontWeight: 400,
+                color: T.text, letterSpacing: '-0.02em' }}>{n}</div>
+              <div style={{ fontFamily: 'Inter', fontSize: 10, fontWeight: 400,
+                letterSpacing: '0.1em', color: T.text3, marginTop: 2 }}>{l.toUpperCase()}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right — portrait */}
+      <div className="fade-in delay-1" style={{ position: 'relative', overflow: 'hidden', background: T.bgAlt }}>
+        {/* Placeholder portrait */}
+        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', flexDirection: 'column', gap: 12,
+          background: isDark
+            ? 'linear-gradient(160deg, #1e1b17 0%, #0f0e0d 60%, #1a1714 100%)'
+            : 'linear-gradient(160deg, #EDE8E0 0%, #F3F0EB 60%, #E8E2D8 100%)' }}>
+          {/* Subtle silhouette */}
+          <svg width="200" height="280" viewBox="0 0 200 280" fill="none">
+            <ellipse cx="100" cy="85" rx="44" ry="54"
+              fill={isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)'}/>
+            <path d="M30 280 Q40 180 100 165 Q160 180 170 280"
+              fill={isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.05)'}/>
+          </svg>
+          <div style={{ fontFamily: 'Inter', fontSize: 9, letterSpacing: '0.2em',
+            textTransform: 'uppercase', color: T.text3 }}>portrait photography</div>
+        </div>
+        {/* Overlay tags */}
+        <div style={{ position: 'absolute', top: 60, right: 40,
+          background: T.surface, border: `1px solid ${T.border}`,
+          padding: '12px 16px', backdropFilter: 'blur(12px)' }}>
+          <div style={{ fontFamily: 'Cormorant Garamond', fontSize: 13, fontStyle: 'italic',
+            color: T.text2, letterSpacing: '0.04em' }}>Luminous Serum</div>
+          <div style={{ fontFamily: 'Inter', fontSize: 10, color: T.accent,
+            letterSpacing: '0.1em', marginTop: 3 }}>NO. 04</div>
+        </div>
+        {/* Scroll hint */}
+        <div style={{ position: 'absolute', bottom: 40, right: 40, display: 'flex',
+          flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+          <div style={{ width: 1, height: 48, background: T.border }}/>
+          <div style={{ fontFamily: 'Inter', fontSize: 9, letterSpacing: '0.18em',
+            textTransform: 'uppercase', color: T.text3, writingMode: 'vertical-rl',
+            transform: 'rotate(180deg)' }}>Scroll</div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ── BUTTON COMPONENTS ────────────────────────────────────────────
+function PrimaryBtn({ children, T, full, size = 'md' }) {
+  const [h, setH] = useState(false);
+  const pad = size === 'sm' ? '10px 22px' : size === 'lg' ? '18px 48px' : '13px 34px';
+  const fs  = size === 'sm' ? 10 : size === 'lg' ? 13 : 11;
+  return (
+    <button onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{ padding: pad, background: h ? T.accentDk : T.accent,
+        border: 'none', fontFamily: 'Inter', fontSize: fs, fontWeight: 400,
+        letterSpacing: '0.16em', textTransform: 'uppercase', color: '#fff',
+        cursor: 'pointer', transition: 'background 0.25s ease', width: full ? '100%' : 'auto' }}>
+      {children}
+    </button>
+  );
+}
+function OutlineBtn({ children, T, full }) {
+  const [h, setH] = useState(false);
+  return (
+    <button onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{ padding: '13px 34px', background: 'transparent',
+        border: `1px solid ${h ? T.border2 : T.border}`,
+        fontFamily: 'Inter', fontSize: 11, fontWeight: 400,
+        letterSpacing: '0.16em', textTransform: 'uppercase', color: T.text2,
+        cursor: 'pointer', transition: 'all 0.2s', width: full ? '100%' : 'auto' }}>
+      {children}
+    </button>
+  );
+}
+function GhostBtn({ children, T }) {
+  const [h, setH] = useState(false);
+  return (
+    <button onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{ padding: '0', background: 'none', border: 'none',
+        fontFamily: 'Inter', fontSize: 11, fontWeight: 400, letterSpacing: '0.16em',
+        textTransform: 'uppercase', color: h ? T.text : T.text2,
+        cursor: 'pointer', transition: 'color 0.2s',
+        borderBottom: `1px solid ${h ? T.border2 : 'transparent'}`,
+        paddingBottom: 2 }}>
+      {children}
+    </button>
+  );
+}
+
+// ── COLOR PALETTE SECTION ─────────────────────────────────────────
+function PaletteSection({ T }) {
+  const swatches = [
+    { hex: '#FAFAF8', name: 'Ivory',     role: 'Background'  },
+    { hex: '#F3F0EB', name: 'Linen',     role: 'Alt Surface' },
+    { hex: '#E4E0D9', name: 'Silk',      role: 'Border'      },
+    { hex: '#ABA49B', name: 'Stone',     role: 'Text Muted'  },
+    { hex: '#6B6560', name: 'Ash',       role: 'Text Sub'    },
+    { hex: '#1A1917', name: 'Ebony',     role: 'Text'        },
+    { hex: '#C4A882', name: 'Sand Gold', role: 'Accent'      },
+    { hex: '#A8895E', name: 'Bronze',    role: 'Accent Dark' },
+  ];
+  return (
+    <Section style={{ background: T.bg }}>
+      <Label T={T}>Color Palette</Label>
+      <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 42, fontWeight: 300,
+        color: T.text, marginBottom: 48, letterSpacing: '-0.01em' }}>
+        Warm Neutrals
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(8, 1fr)', gap: 12 }}>
+        {swatches.map(s => (
+          <div key={s.hex}>
+            <div style={{ height: 80, background: s.hex,
+              border: `1px solid ${T.border}`, marginBottom: 12,
+              transition: 'transform 0.2s ease', cursor: 'default' }}
+              onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.04)'}
+              onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}/>
+            <div style={{ fontFamily: 'Inter', fontSize: 11, fontWeight: 500,
+              color: T.text, marginBottom: 3 }}>{s.name}</div>
+            <div style={{ fontFamily: 'Inter', fontSize: 9, color: T.text3,
+              letterSpacing: '0.06em', marginBottom: 3 }}>{s.hex}</div>
+            <div style={{ fontFamily: 'Inter', fontSize: 9, color: T.text3,
+              letterSpacing: '0.08em', textTransform: 'uppercase' }}>{s.role}</div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+// ── TYPOGRAPHY SECTION ────────────────────────────────────────────
+function TypeSection({ T }) {
+  const scale = [
+    { label: 'Display',    font: 'Cormorant Garamond', size: 72, weight: 300, style: 'normal',  sample: 'The Art of Beauty'   },
+    { label: 'Headline',   font: 'Cormorant Garamond', size: 48, weight: 300, style: 'italic',  sample: 'Luminous Ritual'      },
+    { label: 'Title',      font: 'Cormorant Garamond', size: 32, weight: 400, style: 'normal',  sample: 'Botanical Essence'    },
+    { label: 'Subheading', font: 'Inter',              size: 13, weight: 400, style: 'normal',  sample: 'Carefully crafted from rare ingredients'  },
+    { label: 'Body',       font: 'Inter',              size: 15, weight: 300, style: 'normal',  sample: 'Each formula is developed in collaboration with leading dermatologists and biochemists, ensuring the highest standards of efficacy and safety.' },
+    { label: 'Caption',    font: 'Inter',              size: 11, weight: 400, style: 'normal',  sample: 'Net volume 30 ml — Apply morning and evening'  },
+    { label: 'Label',      font: 'Inter',              size: 9,  weight: 500, style: 'normal',  sample: 'LUMINOUS SERUM NO. 04 · BOTANICAL COLLECTION' },
+  ];
+  return (
+    <Section style={{ background: T.bgAlt }}>
+      <Label T={T}>Typography System</Label>
+      <div style={{ display: 'grid', gridTemplateColumns: '100px 1fr', gap: '0' }}>
+        {scale.map((t, i) => (
+          <React.Fragment key={t.label}>
+            <div style={{ padding: '28px 0', borderTop: i === 0 ? `1px solid ${T.border}` : 'none',
+              display: 'flex', alignItems: 'flex-start', gap: 0 }}>
+              <div>
+                <div style={{ fontFamily: 'Inter', fontSize: 9, fontWeight: 500,
+                  letterSpacing: '0.14em', textTransform: 'uppercase', color: T.text3 }}>{t.label}</div>
+                <div style={{ fontFamily: 'Inter', fontSize: 9, color: T.text3,
+                  marginTop: 4 }}>{t.font.split(' ')[0]} {t.size}px</div>
+              </div>
+            </div>
+            <div style={{ padding: '20px 0 20px 40px',
+              borderTop: `1px solid ${T.border}`,
+              borderLeft: `1px solid ${T.border}` }}>
+              <div style={{ fontFamily: t.font, fontSize: t.size, fontWeight: t.weight,
+                fontStyle: t.style, color: T.text, lineHeight: 1.15,
+                letterSpacing: t.size > 30 ? '-0.01em' : t.size < 12 ? '0.14em' : '0' }}>
+                {t.sample}
+              </div>
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+// ── COMPONENTS SECTION ────────────────────────────────────────────
+function ComponentsSection({ T }) {
+  const [inputVal, setInputVal] = useState('');
+  const [focused, setFocused] = useState(false);
+  const [checked, setChecked] = useState(false);
+  const [qty, setQty] = useState(1);
+
+  return (
+    <Section style={{ background: T.bg }}>
+      <Label T={T}>Component Library</Label>
+      <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 42, fontWeight: 300,
+        color: T.text, marginBottom: 64, letterSpacing: '-0.01em' }}>
+        UI Elements
+      </h2>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 48 }}>
+
+        {/* Buttons */}
+        <div>
+          <div style={{ fontFamily: 'Inter', fontSize: 9, fontWeight: 500,
+            letterSpacing: '0.18em', textTransform: 'uppercase', color: T.text3, marginBottom: 24 }}>
+            Buttons
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            <PrimaryBtn T={T} full>Shop Now</PrimaryBtn>
+            <OutlineBtn T={T} full>Add to Ritual</OutlineBtn>
+            <div style={{ padding: '13px 34px', background: T.surface,
+              border: `1px solid ${T.border}`, cursor: 'pointer',
+              fontFamily: 'Inter', fontSize: 11, fontWeight: 400,
+              letterSpacing: '0.16em', textTransform: 'uppercase', color: T.text2,
+              textAlign: 'center' }}>
+              Wishlist
+            </div>
+            <div style={{ textAlign: 'center', paddingTop: 8 }}>
+              <GhostBtn T={T}>Learn More</GhostBtn>
+            </div>
+          </div>
+        </div>
+
+        {/* Inputs */}
+        <div>
+          <div style={{ fontFamily: 'Inter', fontSize: 9, fontWeight: 500,
+            letterSpacing: '0.18em', textTransform: 'uppercase', color: T.text3, marginBottom: 24 }}>
+            Form Inputs
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {/* Text input */}
+            <div>
+              <div style={{ fontFamily: 'Inter', fontSize: 9, letterSpacing: '0.12em',
+                textTransform: 'uppercase', color: T.text3, marginBottom: 8 }}>
+                Email Address
+              </div>
+              <input value={inputVal} onChange={e => setInputVal(e.target.value)}
+                onFocus={() => setFocused(true)} onBlur={() => setFocused(false)}
+                placeholder="your@email.com"
+                style={{ width: '100%', padding: '12px 16px',
+                  background: T.surface, border: `1px solid ${focused ? T.border2 : T.border}`,
+                  fontFamily: 'Inter', fontSize: 13, fontWeight: 300, color: T.text,
+                  outline: 'none', transition: 'border-color 0.2s',
+                  '::placeholder': { color: T.text3 } }}/>
+            </div>
+            {/* Select */}
+            <div>
+              <div style={{ fontFamily: 'Inter', fontSize: 9, letterSpacing: '0.12em',
+                textTransform: 'uppercase', color: T.text3, marginBottom: 8 }}>
+                Skin Type
+              </div>
+              <select style={{ width: '100%', padding: '12px 16px',
+                background: T.surface, border: `1px solid ${T.border}`,
+                fontFamily: 'Inter', fontSize: 13, fontWeight: 300, color: T.text2,
+                outline: 'none', appearance: 'none', cursor: 'pointer' }}>
+                <option>Normal — Balanced</option>
+                <option>Dry — Dehydrated</option>
+                <option>Oily — Combination</option>
+                <option>Sensitive — Reactive</option>
+              </select>
+            </div>
+            {/* Checkbox */}
+            <div onClick={() => setChecked(!checked)}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer' }}>
+              <div style={{ width: 16, height: 16, border: `1px solid ${checked ? T.accent : T.border}`,
+                background: checked ? T.accent : 'transparent',
+                transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                {checked && <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
+                  <path d="M1 3.5L3.5 6L8 1" stroke="white" strokeWidth="1.5" strokeLinecap="round"/>
+                </svg>}
+              </div>
+              <span style={{ fontFamily: 'Inter', fontSize: 11, fontWeight: 300,
+                color: T.text2, lineHeight: 1.5 }}>
+                Subscribe to the Lumière newsletter
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Tags + Badges */}
+        <div>
+          <div style={{ fontFamily: 'Inter', fontSize: 9, fontWeight: 500,
+            letterSpacing: '0.18em', textTransform: 'uppercase', color: T.text3, marginBottom: 24 }}>
+            Tags & Labels
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 28 }}>
+            {[['New Season', T.surface, T.border, T.text2],
+              ['Best Seller', T.accent, T.accent, '#fff'],
+              ['Vegan', T.bgAlt, T.border2, T.text2],
+              ['Award', T.bgAlt, T.border, T.text3],
+              ['Sold Out', T.surface, T.border, T.text3],
+            ].map(([l, bg, bc, tc]) => (
+              <span key={l} style={{ padding: '5px 12px', background: bg,
+                border: `1px solid ${bc}`, fontFamily: 'Inter', fontSize: 9,
+                fontWeight: 500, letterSpacing: '0.14em', textTransform: 'uppercase', color: tc }}>
+                {l}
+              </span>
+            ))}
+          </div>
+          {/* Quantity control */}
+          <div style={{ fontFamily: 'Inter', fontSize: 9, letterSpacing: '0.12em',
+            textTransform: 'uppercase', color: T.text3, marginBottom: 10 }}>
+            Quantity
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center',
+            border: `1px solid ${T.border}`, width: 'fit-content' }}>
+            <button onClick={() => setQty(Math.max(1, qty-1))}
+              style={{ width: 44, height: 44, background: 'none', border: 'none',
+                fontFamily: 'Inter', fontSize: 18, color: T.text2, cursor: 'pointer',
+                transition: 'color 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.color = T.text}
+              onMouseLeave={e => e.currentTarget.style.color = T.text2}>−</button>
+            <span style={{ width: 44, textAlign: 'center', fontFamily: 'Inter',
+              fontSize: 13, fontWeight: 400, color: T.text }}>{qty}</span>
+            <button onClick={() => setQty(qty+1)}
+              style={{ width: 44, height: 44, background: 'none', border: 'none',
+                fontFamily: 'Inter', fontSize: 18, color: T.text2, cursor: 'pointer',
+                transition: 'color 0.15s' }}
+              onMouseEnter={e => e.currentTarget.style.color = T.text}
+              onMouseLeave={e => e.currentTarget.style.color = T.text2}>+</button>
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+// ── PRODUCT CARD ──────────────────────────────────────────────────
+function ProductCard({ name, sub, price, tag, T }) {
+  const [h, setH] = useState(false);
+  const [wish, setWish] = useState(false);
+  return (
+    <div onMouseEnter={() => setH(true)} onMouseLeave={() => setH(false)}
+      style={{ cursor: 'pointer' }}>
+      <div style={{ position: 'relative', overflow: 'hidden', marginBottom: 20,
+        background: T.bgAlt, height: 340,
+        boxShadow: h ? `0 8px 40px rgba(0,0,0,0.08)` : '0 2px 12px rgba(0,0,0,0.03)',
+        transition: 'box-shadow 0.3s ease' }}>
+        {/* Placeholder */}
+        <div style={{ width: '100%', height: '100%', display: 'flex',
+          alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8 }}>
+          <svg width="40" height="60" viewBox="0 0 40 60" fill="none">
+            <rect x="14" y="2" width="12" height="16" rx="6"
+              fill={T.border2}/>
+            <path d="M6 22 Q8 18 20 18 Q32 18 34 22 L36 58 H4 Z"
+              fill={T.border}/>
+            <rect x="16" y="26" width="8" height="3" rx="1" fill={T.border2}/>
+          </svg>
+          <div style={{ fontFamily: 'Inter', fontSize: 8, letterSpacing: '0.2em',
+            textTransform: 'uppercase', color: T.text3 }}>product</div>
+        </div>
+        {/* Tag */}
+        {tag && <div style={{ position: 'absolute', top: 16, left: 16,
+          padding: '4px 10px', background: T.surface, border: `1px solid ${T.border}`,
+          fontFamily: 'Inter', fontSize: 8, letterSpacing: '0.16em',
+          textTransform: 'uppercase', color: T.text2 }}>{tag}</div>}
+        {/* Wishlist */}
+        <button onClick={e => { e.stopPropagation(); setWish(!wish); }}
+          style={{ position: 'absolute', top: 12, right: 14, background: 'none',
+            border: 'none', cursor: 'pointer', padding: 4,
+            color: wish ? T.accent : T.text3, transition: 'color 0.2s' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill={wish ? 'currentColor' : 'none'}
+            stroke="currentColor" strokeWidth="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+          </svg>
+        </button>
+        {/* Hover CTA */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0,
+          padding: 16, opacity: h ? 1 : 0, transform: h ? 'translateY(0)' : 'translateY(8px)',
+          transition: 'all 0.25s ease' }}>
+          <PrimaryBtn T={T} full>Add to Ritual</PrimaryBtn>
+        </div>
+      </div>
+      <div style={{ fontFamily: 'Inter', fontSize: 8, letterSpacing: '0.18em',
+        textTransform: 'uppercase', color: T.text3, marginBottom: 6 }}>{sub}</div>
+      <div style={{ fontFamily: 'Cormorant Garamond', fontSize: 20, fontWeight: 400,
+        color: T.text, marginBottom: 6, letterSpacing: '0.01em' }}>{name}</div>
+      <div style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 300, color: T.text2 }}>{price}</div>
+    </div>
+  );
+}
+
+function CardsSection({ T }) {
+  const products = [
+    { name: 'Luminous Serum',  sub: 'Brightening · 30ml',   price: '€ 148',  tag: 'Best Seller' },
+    { name: 'Velvet Moisture', sub: 'Hydrating · 50ml',     price: '€ 96',   tag: null          },
+    { name: 'Night Elixir',    sub: 'Regenerating · 25ml',  price: '€ 210',  tag: 'New'         },
+    { name: 'Eye Ritual',      sub: 'Firming · 15ml',       price: '€ 124',  tag: null          },
+  ];
+  return (
+    <Section style={{ background: T.bgAlt }}>
+      <Label T={T}>Product Cards</Label>
+      <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 42, fontWeight: 300,
+        color: T.text, marginBottom: 48, letterSpacing: '-0.01em' }}>
+        The Collection
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 24 }}>
+        {products.map(p => <ProductCard key={p.name} {...p} T={T}/>)}
+      </div>
+    </Section>
+  );
+}
+
+// ── MOTION NOTES ──────────────────────────────────────────────────
+function MotionSection({ T }) {
+  const items = [
+    { title: 'Page Transitions',      desc: 'Slow cross-fade 600ms · ease opacity + subtle scale 0.98→1',   val: '600ms' },
+    { title: 'Hover States',          desc: 'Border color shift + elevation via box-shadow · no background flash', val: '200ms' },
+    { title: 'Button Press',          desc: 'Slight darken on active · scale(0.98) feedback',               val: '80ms'  },
+    { title: 'Image Reveal',          desc: 'Fade + upward drift on scroll enter · staggered in grids',     val: '900ms' },
+    { title: 'Overlay Panels',        desc: 'Slide-in from right 380px panel · backdrop blur 20px',         val: '350ms' },
+    { title: 'Number Counters',       desc: 'Animate count-up on first viewport entry · 1.2s ease-out',     val: '1200ms'},
+  ];
+  return (
+    <Section style={{ background: T.bg }}>
+      <Label T={T}>Micro-interactions</Label>
+      <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 42, fontWeight: 300,
+        color: T.text, marginBottom: 48, letterSpacing: '-0.01em' }}>
+        Motion Language
+      </h2>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1,
+        border: `1px solid ${T.border}` }}>
+        {items.map((item, i) => (
+          <div key={item.title}
+            style={{ padding: '28px 28px',
+              borderRight: i % 3 !== 2 ? `1px solid ${T.border}` : 'none',
+              borderBottom: i < 3 ? `1px solid ${T.border}` : 'none',
+              transition: 'background 0.2s', cursor: 'default' }}
+            onMouseEnter={e => e.currentTarget.style.background = T.bgAlt}
+            onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 10 }}>
+              <div style={{ fontFamily: 'Inter', fontSize: 11, fontWeight: 500, color: T.text }}>{item.title}</div>
+              <div style={{ fontFamily: 'Cormorant Garamond', fontSize: 18, fontWeight: 400,
+                color: T.accent, letterSpacing: '-0.01em' }}>{item.val}</div>
+            </div>
+            <div style={{ fontFamily: 'Inter', fontSize: 11, fontWeight: 300,
+              color: T.text2, lineHeight: 1.7 }}>{item.desc}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop: 32, padding: '20px 28px', background: T.bgAlt,
+        border: `1px solid ${T.border}`, display: 'flex', gap: 48 }}>
+        {[['Easing', 'cubic-bezier(0.16, 1, 0.3, 1) — snappy settle'],
+          ['Principle', 'Everything moves with intent — nothing decorative'],
+          ['Speed', 'Fast interactions feel responsive · slow reveals feel premium']
+        ].map(([k, v]) => (
+          <div key={k}>
+            <div style={{ fontFamily: 'Inter', fontSize: 9, fontWeight: 500, letterSpacing: '0.14em',
+              textTransform: 'uppercase', color: T.text3, marginBottom: 6 }}>{k}</div>
+            <div style={{ fontFamily: 'Inter', fontSize: 12, fontWeight: 300, color: T.text2 }}>{v}</div>
+          </div>
+        ))}
+      </div>
+    </Section>
+  );
+}
+
+// ── DARK PREVIEW ──────────────────────────────────────────────────
+function DarkPreview({ T, isDark }) {
+  const opp = isDark ? light : dark;
+  return (
+    <Section style={{ background: T.bgAlt }}>
+      <Label T={T}>Dark Mode Preview</Label>
+      <h2 style={{ fontFamily: 'Cormorant Garamond', fontSize: 42, fontWeight: 300,
+        color: T.text, marginBottom: 40, letterSpacing: '-0.01em' }}>
+        {isDark ? 'Light Mode' : 'Dark Mode'}
+      </h2>
+      <div style={{ background: opp.bg, border: `1px solid ${T.border}`, padding: 48 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
+          <div>
+            <div style={{ fontFamily: 'Inter', fontSize: 9, fontWeight: 500,
+              letterSpacing: '0.18em', textTransform: 'uppercase', color: opp.text3, marginBottom: 16 }}>
+              LUMIÈRE · BOTANICAL
+            </div>
+            <div style={{ fontFamily: 'Cormorant Garamond', fontSize: 40, fontWeight: 300,
+              color: opp.text, lineHeight: 1.15, marginBottom: 16, letterSpacing: '-0.01em' }}>
+              <em>Effortless</em><br/>Radiance
+            </div>
+            <div style={{ fontFamily: 'Inter', fontSize: 13, fontWeight: 300,
+              color: opp.text2, lineHeight: 1.8, marginBottom: 28 }}>
+              Your daily ritual, elevated. Pure botanical actives for luminous skin.
+            </div>
+            <div style={{ display: 'flex', gap: 12 }}>
+              <div style={{ padding: '12px 28px', background: opp.accent,
+                fontFamily: 'Inter', fontSize: 10, letterSpacing: '0.16em',
+                textTransform: 'uppercase', color: '#fff', cursor: 'pointer' }}>
+                Shop Now
+              </div>
+              <div style={{ padding: '12px 28px', border: `1px solid ${opp.border}`,
+                fontFamily: 'Inter', fontSize: 10, letterSpacing: '0.16em',
+                textTransform: 'uppercase', color: opp.text2, cursor: 'pointer' }}>
+                Explore
+              </div>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            {['Luminous Serum', 'Velvet Moisture', 'Night Elixir', 'Eye Ritual'].map(n => (
+              <div key={n} style={{ background: opp.bgAlt, border: `1px solid ${opp.border}`, padding: 16 }}>
+                <div style={{ height: 80, background: opp.s3 || opp.bgAlt,
+                  border: `1px solid ${opp.border}`, marginBottom: 10,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 20, height: 30, background: opp.border2, borderRadius: '50% 50% 40% 40%' }}/>
+                </div>
+                <div style={{ fontFamily: 'Cormorant Garamond', fontSize: 14, color: opp.text }}>{n}</div>
+                <div style={{ fontFamily: 'Inter', fontSize: 10, color: opp.text3, marginTop: 2 }}>€ 148</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Section>
+  );
+}
+
+// ── TWEAKS ────────────────────────────────────────────────────────
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"darkMode": false}/*EDITMODE-END*/;
+
+function TweaksPanel({ isDark, setDark, T }) {
+  const [vis, setVis] = useState(false);
+
+  useEffect(() => {
+    const h = e => {
+      if (e.data?.type === '__activate_edit_mode')   setVis(true);
+      if (e.data?.type === '__deactivate_edit_mode') setVis(false);
+    };
+    window.addEventListener('message', h);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', h);
+  }, []);
+
+  if (!vis) return null;
+
+  return (
+    <div style={{ position: 'fixed', bottom: 24, right: 24, zIndex: 9999,
+      background: T.surface, border: `1px solid ${T.border}`,
+      padding: 20, width: 200,
+      boxShadow: `0 16px 48px rgba(0,0,0,${isDark ? 0.5 : 0.1})` }}>
+      <div style={{ fontFamily: 'Inter', fontSize: 9, fontWeight: 500, letterSpacing: '0.16em',
+        textTransform: 'uppercase', color: T.text3, marginBottom: 16 }}>Tweaks</div>
+      <div style={{ fontFamily: 'Inter', fontSize: 9, color: T.text2, marginBottom: 10, letterSpacing: '0.08em' }}>Theme</div>
+      <div style={{ display: 'flex', border: `1px solid ${T.border}` }}>
+        {[['light', 'Light'], ['dark', 'Dark']].map(([k, l]) => (
+          <button key={k} onClick={() => {
+            setDark(k === 'dark');
+            window.parent.postMessage({ type: '__edit_mode_set_keys', edits: { darkMode: k==='dark' } }, '*');
+          }} style={{ flex: 1, padding: '8px', background: (k==='dark')===isDark ? T.bgAlt : 'transparent',
+            border: 'none', color: (k==='dark')===isDark ? T.text : T.text2,
+            fontSize: 10, letterSpacing: '0.1em', cursor: 'pointer', fontFamily: 'Inter' }}>
+            {l}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── APP ───────────────────────────────────────────────────────────
+function App() {
+  const [isDark, setDark] = useState(() => localStorage.getItem('lum_dark') === 'true');
+  useEffect(() => { localStorage.setItem('lum_dark', isDark); }, [isDark]);
+  const T = isDark ? dark : light;
+
+  return (
+    <div style={{ background: T.bg, color: T.text, transition: 'background 0.4s ease, color 0.3s ease', minHeight: '100vh' }}>
+      <Hero T={T} dark={isDark} setDark={setDark} />
+      <Divider T={T}/>
+      <PaletteSection T={T}/>
+      <Divider T={T}/>
+      <TypeSection T={T}/>
+      <Divider T={T}/>
+      <ComponentsSection T={T}/>
+      <Divider T={T}/>
+      <CardsSection T={T}/>
+      <Divider T={T}/>
+      <MotionSection T={T}/>
+      <Divider T={T}/>
+      <DarkPreview T={T} isDark={isDark}/>
+
+      {/* Footer */}
+      <div style={{ borderTop: `1px solid ${T.border}`, padding: '32px 80px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        background: T.bgAlt }}>
+        <div style={{ fontFamily: 'Cormorant Garamond', fontSize: 18, fontWeight: 500,
+          letterSpacing: '0.1em', color: T.text }}>LUMIÈRE</div>
+        <div style={{ fontFamily: 'Inter', fontSize: 9, letterSpacing: '0.12em',
+          textTransform: 'uppercase', color: T.text3 }}>
+          Premium Beauty UI System · 2026
+        </div>
+        <button onClick={() => setDark(!isDark)}
+          style={{ background: 'none', border: `1px solid ${T.border}`,
+            padding: '6px 14px', fontFamily: 'Inter', fontSize: 9, letterSpacing: '0.12em',
+            textTransform: 'uppercase', color: T.text2, cursor: 'pointer' }}>
+          {isDark ? 'Light Mode' : 'Dark Mode'}
+        </button>
+      </div>
+
+      <TweaksPanel isDark={isDark} setDark={setDark} T={T}/>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+/* ── ANIMATIONS ─────────────────────────────────────────────── */
+
+/* Page transitions */
+@keyframes pageEnter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+[data-page-content] {
+  animation: pageEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Card stagger */
+@keyframes cardEnter {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+[data-product-card] {
+  animation: cardEnter 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+[data-product-card]:nth-child(1) { animation-delay: 0ms; }
+[data-product-card]:nth-child(2) { animation-delay: 50ms; }
+[data-product-card]:nth-child(3) { animation-delay: 100ms; }
+[data-product-card]:nth-child(4) { animation-delay: 150ms; }
+[data-product-card]:nth-child(5) { animation-delay: 200ms; }
+[data-product-card]:nth-child(6) { animation-delay: 250ms; }
+[data-product-card]:nth-child(7) { animation-delay: 300ms; }
+[data-product-card]:nth-child(8) { animation-delay: 350ms; }
+
+/* Hover lift */
+[data-hover-lift] { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+[data-hover-lift]:hover { transform: translateY(-2px); }
+
+/* Toast */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(24px); }
+}
+.toast-enter { animation: toastIn 0.25s cubic-bezier(0.16,1,0.3,1); }
+.toast-exit  { animation: toastOut 0.2s ease forwards; }
+
+/* Button press */
+button:active { transform: scale(0.97); transition: transform 0.05s; }
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Image placeholder shimmer */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+[data-shimmer] {
+  background: linear-gradient(90deg,
+    rgba(0,0,0,0.04) 0%,
+    rgba(0,0,0,0.08) 50%,
+    rgba(0,0,0,0.04) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s infinite;
+}
+
+/* Fade in on scroll */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+[data-fade-up] { animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
