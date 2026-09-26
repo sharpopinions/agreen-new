@@ -115,3 +115,16 @@
 Фільтри (`Components/CatalogFilters.vue`) і список товарів (`Components/CatalogResults.vue`) спільні для всіх трьох сторінок.
 
 Query-параметри: `q` (назва або артикул), `brand[]`, `category[]`, `availability[]` (`in_stock` / `preorder`), `sale`, `min_price`, `max_price`, `sort` (`price_asc` / `price_desc`), `page`.
+
+## Прогрес верстки за Claude Design
+
+Референс: `docs/design/claude-design/project/prototype/` (`pages.jsx`, `components.jsx`, `extra-pages*.jsx`).
+
+- [x] Головна (`MainPage`): усі 8 блоків. Контент блоків 5–8 тимчасово лежить у `resources/js/data/home.js`.
+- [ ] Мегаменю хедера і Cmd+K (`mega-menus.jsx`, `command-palette.jsx`)
+- [ ] Сторінка товару: 5 варіантів
+- [ ] Кошик, оформлення замовлення, сторінки подяки
+- [ ] Інші сторінки (`extra-pages*.jsx`)
+- [ ] Вхід і реєстрація, кабінети
+
+Заглушка фото `Components/ImgPlaceholder.vue` — порт `Img` з прототипу. Її треба замінити на реальні зображення.

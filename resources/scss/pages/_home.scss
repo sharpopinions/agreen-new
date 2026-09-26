@@ -67,12 +67,44 @@
     min-height: 440px;
 }
 
-.home-hero__banner-img {
-    width: 100%;
-    height: 440px;
-    background: var(--color-muted);
+.home-hero__dots {
+    position: absolute;
+    right: 20px;
+    bottom: 16px;
+    display: flex;
+    gap: 6px;
+}
+
+.home-hero__dot {
+    @extend %btn-reset;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--color-border-2);
+    transition: all 0.3s ease;
+
+    &--active {
+        width: 20px;
+        background: var(--color-inv-bg);
+    }
+}
+
+.home-hero__arrow {
+    @extend %btn-reset;
     @include flex-center;
-    color: var(--color-text-3);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 40px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-2);
+
+    &--prev { left: 12px; }
+    &--next { right: 12px; }
+    &:hover { color: var(--color-text); }
 }
 
 .home-hero__banner-overlay {
@@ -80,7 +112,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: var(--space-8) var(--space-8) var(--space-6);
+    padding: 36px 60px 32px;
     background: linear-gradient(to top, rgba(255,255,255,0.97) 0%, rgba(255,255,255,0.65) 60%, transparent 100%);
 }
 
@@ -122,13 +154,6 @@
     flex-direction: column;
 }
 
-.home-hero__partner-img {
-    height: 130px;
-    background: var(--color-muted);
-    @include flex-center;
-    color: var(--color-text-3);
-    font-size: var(--font-size-sm);
-}
 
 .home-hero__partner-body {
     padding: var(--space-4);
@@ -149,35 +174,49 @@
     margin-bottom: var(--space-4);
 }
 
-// Buttons
+// Buttons (Claude Design: Btn, size md)
 .btn {
     @extend %btn-reset;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: var(--space-2) var(--space-4);
+    gap: 6px;
+    padding: 9px 20px;
+    border: 1px solid transparent;
     border-radius: var(--radius-sm);
     font-size: 14px;
     font-weight: 500;
-    transition: opacity var(--transition-fast), background var(--transition-fast);
+    line-height: 1.43;
+    white-space: nowrap;
+    transition: all 0.15s ease;
 
     &--primary {
         background: var(--color-inv-bg);
+        border-color: var(--color-inv-bg);
         color: var(--color-inv-text);
         &:hover { opacity: 0.85; }
+    }
+
+    &--secondary {
+        background: var(--color-surface);
+        border-color: var(--color-border);
+        color: var(--color-text);
+        &:hover { background: var(--color-bg-alt); }
     }
 
     &--outline {
         background: transparent;
         color: var(--color-text);
-        border: 1px solid var(--color-border);
+        border-color: var(--color-border);
         &:hover { background: var(--color-muted); }
     }
 
     &--ghost {
         background: transparent;
         color: var(--color-text-2);
-        &:hover { color: var(--color-text); }
+        padding: 6px 14px;
+        font-size: 13px;
+        &:hover { background: var(--color-muted); color: var(--color-text); }
     }
 
     &--full { width: 100%; }
@@ -318,4 +357,245 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-4);
+}
+
+.home-products__empty {
+    padding: var(--space-8) 0;
+    text-align: center;
+    font-size: 13px;
+    color: var(--color-text-2);
+}
+
+// ── Блоки 5–8 (Claude Design: MainPage) ────────────────────────────────────
+.home-section {
+    padding: 0 var(--space-8) 52px;
+}
+
+.home-section__title { margin-bottom: 20px; }
+
+// «Детальніше →» / «Читати →»
+.home-more {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text-2);
+    transition: color var(--transition-fast);
+
+    &--sm { font-size: 12px; }
+}
+
+// Послуги
+.home-services {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.home-services__card {
+    display: block;
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: var(--color-border-2);
+        box-shadow: var(--shadow-md);
+        .home-more { color: var(--color-text); }
+    }
+}
+
+.home-services__num {
+    margin-bottom: 14px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-text-3);
+}
+
+.home-services__title {
+    margin-bottom: var(--space-2);
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.43;
+    color: var(--color-text);
+}
+
+.home-services__desc {
+    margin-bottom: var(--space-4);
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--color-text-2);
+}
+
+// Партнерство
+.home-partners {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-8);
+    padding: 40px 48px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.home-partners__title {
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--color-text);
+}
+
+.home-partners__desc {
+    margin-bottom: var(--space-4);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--color-text-2);
+}
+
+.home-partners__item .home-more:hover { color: var(--color-text); }
+
+.home-dealer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: var(--space-10);
+    margin-top: 14px;
+    padding: 28px 48px;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.home-dealer__title {
+    margin-bottom: var(--space-3);
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+}
+
+.home-dealer__text {
+    margin-bottom: var(--space-4);
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--color-text-2);
+}
+
+.home-dealer__img {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+// Про компанію
+.home-about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-10);
+}
+
+.home-about__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-bottom: var(--space-6);
+    padding: 28px 0;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.home-about__stat {
+    padding: 0 20px;
+    text-align: center;
+
+    & + & { border-left: 1px solid var(--color-border); }
+}
+
+.home-about__num {
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+}
+
+.home-about__label {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--color-text-3);
+}
+
+.home-about__text {
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--color-text-2);
+}
+
+.home-about__btn { margin-top: 20px; }
+
+.home-about__img {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+// Блог
+.home-blog {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+}
+
+.home-blog__card {
+    display: block;
+    overflow: hidden;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+
+    &:hover {
+        border-color: var(--color-border-2);
+        box-shadow: var(--shadow-md);
+        .home-more { color: var(--color-text); }
+    }
+}
+
+.home-blog__body { padding: 14px 16px 18px; }
+
+.home-blog__date {
+    margin-bottom: 6px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-3);
+}
+
+.home-blog__title {
+    margin-bottom: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--color-text);
+}
+
+@media (max-width: 1100px) {
+    .home-services,
+    .home-blog { grid-template-columns: repeat(2, 1fr); }
+    .home-partners { grid-template-columns: 1fr; padding: var(--space-8); }
+    .home-dealer,
+    .home-about { grid-template-columns: 1fr; }
+    .home-dealer { padding: var(--space-6) var(--space-8); }
+}
+
+@media (max-width: 640px) {
+    .home-section { padding-inline: var(--space-4); }
+    .home-services,
+    .home-blog { grid-template-columns: 1fr; }
+}
+
+[data-theme="dark"] .home-hero__banner-overlay {
+    background: linear-gradient(to top, rgba(9, 9, 11, 0.96) 0%, rgba(9, 9, 11, 0.5) 60%, transparent 100%);
 }
