@@ -1,112 +1,88 @@
-// Design tokens — джерело: Figma "A-green" (див. docs/design/README.md)
 :root {
-    // Brand
-    --color-primary: #1a5cb9;
-    --color-primary-hover: #154a94;
-    --color-primary-text: #ffffff;
-    --color-accent-gold: #c69500;
+      // Background
+      --color-bg: #ffffff;
+      --color-bg-alt: #f4f4f5;
+      --color-surface: #ffffff;
 
-    // Background
-    --color-bg: #ffffff;
-    --color-bg-alt: #eeeeee;
-    --color-surface: #ffffff;
-    --color-placeholder: #d9d9d9;
-    --color-footer-bg: #444444;
+      // Text
+      --color-text: #09090b;
+      --color-text-2: #71717a;
+      --color-text-3: #a1a1aa;
 
-    // Text
-    --color-text: #000000;
-    --color-text-2: rgba(0, 0, 0, 0.5);
-    --color-text-3: rgba(0, 0, 0, 0.3);
-    --color-text-label: #838383;
+      // Border
+      --color-border: #e4e4e7;
+      --color-border-2: #d4d4d8;
 
-    // Border
-    --color-border: #000000;
-    --color-border-2: rgba(0, 0, 0, 0.2);
+      // Primary button (dark)
+      --color-inv-bg: #18181b;
+      --color-inv-text: #fafafa;
 
-    // Primary button (brand)
-    --color-inv-bg: var(--color-primary);
-    --color-inv-text: var(--color-primary-text);
+      // Semantic
+      --color-danger: #dc2626;
+      --color-warn: #b45309;
+      --color-success: #16a34a;
 
-    // Semantic
-    --color-danger: #dc2626;
-    --color-warn: #c69500;   // "Під замовлення"
-    --color-success: #487e01; // "Є в наявності"
+      // Muted
+      --color-muted: #f4f4f5;
+      --color-muted-fg: #71717a;
 
-    // Muted
-    --color-muted: #eeeeee;
-    --color-muted-fg: rgba(0, 0, 0, 0.5);
+      // Typography
+      --font-sans: 'Geist', 'Inter', system-ui, sans-serif;
+      --font-size-xs: 0.6875rem;
+      --font-size-sm: 0.75rem;
+      --font-size-base: 0.875rem;
+      --font-size-lg: 1rem;
+      --font-size-xl: 1.125rem;
+      --font-size-2xl: 1.25rem;
+      --font-size-3xl: 1.5rem;
+  
+      // Spacing
+      --space-1: 0.25rem;
+      --space-2: 0.5rem;
+      --space-3: 0.75rem;
+      --space-4: 1rem;
+      --space-5: 1.25rem;
+      --space-6: 1.5rem;
+      --space-8: 2rem;
+      --space-10: 2.5rem;
+      --space-12: 3rem;
+      --space-16: 4rem;
 
-    // Typography
-    --font-sans: 'Inter', system-ui, sans-serif;
-    --font-size-xs: 0.625rem;  // 10
-    --font-size-sm: 0.75rem;   // 12
-    --font-size-base: 0.875rem; // 14
-    --font-size-lg: 1rem;      // 16
-    --font-size-xl: 1.125rem;  // 18
-    --font-size-2xl: 1.25rem;  // 20
-    --font-size-3xl: 1.5rem;   // 24
-    --font-size-4xl: 1.75rem;  // 28
-    --font-size-5xl: 2rem;     // 32
-    --font-size-display: 2.875rem; // 46
+      // Borders
+      --radius-sm: 8px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-full: 9999px;
 
-    --font-weight-light: 300;
-    --font-weight-regular: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
+      // Shadows
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
 
-    // Spacing
-    --space-1: 0.25rem;
-    --space-2: 0.5rem;
-    --space-3: 0.75rem;
-    --space-4: 1rem;
-    --space-5: 1.25rem;
-    --space-6: 1.5rem;
-    --space-8: 2rem;
-    --space-10: 2.5rem;
-    --space-12: 3rem;
-    --space-16: 4rem;
+      // Transitions
+      --transition-fast: 150ms ease;
+      --transition-base: 250ms ease;
+  }
 
-    // Layout (макет 1440, поля 60 → контент 1320)
-    --container-max: 1440px;
-    --container-gutter: 60px;
+  // Dark theme
+  [data-theme="dark"] {
+      --color-bg: #09090b;
+      --color-bg-alt: #18181b;
+      --color-surface: #09090b;
 
-    // Borders — у макеті кути прямі, заокруглені лише "пілюлі"
-    --radius-sm: 0;
-    --radius-md: 0;
-    --radius-lg: 0;
-    --radius-full: 9999px;
+      --color-text: #fafafa;
+      --color-text-2: #a1a1aa;
+      --color-text-3: #71717a;
 
-    // Shadows
-    --shadow-sm: none;
-    --shadow-md: 1px 1px 15px rgba(0, 0, 0, 0.1);
+      --color-border: #27272a;
+      --color-border-2: #3f3f46;
 
-    // Transitions
-    --transition-fast: 150ms ease;
-    --transition-base: 250ms ease;
-}
+      --color-inv-bg: #fafafa;
+      --color-inv-text: #09090b;
 
-// Dark theme
-[data-theme="dark"] {
-    --color-primary: #5b8fdb;
-    --color-primary-hover: #7aa6e4;
+      --color-danger: #ef4444;
+      --color-warn: #f59e0b;
 
-    --color-bg: #09090b;
-    --color-bg-alt: #18181b;
-    --color-surface: #09090b;
-    --color-placeholder: #27272a;
+      --color-muted: #18181b;
+      --color-muted-fg: #a1a1aa;
+  }
 
-    --color-text: #fafafa;
-    --color-text-2: rgba(255, 255, 255, 0.6);
-    --color-text-3: rgba(255, 255, 255, 0.4);
-    --color-text-label: #a1a1aa;
-
-    --color-border: rgba(255, 255, 255, 0.6);
-    --color-border-2: rgba(255, 255, 255, 0.2);
-
-    --color-danger: #ef4444;
-    --color-warn: #f59e0b;
-    --color-success: #84cc16;
-
-    --color-muted: #18181b;
-    --color-muted-fg: rgba(255, 255, 255, 0.6);
-}

@@ -19,6 +19,7 @@ class HomeController extends Controller
             'translations'          => fn($q) => $q->where('language_id', $langId),
             'children.translations' => fn($q) => $q->where('language_id', $langId),
         ])
+            ->withCount(['products' => fn($q) => $q->where('store_id', 1)->where('is_active', true)])
             ->where('store_id', 1)
             ->where('is_active', true)
             ->whereNull('parent_id')
@@ -28,6 +29,7 @@ class HomeController extends Controller
                 'id'       => $cat->id,
                 'name'     => $cat->translations->first()?->name ?? '',
                 'slug'     => $cat->translations->first()?->slug ?? '',
+                'count'    => $cat->products_count,
                 'children' => $cat->children
                     ->filter(fn($c) => $c->is_active)
                     ->map(fn($sub) => [

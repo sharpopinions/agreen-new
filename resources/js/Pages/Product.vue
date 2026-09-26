@@ -1,152 +1,158 @@
 <template>
     <AppLayout>
-        <div class="container">
+        <div class="product-page">
+
+            <!-- Breadcrumbs -->
             <nav class="breadcrumbs">
                 <Link href="/" class="breadcrumbs__item">Головна</Link>
+                <span class="breadcrumbs__sep">›</span>
                 <Link href="/catalog" class="breadcrumbs__item">Каталог</Link>
-                <Link v-if="product.category" :href="`/catalog/${product.category.slug}`" class="breadcrumbs__item">
-                    {{ product.category.name }}
-                </Link>
+                <template v-if="product.category">
+                    <span class="breadcrumbs__sep">›</span>
+                    <Link :href="`/catalog/${product.category.slug}`" class="breadcrumbs__item">
+                        {{ product.category.name }}
+                    </Link>
+                </template>
+                <span class="breadcrumbs__sep">›</span>
                 <span class="breadcrumbs__item breadcrumbs__item--active">{{ product.name }}</span>
             </nav>
 
-            <nav class="product-anchors" aria-label="Розділи сторінки товару">
-                <a v-for="a in anchors" :key="a.id" :href="`#${a.id}`" class="product-anchors__link">{{ a.label }}</a>
-            </nav>
+            <!-- Gallery + Info -->
+            <div class="product-page__body">
 
-            <!-- Галерея + інформація -->
-            <section id="all" class="product-top">
+                <!-- Gallery -->
                 <div class="product-gallery">
                     <div class="product-gallery__main">
-                        <span v-if="product.badges.length" class="product-gallery__badge">{{ product.badges[0].name }}</span>
-                        <button class="product-gallery__arrow product-gallery__arrow--prev" type="button" aria-label="Попереднє фото">
-                            <Icon name="chevron-left" :size="40" :stroke-width="1" />
-                        </button>
-                        <button class="product-gallery__arrow product-gallery__arrow--next" type="button" aria-label="Наступне фото">
-                            <Icon name="chevron-right" :size="40" :stroke-width="1" />
-                        </button>
+                        <span class="product-gallery__label">ФОТО ТОВАРУ</span>
                     </div>
                     <div class="product-gallery__thumbs">
-                        <span v-for="i in 4" :key="i" class="product-gallery__thumb" />
+                        <div v-for="i in 4" :key="i" class="product-gallery__thumb"></div>
                     </div>
                 </div>
 
+                <!-- Info -->
                 <div class="product-info">
+
+                    <div v-if="product.badges.length" class="product-info__badges">
+                        <span
+                            v-for="b in product.badges"
+                            :key="b.name"
+                            class="product-card__badge"
+                            :style="{ color: b.color, backgroundColor: b.bgColor }"
+                        >{{ b.name }}</span>
+                    </div>
+
                     <h1 class="product-info__name">{{ product.name }}</h1>
 
-                    <div class="product-info__rating">
-                        <Stars :value="product.rating" :size="24" />
-                        <a href="#reviews" class="product-info__reviews">{{ product.rating || 0 }}/5 ({{ reviewsLabel }})</a>
-                        <a href="#reviews" class="product-info__review-link">Залишити відгук</a>
-                    </div>
-
                     <div class="product-info__meta">
-                        <span v-if="product.brand" class="product-info__brand">
-                            Бренд: <Link :href="`/brands/${product.brand.slug}`">{{ product.brand.name }}</Link>
-                        </span>
-                        <span class="product-info__sku">Артикул: {{ product.sku }}</span>
+                        <span class="product-info__sku">Арт: {{ product.sku }}</span>
+                        <span v-if="product.brand" class="product-info__meta-sep">·</span>
+                        <Link v-if="product.brand" :href="`/brands/${product.brand.slug}`" class="product-info__brand">
+                            {{ product.brand.name }}
+                        </Link>
                     </div>
 
-                    <div class="product-info__stock">
-                        <span v-if="inStock" class="product-info__status product-info__status--ok">Є в наявності</span>
-                        <span v-else class="product-info__status product-info__status--order">Під замовлення</span>
-                        <span v-if="inStock" class="product-info__stock-qty">На складі: {{ product.stock }} шт</span>
+                    <div class="product-info__price-row">
+                        <span class="product-info__price">{{ fmt(product.price) }}</span>
+                        <span v-if="product.oldPrice" class="product-info__old-price">{{ fmt(product.oldPrice) }}</span>
                     </div>
 
-                    <Qty v-model="qty" :size="26" class="product-info__qty" />
+                    <div class="product-info__divider"></div>
 
-                    <div class="product-info__buy">
-                        <div class="product-info__prices">
-                            <s v-if="product.oldPrice" class="product-info__old-price">{{ fmt(product.oldPrice) }}</s>
-                            <span class="product-info__price">{{ fmt(product.price) }}</span>
+                    <div class="product-info__actions">
+                        <div class="product-info__qty">
+                            <button class="product-info__qty-btn" @click="qty > 1 && qty--">−</button>
+                            <input class="product-info__qty-input" type="number" v-model.number="qty" min="1" />
+                            <button class="product-info__qty-btn" @click="qty++">+</button>
                         </div>
-                        <button class="btn btn--primary product-info__btn" type="button">Додати в кошик</button>
-                        <button class="btn btn--outline product-info__btn" type="button">Швидке замовлення</button>
-                        <div class="product-info__tools">
-                            <button class="product-card__tool" type="button" aria-label="Додати до порівняння"><Icon name="compare" :size="26" /></button>
-                            <button class="product-card__tool" type="button" aria-label="Додати в обране"><Icon name="heart" :size="26" /></button>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Опис -->
-            <section id="description" class="product-section">
-                <h2 class="product-section__title">Опис товару</h2>
-                <div class="product-section__body">
-                    <template v-if="product.description">
-                        <div class="product-description" :class="{ 'product-description--open': descOpen }">{{ product.description }}</div>
-                        <button v-if="product.description.length > 600" class="product-section__more" type="button" @click="descOpen = !descOpen">
-                            {{ descOpen ? 'Згорнути' : 'Читати повністю' }}
+                        <button class="product-info__cart-btn">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                                <line x1="3" y1="6" x2="21" y2="6"/>
+                                <path d="M16 10a4 4 0 0 1-8 0"/>
+                            </svg>
+                            До кошика
                         </button>
-                    </template>
-                    <p v-else class="product-section__empty">Опис не заповнено.</p>
-                </div>
-            </section>
-
-            <!-- Характеристики -->
-            <section id="attributes" class="product-section">
-                <h2 class="product-section__title">Характеристики</h2>
-                <div class="product-section__body">
-                    <ul v-if="product.attributes.length" class="product-attrs">
-                        <li v-for="attr in product.attributes" :key="attr.name">{{ attr.name }}: {{ attr.value }}</li>
-                    </ul>
-                    <p v-else class="product-section__empty">Характеристики не заповнено.</p>
-                </div>
-            </section>
-
-            <!-- Відгуки -->
-            <section id="reviews" class="product-section">
-                <div class="product-section__title-col">
-                    <h2 class="product-section__title">Відгуки</h2>
-                    <div class="product-rating">
-                        <div class="product-rating__row">
-                            <span>Оцінка користувачів</span>
-                            <span>{{ product.rating || 0 }}/5</span>
-                        </div>
-                        <div class="product-rating__row">На основі {{ reviewsLabel }}</div>
                     </div>
-                    <button class="btn btn--outline btn--full" type="button">Написати відгук</button>
-                </div>
-                <!-- Картки відгуків — після появи моделі відгуків (Figma: Product-card, блок «Відгуки») -->
-                <div class="product-section__body" />
-            </section>
 
-            <!-- Супутні товари -->
-            <section v-if="related.length" id="related" class="section">
-                <h2 class="section__title section__title--left">Супутні товари</h2>
-                <ProductCarousel :products="related" />
-            </section>
+                    <div class="product-info__secondary">
+                        <button class="product-info__icon-btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+                            </svg>
+                            Порівняти
+                        </button>
+                        <button class="product-info__icon-btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                            </svg>
+                            У вішліст
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Tabs: description / attributes -->
+            <div class="product-tabs">
+                <div class="product-tabs__nav">
+                    <button
+                        class="product-tabs__btn"
+                        :class="{ 'product-tabs__btn--active': activeTab === 'description' }"
+                        @click="activeTab = 'description'"
+                    >Опис</button>
+                    <button
+                        class="product-tabs__btn"
+                        :class="{ 'product-tabs__btn--active': activeTab === 'attributes' }"
+                        @click="activeTab = 'attributes'"
+                    >Характеристики</button>
+                </div>
+                <div class="product-tabs__content">
+                    <div v-if="activeTab === 'description'" class="product-tabs__text">
+                        <p v-if="product.description">{{ product.description }}</p>
+                        <p v-else class="product-tabs__empty">Опис не заповнено.</p>
+                    </div>
+                    <div v-else class="product-tabs__attrs">
+                        <table v-if="product.attributes.length" class="product-attrs">
+                            <tbody>
+                                <tr v-for="attr in product.attributes" :key="attr.name">
+                                    <td class="product-attrs__name">{{ attr.name }}</td>
+                                    <td class="product-attrs__value">{{ attr.value }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p v-else class="product-tabs__empty">Характеристики не заповнено.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related products -->
+            <div v-if="related.length" class="product-related">
+                <h2 class="product-related__title">Схожі товари</h2>
+                <div class="cat-grid">
+                    <ProductCard v-for="p in related" :key="p.id" :product="p" />
+                </div>
+            </div>
+
         </div>
     </AppLayout>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Icon from '@/Components/Icon.vue';
-import Stars from '@/Components/Stars.vue';
-import Qty from '@/Components/Qty.vue';
-import ProductCarousel from '@/Components/ProductCarousel.vue';
-import { formatPrice as fmt, pluralUa } from '@/utils/format';
+import ProductCard from '@/Components/ProductCard.vue';
 
-const props = defineProps({
+defineProps({
     product: Object,
     related: Array,
 });
 
+const activeTab = ref('description');
 const qty = ref(1);
-const descOpen = ref(false);
 
-const inStock = computed(() => (props.product.stock ?? 0) > 0);
-const reviewsLabel = computed(() => pluralUa(props.product.reviews ?? 0, 'відгук', 'відгуки', 'відгуків'));
-
-const anchors = computed(() => [
-    { id: 'all',         label: 'Усе про товар'  },
-    { id: 'description', label: 'Опис товару'    },
-    { id: 'attributes',  label: 'Характеристики' },
-    { id: 'reviews',     label: 'Відгуки'        },
-    ...(props.related.length ? [{ id: 'related', label: 'Супутні товари' }] : []),
-]);
+function fmt(price) {
+    return price.toLocaleString('uk-UA') + ' ₴';
+}
 </script>

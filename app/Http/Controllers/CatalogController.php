@@ -13,28 +13,16 @@ use Inertia\Response;
 
 class CatalogController extends Controller
 {
-    /** Лендинг каталогу: категорії, бренди, хіти (Figma: Catalog). */
-    public function index(): Response
+    /** Каталог: плитки категорій + усі товари з фільтрами. */
+    public function index(Request $request): Response
     {
-        $langId = Language::currentId();
-
-        $hits = $this->productQuery($langId)
-            ->orderByDesc('reviews_count')
-            ->limit(8)
-            ->get()
-            ->map(fn($p) => $this->mapProduct($p));
-
-        return Inertia::render('Catalog', [
-            'categories' => $this->getCategories($langId),
-            'brands'     => $this->getBrands($langId, $this->productQuery($langId)),
-            'hits'       => $hits,
-        ]);
+        return $this->listing($request, Language::currentId(), null, 'Catalog');
     }
 
     /** Усі товари з фільтрами (Figma: Catalog//All-products). */
     public function all(Request $request): Response
     {
-        return $this->listing($request, Language::currentId(), null);
+        return $this->listing($request, Language::currentId(), null, 'CatalogCategory');
     }
 
     /** Категорія або підкатегорія (Figma: Catalog-category, Catalog//Subcategory). */
@@ -52,10 +40,10 @@ class CatalogController extends Controller
             ->whereHas('translations', fn($q) => $q->where('slug', $slug))
             ->firstOrFail();
 
-        return $this->listing($request, $langId, $category);
+        return $this->listing($request, $langId, $category, 'CatalogCategory');
     }
 
-    private function listing(Request $request, int $langId, ?Category $category): Response
+    private function listing(Request $request, int $langId, ?Category $category, string $page): Response
     {
         $filters = [
             'q'            => trim((string) $request->get('q', '')),
@@ -99,7 +87,7 @@ class CatalogController extends Controller
 
         $prices = $base()->selectRaw('MIN(price) as min, MAX(price) as max')->reorder()->first();
 
-        return Inertia::render('CatalogCategory', [
+        return Inertia::render($page, [
             'category'   => $category ? [
                 'id'     => $category->id,
                 'name'   => $category->translations->first()?->name ?? '',

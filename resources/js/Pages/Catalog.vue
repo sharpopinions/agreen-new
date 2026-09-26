@@ -1,66 +1,43 @@
 <template>
     <AppLayout>
-        <div class="container">
-            <nav class="breadcrumbs">
-                <Link href="/" class="breadcrumbs__item">Головна</Link>
-                <span class="breadcrumbs__item breadcrumbs__item--active">Каталог</span>
-            </nav>
+        <div class="catalog-landing">
 
-            <p class="catalog-intro">
-                Оберіть категорію, щоб швидко знайти потрібний товар. Ми пропонуємо широкий асортимент продукції
-                для різних потреб — від базових матеріалів до професійних рішень. Ціни на сайті вказані згідно
-                рекомендованих виробниками прайс-листів. Для вас — гнучка система знижок!
-            </p>
+            <!-- Пошук -->
+            <div class="catalog-landing__search-wrap">
+                <svg class="catalog-landing__search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input v-model="query" class="catalog-landing__search" type="search" placeholder="Введіть назву товару або категорії..." @keydown.enter="search" />
+            </div>
 
-            <form class="catalog-search" role="search" @submit.prevent="search">
-                <Icon name="search" :size="20" class="catalog-search__icon" />
-                <input
-                    v-model="query"
-                    class="catalog-search__input"
-                    type="search"
-                    placeholder="Введіть назву товару або категорії"
-                    aria-label="Пошук у каталозі"
+            <!-- Категорії -->
+            <div class="catalog-landing__section-label">ВСІ КАТЕГОРІЇ</div>
+
+            <div class="catalog-landing__grid">
+                <Link
+                    v-for="cat in categories"
+                    :key="cat.id"
+                    :href="`/catalog/${cat.slug}`"
+                    class="catalog-landing__card"
+                >
+                    <div class="catalog-landing__card-name">{{ cat.name }}</div>
+                    <div class="catalog-landing__card-count">{{ pluralUa(cat.count ?? 0, 'товар', 'товари', 'товарів') }}</div>
+                    <ul v-if="cat.children?.length" class="catalog-landing__card-subs">
+                        <li v-for="sub in cat.children.slice(0, 3)" :key="sub.id">— {{ sub.name }}</li>
+                    </ul>
+                </Link>
+            </div>
+
+            <!-- Фільтри + товари -->
+            <div class="cat-layout">
+                <CatalogFilters
+                    base-url="/catalog"
+                    :filters="filters"
+                    :categories="categories"
+                    :brands="brands"
+                    :price-range="priceRange"
                 />
-            </form>
-
-            <div class="catalog-categories">
-                <CategoryCard v-for="cat in categories" :key="cat.id" :category="cat" />
-            </div>
-
-            <div class="section__more">
-                <Link href="/catalog/all" class="btn btn--primary btn--wide">Дивитись усі товари</Link>
-            </div>
-
-            <section v-if="brands.length" class="section">
-                <h2 class="section__title">Популярні бренди</h2>
-                <div class="home-brands">
-                    <Link
-                        v-for="brand in brands.slice(0, 5)"
-                        :key="brand.id"
-                        :href="`/catalog/all?brand[]=${brand.id}`"
-                        class="home-brands__item"
-                    >{{ brand.name }}</Link>
-                </div>
-                <div class="section__more">
-                    <Link href="/brands" class="btn btn--primary btn--wide">Дивитись усі бренди</Link>
-                </div>
-            </section>
-
-            <section v-if="hits.length" class="section">
-                <h2 class="section__title">Хіти продажів</h2>
-                <ProductCarousel :products="hits" />
-            </section>
-
-            <div class="catalog-seo">
-                <p>
-                    Ми зібрали у нашому каталозі все необхідне для комплексного обслуговування підприємств
-                    малярно-кузовного ремонту, промислових та виробничих підприємств, а також підприємств, що
-                    використовують гігієнічну продукцію, щоб ви могли швидко підібрати потрібні рішення.
-                </p>
-                <p>
-                    Продукція представлена від провідних світових брендів та перевірених постачальників. Купуючи
-                    у нас, ви отримуєте якість, офіційну гарантію та професійну підтримку.
-                </p>
+                <CatalogResults base-url="/catalog" :products="products" :filters="filters" />
             </div>
         </div>
     </AppLayout>
@@ -68,23 +45,24 @@
 
 <script setup>
 import { ref } from 'vue';
-import { Link, router } from '@inertiajs/vue3';
+import { router, Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
-import Icon from '@/Components/Icon.vue';
-import CategoryCard from '@/Components/CategoryCard.vue';
-import ProductCarousel from '@/Components/ProductCarousel.vue';
+import CatalogFilters from '@/Components/CatalogFilters.vue';
+import CatalogResults from '@/Components/CatalogResults.vue';
+import { pluralUa } from '@/utils/format';
 
-defineProps({
+const props = defineProps({
     categories: Array,
     brands:     Array,
-    hits:       Array,
+    products:   Object,
+    filters:    Object,
+    priceRange: Object,
 });
 
-const query = ref('');
+const query = ref(props.filters.q ?? '');
 
-// Пошук за назвою або артикулом — у списку всіх товарів
+// Пошук за назвою або артикулом
 function search() {
-    const q = query.value.trim();
-    if (q) router.get('/catalog/all', { q });
+    router.get('/catalog', query.value.trim() ? { q: query.value.trim() } : {}, { preserveScroll: true });
 }
 </script>

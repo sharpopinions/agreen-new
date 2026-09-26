@@ -1,30 +1,72 @@
 <template>
     <header class="header">
-        <div class="header__inner container">
-            <Link href="/" class="header__logo" aria-label="A-green — на головну">A-green</Link>
+        <div class="header__topbar">
+            <span>Пн–Пт 9:00–18:00 · +380 44 123-45-67</span>
+            <div class="header__topbar-actions">
+                <a href="#">Особистий кабінет</a>
+                <span>·</span>
+                <span>UKR</span>
+                <button class="header__theme-btn" @click="toggleTheme">
+                    <svg v-if="isDark" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+                    </svg>
+                    <svg v-else width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    {{ isDark ? 'Світла' : 'Темна' }}
+                </button>
+            </div>
+        </div>
+
+        <div class="header__main">
+            <Link href="/" class="header__logo">
+                <div class="header__logo-mark">AG</div>
+                <span class="header__logo-name">A-green</span>
+            </Link>
 
             <nav class="header__nav">
                 <Link
                     v-for="item in navLinks"
                     :key="item.key"
                     :href="item.href"
-                    class="header__nav-link"
-                    :class="{ 'header__nav-link--active': isActive(item.href) }"
+                    class="header__nav-btn"
+                    :class="{ 'header__nav-btn--active': page.url.startsWith(item.href) }"
                 >
                     {{ item.label }}
-                    <Icon v-if="item.dropdown" name="chevron-down" :size="12" />
+                    <svg v-if="item.dropdown" class="header__nav-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m6 9 6 6 6-6"/>
+                    </svg>
                 </Link>
             </nav>
 
-            <div class="header__switchers">
-                <button class="header__switcher" type="button">UKR <Icon name="chevron-down" :size="12" /></button>
-                <button class="header__switcher" type="button">₴ <Icon name="chevron-down" :size="12" /></button>
+            <div class="header__search-wrap">
+                <svg class="header__search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input class="header__search" type="text" placeholder="Пошук..." />
+                <span class="header__search-hint">⌘К</span>
             </div>
 
             <div class="header__actions">
-                <button v-for="action in actions" :key="action.key" class="header__action" type="button">
-                    <Icon :name="action.icon" :size="22" />
-                    <span class="header__action-label">{{ action.label }}</span>
+                <button class="header__icon-btn" aria-label="Вішліст">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                    </svg>
+                </button>
+
+                <button class="header__icon-btn" aria-label="Порівняння">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
+                    </svg>
+                </button>
+
+                <button class="header__cart-btn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+                        <line x1="3" y1="6" x2="21" y2="6"/>
+                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                    Кошик
                 </button>
             </div>
         </div>
@@ -32,28 +74,24 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { Link, usePage } from '@inertiajs/vue3';
-import Icon from '@/Components/Icon.vue';
 
 const page = usePage();
 
-const isActive = (href) => page.url === href || page.url.startsWith(href + '/') || page.url.startsWith(href + '?');
+const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
+
+function toggleTheme() {
+    isDark.value = !isDark.value;
+    document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light');
+}
 
 const navLinks = [
-    { label: 'Каталог',      key: 'catalog',  href: '/catalog',  dropdown: false },
-    { label: 'Бренди',       key: 'brands',   href: '/brands',   dropdown: true  },
-    { label: 'Послуги',      key: 'services', href: '/services', dropdown: true  },
-    { label: 'Партнерам',    key: 'partners', href: '/partners', dropdown: false },
-    { label: 'Про компанію', key: 'about',    href: '/about',    dropdown: true  },
-    { label: 'Блог',         key: 'blog',     href: '/blog',     dropdown: false },
-    { label: 'Контакти',     key: 'contacts', href: '/contacts', dropdown: false },
-];
-
-const actions = [
-    { key: 'search',  icon: 'search',  label: 'Пошук'      },
-    { key: 'login',   icon: 'user',    label: 'Увійти'     },
-    { key: 'compare', icon: 'compare', label: 'Порівняння' },
-    { key: 'wish',    icon: 'heart',   label: 'Обране'     },
-    { key: 'cart',    icon: 'cart',    label: 'Кошик'      },
+    { label: 'Каталог',   key: 'catalog',  href: '/catalog',  dropdown: true  },
+    { label: 'Бренди',    key: 'brands',   href: '/brands',   dropdown: true  },
+    { label: 'Послуги',   key: 'services', href: '/services', dropdown: true  },
+    { label: 'Партнерам', key: 'partners', href: '/partners', dropdown: false },
+    { label: 'Про нас',   key: 'about',    href: '/about',    dropdown: true  },
+    { label: 'Блог',      key: 'blog',     href: '/blog',     dropdown: false },
 ];
 </script>

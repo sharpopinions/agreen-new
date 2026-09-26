@@ -1,59 +1,10 @@
 # Дизайн A-green
 
-Джерела:
-- **Figma:** [A-green](https://www.figma.com/design/UsUspef6txX7t8aLyK5Pv8/A-green), один робочий аркуш «Page 1», 88 фреймів (екрани 1440px і кілька окремих компонентів).
-- **Таблиця ТЗ:** [ТЗ по сайту Агрін](https://docs.google.com/spreadsheets/d/17ZqtYuUHBDx-NYJZpcxO-u-ZDARXwo_qfwZFrTFWKYA/edit), 35 сторінок, у всіх статус «Готово / Погоджено».
+## Джерела
 
-Макет є прототипом: сірі прямокутники `#D9D9D9` означають місця під фото, а не фінальні зображення.
-
-## Токени
-
-Токени задані в `resources/scss/abstracts/_variables.scss`. Значення нижче взято з макета за частотою використання.
-
-### Кольори
-
-| Токен | Значення | Де в макеті |
-|---|---|---|
-| `--color-primary` | `#1A5CB9` | кнопки (заливка), посилання «Дивитися всі →», «Детальніше», активні стани |
-| `--color-text` | `#000000` | основний текст, іконки |
-| `--color-text-2` | `rgba(0,0,0,.5)` | артикул, залишок, дати, рейтинг |
-| `--color-text-3` | `rgba(0,0,0,.3)` | неактивні зірки, плейсхолдери |
-| `--color-text-label` | `#838383` | підписи полів форм |
-| `--color-border` | `#000000` | рамки 1px у карток, інпутів і кнопок-обведень |
-| `--color-border-2` | `rgba(0,0,0,.2)` | роздільники, другорядні лінії |
-| `--color-bg-alt` / `--color-muted` | `#EEEEEE` | фон блоків і секцій |
-| `--color-placeholder` | `#D9D9D9` | плейсхолдери зображень, активний пункт меню кабінету |
-| `--color-success` | `#487E01` | «Є в наявності» |
-| `--color-warn` / `--color-accent-gold` | `#C69500` | «Під замовлення» |
-
-`--color-primary-hover` (`#154A94`) у макеті відсутній, це похідне значення.
-
-### Типографіка
-
-Шрифт **Inter** підключається локально через пакет `@fontsource/inter` у `resources/js/app.js`. Накреслення: Regular (400), Medium (500), Light (300), Semi Bold (600). Висота рядка в макеті переважно 100%.
-
-| Токен | px | Використання |
-|---|---|---|
-| `--font-size-xs` | 10 | дрібні мітки |
-| `--font-size-sm` | 12 | метадані, найчастіший розмір |
-| `--font-size-base` | 14 | текст карток, кнопки |
-| `--font-size-lg` | 16 | основний текст |
-| `--font-size-xl` | 18 | підзаголовки |
-| `--font-size-2xl` | 20 | заголовки карток |
-| `--font-size-3xl` | 24 | заголовки блоків |
-| `--font-size-4xl` | 28 | заголовки секцій |
-| `--font-size-5xl` | 32 | заголовки сторінок |
-| `--font-size-display` | 46 | герой на головній |
-
-Заголовки в макеті мають вагу Medium (500).
-
-### Форма та сітка
-
-- **Кути прямі.** `--radius-sm/md/lg = 0`. Заокруглення 20px мають лише «пілюлі» (теги, лічильники), для них `--radius-full`.
-- **Рамки** всюди 1px.
-- **Кнопка:** висота 40px, заливка `--color-primary`, білий текст.
-- **Тіні:** майже відсутні. Є одна м'яка тінь `--shadow-md` для поп-апів.
-- **Контейнер:** 1440px, бічні поля 60px (`--container-gutter`), контент 1320px.
+- **Візуальний дизайн** (кольори, шрифти, картки, кнопки) — проєкт у Claude Design («A-green Prototype»). У коді він зафіксований у токенах `resources/scss/abstracts/_variables.scss` і в компонентах. Нові сторінки робимо в цьому стилі.
+- **Прототип Figma** — [A-green](https://www.figma.com/design/UsUspef6txX7t8aLyK5Pv8/A-green), чорно-білий вайрфрейм. Він задає **структуру** сторінок: які блоки є і в якому порядку. Кольори й форми з нього **не** переносимо.
+- **Таблиця ТЗ** — [ТЗ по сайту Агрін](https://docs.google.com/spreadsheets/d/17ZqtYuUHBDx-NYJZpcxO-u-ZDARXwo_qfwZFrTFWKYA/edit): 35 сторінок, ТЗ і прототип для кожної.
 
 ## Сторінки → екрани Figma → ТЗ
 
@@ -153,25 +104,14 @@
 - `Main//Sidebar-hover` — `1174:8284`
 - `Brand//Products-Subcategory` — `1174:9197`
 
-## Що зверстано за макетом
+## Каталог: маршрути та фільтри
 
-| Сторінка | Маршрут | Екран Figma | Vue |
-|---|---|---|---|
-| Хедер / футер | усі | `main-menu-v1`, `Footer` (у `Main`) | `Components/Layout/TheHeader.vue`, `TheFooter.vue` |
-| Головна | `/` | `Main` `290:716` | `Pages/Home.vue` |
-| Каталог (лендинг) | `/catalog` | `Catalog` `410:772` | `Pages/Catalog.vue` |
-| Усі товари | `/catalog/all` | `Catalog//All-products` `782:2685` | `Pages/CatalogCategory.vue` |
-| Категорія / підкатегорія | `/catalog/{slug}` | `Catalog-category` `533:15083`, `Catalog//Subcategory` `533:15831` | `Pages/CatalogCategory.vue` |
-| Товар | `/p/{slug}` | `Product-card` `441:938` | `Pages/Product.vue` |
+| Маршрут | Сторінка | Vue |
+|---|---|---|
+| `/catalog` | плитки категорій + усі товари з фільтрами | `Pages/Catalog.vue` |
+| `/catalog/all` | усі товари з фільтрами | `Pages/CatalogCategory.vue` |
+| `/catalog/{slug}` | категорія або підкатегорія (разом з товарами підкатегорій) | `Pages/CatalogCategory.vue` |
 
-Спільні компоненти: `ProductCard`, `CategoryCard`, `ProductCarousel`, `CatalogFilters`, `Stars`, `Qty`, `Icon`. Стилі кнопок, секцій, хлібних крихт лежать у `scss/components/_button.scss` і `_section.scss`.
+Фільтри (`Components/CatalogFilters.vue`) і список товарів (`Components/CatalogResults.vue`) спільні для всіх трьох сторінок.
 
-Фільтри списку товарів (query-параметри): `q`, `brand[]`, `category[]`, `availability[]` (`in_stock` / `preorder`), `sale`, `min_price`, `max_price`, `sort` (`price_asc` / `price_desc`).
-
-### Ще не зроблено
-
-- Мегаменю хедера (`Main-catalog-menu`, `Main-brand-menu` та інші) і випадні списки мови й валюти.
-- Блоки головної «Блог та новини» і «SEO-текст»: немає моделі новин і SEO-полів. Тексти секцій «Послуги», «Партнерство» і «Про компанію» тимчасово лежать у `resources/js/data/home.js` і чекають на копірайт і CMS.
-- На сторінці товару немає блоків «Рекомендуємо до…», варіантів (колір, розмір), «Інструкцій», «Відеоогляду», карток відгуків і «Нещодавно переглянутих», бо для них немає даних у моделі.
-- Фото товарів, категорій і логотипи брендів поки що плейсхолдери.
-- Мобільних макетів немає. Адаптив зроблений базовий, без окремого дизайну.
+Query-параметри: `q` (назва або артикул), `brand[]`, `category[]`, `availability[]` (`in_stock` / `preorder`), `sale`, `min_price`, `max_price`, `sort` (`price_asc` / `price_desc`), `page`.
