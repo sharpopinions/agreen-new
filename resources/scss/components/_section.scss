@@ -1,0 +1,88 @@
+@use '../abstracts' as *;
+
+.container {
+    @extend %container;
+}
+
+.visually-hidden {
+    @extend %visually-hidden;
+}
+
+// Секція сторінки з центрованим заголовком (Бренди, Послуги, Блог …)
+.section {
+    padding-block: var(--space-10);
+
+    &__title {
+        margin-bottom: var(--space-10);
+        font-size: var(--font-size-5xl);
+        font-weight: var(--font-weight-medium);
+        text-align: center;
+
+        &--left { text-align: left; }
+    }
+
+    &__more {
+        display: flex;
+        justify-content: center;
+        margin-top: var(--space-10);
+    }
+}
+
+// Плейсхолдер зображення (сірий блок з тонкою рамкою, як у прототипі)
+.img-ph {
+    display: block;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border-2);
+    object-fit: cover;
+}
+
+// Хлібні крихти
+.breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    padding-block: var(--space-6);
+    font-size: var(--font-size-sm);
+
+    &__item {
+        color: var(--color-text-2);
+        &:hover { color: var(--color-text); }
+
+        &:not(:last-child)::after {
+            content: '–';
+            margin-left: var(--space-1);
+        }
+
+        &--active { color: var(--color-text); }
+    }
+}
+
+// Рейтинг зірками
+.stars {
+    display: inline-flex;
+    gap: 2px;
+    color: var(--color-placeholder);
+
+    &__on { color: var(--color-text-label); }
+}
+
+// Лічильник кількості (−) 1 (+)
+.qty {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--font-size-sm);
+
+    &__btn {
+        @extend %btn-reset;
+        display: inline-flex;
+        color: var(--color-text);
+        &:hover { color: var(--color-primary); }
+        &:disabled { color: var(--color-text-3); cursor: default; }
+    }
+
+    &__value {
+        min-width: 1.5ch;
+        text-align: center;
+    }
+}

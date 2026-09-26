@@ -15,16 +15,26 @@ class HomeController extends Controller
     {
         $langId = Language::currentId();
 
-        $categories = Category::with(['translations' => fn($q) => $q->where('language_id', $langId)])
+        $categories = Category::with([
+            'translations'          => fn($q) => $q->where('language_id', $langId),
+            'children.translations' => fn($q) => $q->where('language_id', $langId),
+        ])
             ->where('store_id', 1)
             ->where('is_active', true)
             ->whereNull('parent_id')
             ->orderBy('sort_order')
             ->get()
             ->map(fn($cat) => [
-                'id'   => $cat->id,
-                'name' => $cat->translations->first()?->name ?? '',
-                'slug' => $cat->translations->first()?->slug ?? '',
+                'id'       => $cat->id,
+                'name'     => $cat->translations->first()?->name ?? '',
+                'slug'     => $cat->translations->first()?->slug ?? '',
+                'children' => $cat->children
+                    ->filter(fn($c) => $c->is_active)
+                    ->map(fn($sub) => [
+                        'id'   => $sub->id,
+                        'name' => $sub->translations->first()?->name ?? '',
+                        'slug' => $sub->translations->first()?->slug ?? '',
+                    ])->values(),
             ]);
 
         $brands = Brand::with(['translations' => fn($q) => $q->where('language_id', $langId)])
@@ -57,8 +67,9 @@ class HomeController extends Controller
                     'color'   => $p->badges->first()->color,
                     'bgColor' => $p->badges->first()->bg_color,
                 ] : null,
-                'rating'   => 0,
-                'reviews'  => 0,
+                'rating'   => (float) $p->rating,
+                'reviews'  => $p->reviews_count,
+                'stock'    => $p->stock_quantity,
             ]);
 
         return Inertia::render('Home', compact('categories', 'brands', 'products'));

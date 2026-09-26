@@ -1,19 +1,26 @@
 <template>
-    <div class="cat-card">
+    <article class="cat-card">
+        <Link :href="href" class="cat-card__img img-ph" :aria-label="category.name" />
         <div class="cat-card__body">
-            <div class="cat-card__name">{{ category.name }}</div>
-            <div class="cat-card__count">{{ (category.count ?? 0).toLocaleString('uk-UA') }} товарів</div>
-            <ul class="cat-card__subs">
-                <li v-for="sub in (category.subs ?? []).slice(0, 3)" :key="sub" class="cat-card__sub">
-                    {{ sub }}
+            <Link :href="href" class="cat-card__name">{{ category.name }}</Link>
+            <ul v-if="subs.length" class="cat-card__subs">
+                <li v-for="sub in subs" :key="sub.id">
+                    <Link :href="`/catalog/${sub.slug}`" class="cat-card__sub">{{ sub.name }}</Link>
                 </li>
             </ul>
+            <Link :href="href" class="link-more cat-card__more">Дивитися всі</Link>
         </div>
-    </div>
+    </article>
 </template>
 
 <script setup>
-defineProps({
+import { computed } from 'vue';
+import { Link } from '@inertiajs/vue3';
+
+const props = defineProps({
     category: Object,
 });
+
+const href = computed(() => `/catalog/${props.category.slug}`);
+const subs = computed(() => (props.category.children ?? []).slice(0, 3));
 </script>

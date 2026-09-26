@@ -30,7 +30,7 @@
 
 ### Типографіка
 
-Шрифт **Inter** підключається з fonts.bunny.net у `resources/views/app.blade.php`. Накреслення: Regular (400), Medium (500), Light (300), Semi Bold (600). Висота рядка в макеті переважно 100%.
+Шрифт **Inter** підключається локально через пакет `@fontsource/inter` у `resources/js/app.js`. Накреслення: Regular (400), Medium (500), Light (300), Semi Bold (600). Висота рядка в макеті переважно 100%.
 
 | Токен | px | Використання |
 |---|---|---|
@@ -152,3 +152,26 @@
 - `Sidebar hover arrow` — `1169:8370`
 - `Main//Sidebar-hover` — `1174:8284`
 - `Brand//Products-Subcategory` — `1174:9197`
+
+## Що зверстано за макетом
+
+| Сторінка | Маршрут | Екран Figma | Vue |
+|---|---|---|---|
+| Хедер / футер | усі | `main-menu-v1`, `Footer` (у `Main`) | `Components/Layout/TheHeader.vue`, `TheFooter.vue` |
+| Головна | `/` | `Main` `290:716` | `Pages/Home.vue` |
+| Каталог (лендинг) | `/catalog` | `Catalog` `410:772` | `Pages/Catalog.vue` |
+| Усі товари | `/catalog/all` | `Catalog//All-products` `782:2685` | `Pages/CatalogCategory.vue` |
+| Категорія / підкатегорія | `/catalog/{slug}` | `Catalog-category` `533:15083`, `Catalog//Subcategory` `533:15831` | `Pages/CatalogCategory.vue` |
+| Товар | `/p/{slug}` | `Product-card` `441:938` | `Pages/Product.vue` |
+
+Спільні компоненти: `ProductCard`, `CategoryCard`, `ProductCarousel`, `CatalogFilters`, `Stars`, `Qty`, `Icon`. Стилі кнопок, секцій, хлібних крихт лежать у `scss/components/_button.scss` і `_section.scss`.
+
+Фільтри списку товарів (query-параметри): `q`, `brand[]`, `category[]`, `availability[]` (`in_stock` / `preorder`), `sale`, `min_price`, `max_price`, `sort` (`price_asc` / `price_desc`).
+
+### Ще не зроблено
+
+- Мегаменю хедера (`Main-catalog-menu`, `Main-brand-menu` та інші) і випадні списки мови й валюти.
+- Блоки головної «Блог та новини» і «SEO-текст»: немає моделі новин і SEO-полів. Тексти секцій «Послуги», «Партнерство» і «Про компанію» тимчасово лежать у `resources/js/data/home.js` і чекають на копірайт і CMS.
+- На сторінці товару немає блоків «Рекомендуємо до…», варіантів (колір, розмір), «Інструкцій», «Відеоогляду», карток відгуків і «Нещодавно переглянутих», бо для них немає даних у моделі.
+- Фото товарів, категорій і логотипи брендів поки що плейсхолдери.
+- Мобільних макетів немає. Адаптив зроблений базовий, без окремого дизайну.

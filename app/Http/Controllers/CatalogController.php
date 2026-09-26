@@ -2,61 +2,146 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class CatalogController extends Controller
 {
-    public function index(Request $request): Response
+    /** Лендинг каталогу: категорії, бренди, хіти (Figma: Catalog). */
+    public function index(): Response
     {
-        $langId   = Language::currentId();
-        $brandIds = array_filter(array_map('intval', (array) $request->get('brand', [])));
-        $sort     = $request->get('sort', 'default');
-        $minPrice = $request->get('min_price') ? (float) $request->get('min_price') : null;
-        $maxPrice = $request->get('max_price') ? (float) $request->get('max_price') : null;
+        $langId = Language::currentId();
+
+        $hits = $this->productQuery($langId)
+            ->orderByDesc('reviews_count')
+            ->limit(8)
+            ->get()
+            ->map(fn($p) => $this->mapProduct($p));
 
         return Inertia::render('Catalog', [
-            'categories'   => $this->getCategories($langId),
-            'brands'       => $this->getBrands($langId),
-            'products'     => $this->getProducts($langId, 0, $brandIds, $sort, $minPrice, $maxPrice),
-            'activeBrands' => array_values($brandIds),
-            'currentSort'  => $sort,
-            'minPrice'     => $minPrice,
-            'maxPrice'     => $maxPrice,
+            'categories' => $this->getCategories($langId),
+            'brands'     => $this->getBrands($langId, $this->productQuery($langId)),
+            'hits'       => $hits,
         ]);
     }
 
+    /** Усі товари з фільтрами (Figma: Catalog//All-products). */
+    public function all(Request $request): Response
+    {
+        return $this->listing($request, Language::currentId(), null);
+    }
+
+    /** Категорія або підкатегорія (Figma: Catalog-category, Catalog//Subcategory). */
     public function show(Request $request, string $slug): Response
     {
         $langId = Language::currentId();
 
-        $category = Category::with(['translations' => fn($q) => $q->where('language_id', $langId)])
+        $category = Category::with([
+            'translations'          => fn($q) => $q->where('language_id', $langId),
+            'parent.translations'   => fn($q) => $q->where('language_id', $langId),
+            'children.translations' => fn($q) => $q->where('language_id', $langId),
+        ])
             ->where('store_id', 1)
             ->where('is_active', true)
             ->whereHas('translations', fn($q) => $q->where('slug', $slug))
             ->firstOrFail();
 
-        $translation = $category->translations->first();
-        $brandIds    = array_filter(array_map('intval', (array) $request->get('brand', [])));
-        $sort        = $request->get('sort', 'default');
-        $minPrice    = $request->get('min_price') ? (float) $request->get('min_price') : null;
-        $maxPrice    = $request->get('max_price') ? (float) $request->get('max_price') : null;
+        return $this->listing($request, $langId, $category);
+    }
+
+    private function listing(Request $request, int $langId, ?Category $category): Response
+    {
+        $filters = [
+            'q'            => trim((string) $request->get('q', '')),
+            'brand'        => array_values(array_filter(array_map('intval', (array) $request->get('brand', [])))),
+            'category'     => array_values(array_filter(array_map('intval', (array) $request->get('category', [])))),
+            'availability' => array_values(array_intersect((array) $request->get('availability', []), ['in_stock', 'preorder'])),
+            'sale'         => $request->boolean('sale'),
+            'min_price'    => $request->filled('min_price') ? (float) $request->get('min_price') : null,
+            'max_price'    => $request->filled('max_price') ? (float) $request->get('max_price') : null,
+            'sort'         => in_array($request->get('sort'), ['price_asc', 'price_desc'], true) ? $request->get('sort') : 'popular',
+        ];
+
+        // Базова вибірка — товари категорії (разом з її підкатегоріями) або всі
+        $scopeIds = $category
+            ? $category->children->where('is_active', true)->pluck('id')->push($category->id)->all()
+            : null;
+
+        $base = fn() => $this->productQuery($langId)
+            ->when($scopeIds, fn($q) => $q->whereHas('categories', fn($c) => $c->whereIn('categories.id', $scopeIds)));
+
+        $query = $base();
+        $this->applyFilters($query, $filters);
+
+        match ($filters['sort']) {
+            'price_asc'  => $query->orderBy('price'),
+            'price_desc' => $query->orderByDesc('price'),
+            default      => $query->orderByDesc('reviews_count')->orderBy('sort_order'),
+        };
+
+        $products = $query->paginate(12)->withQueryString()->through(fn($p) => $this->mapProduct($p));
+
+        // Фільтр «Категорія» / «Підкатегорія»: для категорії — її діти, інакше — кореневі
+        $filterCategories = $category
+            ? $category->children->where('is_active', true)->map(fn($c) => [
+                'id'    => $c->id,
+                'name'  => $c->translations->first()?->name ?? '',
+                'slug'  => $c->translations->first()?->slug ?? '',
+                'count' => $base()->whereHas('categories', fn($q) => $q->where('categories.id', $c->id))->count(),
+            ])->values()->all()
+            : $this->getCategories($langId);
+
+        $prices = $base()->selectRaw('MIN(price) as min, MAX(price) as max')->reorder()->first();
 
         return Inertia::render('CatalogCategory', [
-            'category'     => ['id' => $category->id, 'name' => $translation?->name ?? '', 'slug' => $slug],
-            'categories'   => $this->getCategories($langId),
-            'brands'       => $this->getBrands($langId),
-            'products'     => $this->getProducts($langId, $category->id, $brandIds, $sort, $minPrice, $maxPrice),
-            'activeBrands' => array_values($brandIds),
-            'currentSort'  => $sort,
-            'minPrice'     => $minPrice,
-            'maxPrice'     => $maxPrice,
+            'category'   => $category ? [
+                'id'     => $category->id,
+                'name'   => $category->translations->first()?->name ?? '',
+                'slug'   => $category->translations->first()?->slug ?? '',
+                'parent' => $category->parent ? [
+                    'name' => $category->parent->translations->first()?->name ?? '',
+                    'slug' => $category->parent->translations->first()?->slug ?? '',
+                ] : null,
+            ] : null,
+            'categories' => $filterCategories,
+            'brands'     => $this->getBrands($langId, $base()),
+            'products'   => $products,
+            'filters'    => $filters,
+            'priceRange' => ['min' => (float) ($prices->min ?? 0), 'max' => (float) ($prices->max ?? 0)],
         ]);
+    }
+
+    private function applyFilters(Builder $query, array $f): void
+    {
+        $query
+            ->when($f['q'] !== '', fn($q) => $q->where(fn($w) => $w
+                ->where('sku', 'like', '%' . $f['q'] . '%')
+                ->orWhereHas('translations', fn($t) => $t->where('name', 'like', '%' . $f['q'] . '%'))))
+            ->when($f['brand'], fn($q) => $q->whereIn('brand_id', $f['brand']))
+            ->when($f['category'], fn($q) => $q->whereHas('categories', fn($c) => $c->whereIn('categories.id', $f['category'])))
+            ->when($f['min_price'] !== null, fn($q) => $q->where('price', '>=', $f['min_price']))
+            ->when($f['max_price'] !== null, fn($q) => $q->where('price', '<=', $f['max_price']))
+            ->when($f['sale'], fn($q) => $q->whereNotNull('old_price'))
+            ->when(count($f['availability']) === 1, fn($q) => $f['availability'][0] === 'in_stock'
+                ? $q->where('stock_quantity', '>', 0)
+                : $q->where(fn($s) => $s->whereNull('stock_quantity')->orWhere('stock_quantity', 0)));
+    }
+
+    private function productQuery(int $langId): Builder
+    {
+        return Product::with([
+            'translations'        => fn($q) => $q->where('language_id', $langId),
+            'brand.translations'  => fn($q) => $q->where('language_id', $langId),
+            'badges.translations' => fn($q) => $q->where('language_id', $langId),
+        ])
+            ->where('store_id', 1)
+            ->where('is_active', true);
     }
 
     private function getCategories(int $langId): array
@@ -87,53 +172,34 @@ class CatalogController extends Controller
             ->toArray();
     }
 
-    private function getBrands(int $langId): array
+    /** Бренди з кількістю товарів у поточній вибірці. */
+    private function getBrands(int $langId, Builder $scope): array
     {
+        $counts = $scope->reorder()->toBase()
+            ->selectRaw('brand_id, COUNT(*) as cnt')
+            ->whereNotNull('brand_id')
+            ->groupBy('brand_id')
+            ->pluck('cnt', 'brand_id');
+
         return Brand::with(['translations' => fn($q) => $q->where('language_id', $langId)])
             ->where('store_id', 1)
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->get()
             ->map(fn($b) => [
-                'id'   => $b->id,
-                'name' => $b->translations->first()?->name ?? '',
+                'id'    => $b->id,
+                'name'  => $b->translations->first()?->name ?? '',
+                'slug'  => $b->translations->first()?->slug ?? '',
+                'count' => (int) ($counts[$b->id] ?? 0),
             ])
             ->toArray();
     }
 
-    private function getProducts(int $langId, int $categoryId, array $brandIds, string $sort, ?float $minPrice = null, ?float $maxPrice = null): object
+    private function mapProduct(Product $p): array
     {
-        $query = Product::with([
-            'translations'        => fn($q) => $q->where('language_id', $langId),
-            'brand.translations'  => fn($q) => $q->where('language_id', $langId),
-            'badges.translations' => fn($q) => $q->where('language_id', $langId),
-        ])
-            ->where('store_id', 1)
-            ->where('is_active', true);
+        $badge = $p->badges->first();
 
-        if ($categoryId) {
-            $query->whereHas('categories', fn($q) => $q->where('categories.id', $categoryId));
-        }
-
-        if (!empty($brandIds)) {
-            $query->whereIn('brand_id', $brandIds);
-        }
-
-        if ($minPrice !== null) {
-            $query->where('price', '>=', $minPrice);
-        }
-
-        if ($maxPrice !== null) {
-            $query->where('price', '<=', $maxPrice);
-        }
-
-        match ($sort) {
-            'price_asc'  => $query->orderBy('price'),
-            'price_desc' => $query->orderBy('price', 'desc'),
-            default      => $query->orderBy('sort_order'),
-        };
-
-        return $query->paginate(12)->through(fn($p) => [
+        return [
             'id'       => $p->id,
             'name'     => $p->translations->first()?->name ?? '',
             'slug'     => $p->translations->first()?->slug ?? '',
@@ -141,14 +207,14 @@ class CatalogController extends Controller
             'price'    => (float) $p->price,
             'oldPrice' => $p->old_price ? (float) $p->old_price : null,
             'brand'    => $p->brand?->translations->first()?->name ?? null,
-            'badge'    => $p->badges->first() ? [
-                'name'    => $p->badges->first()->translations->first()?->name ?? '',
-                'color'   => $p->badges->first()->color,
-                'bgColor' => $p->badges->first()->bg_color,
+            'badge'    => $badge ? [
+                'name'    => $badge->translations->first()?->name ?? '',
+                'color'   => $badge->color,
+                'bgColor' => $badge->bg_color,
             ] : null,
             'rating'   => (float) $p->rating,
             'reviews'  => $p->reviews_count,
             'stock'    => $p->stock_quantity,
-        ]);
+        ];
     }
 }

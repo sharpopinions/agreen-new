@@ -38,7 +38,7 @@ class ProductController extends Controller
             ->where('is_active', true)
             ->where('id', '!=', $product->id)
             ->when($category, fn($q) => $q->whereHas('categories', fn($q2) => $q2->where('categories.id', $category->id)))
-            ->limit(4)
+            ->limit(8)
             ->get()
             ->map(fn($p) => [
                 'id'       => $p->id,
@@ -67,6 +67,9 @@ class ProductController extends Controller
                 'price'       => (float) $product->price,
                 'oldPrice'    => $product->old_price ? (float) $product->old_price : null,
                 'description' => $translation?->description ?? '',
+                'rating'      => (float) $product->rating,
+                'reviews'     => $product->reviews_count,
+                'stock'       => $product->stock_quantity,
                 'brand'       => $product->brand ? [
                     'name' => $product->brand->translations->first()?->name ?? '',
                     'slug' => $product->brand->translations->first()?->slug ?? '',

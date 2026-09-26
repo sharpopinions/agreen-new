@@ -1,0 +1,48 @@
+@use '../abstracts' as *;
+
+// Кнопки — у макеті прямокутні, висота 40px, Inter Medium 14
+.btn {
+    @extend %btn-reset;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: 40px;
+    padding: 0 var(--space-6);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+
+    &:focus-visible { @include focus-ring; }
+
+    &--primary {
+        background: var(--color-primary);
+        color: var(--color-primary-text);
+        &:hover { background: var(--color-primary-hover); }
+    }
+
+    &--outline {
+        background: transparent;
+        color: var(--color-primary);
+        border-color: var(--color-primary);
+        &:hover { background: var(--color-primary); color: var(--color-primary-text); }
+    }
+
+    &--wide { min-width: 210px; }
+    &--full { width: 100%; }
+}
+
+// Текстове посилання-стрілка: «Дивитися всі →», «Детальніше →»
+.link-more {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    font-size: var(--font-size-base);
+    color: var(--color-primary);
+    transition: color var(--transition-fast);
+
+    &::after { content: '→'; }
+    &:hover { color: var(--color-primary-hover); }
+}
