@@ -44,6 +44,9 @@ class AdminAccessTest extends TestCase
             '/admin/orders'    => [200,  200,    403],
             '/admin/users'     => [200,  403,    403],
             '/admin/languages' => [200,  403,    403],
+            '/admin/order-statuses'     => [200, 403, 403],
+            '/admin/shipping-providers' => [200, 403, 403],
+            '/admin/payment-providers'  => [200, 403, 403],
         ];
 
         foreach ($matrix as $url => [$admin, $manager, $content]) {

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderStatus;
+use App\Models\PaymentProvider;
+use App\Models\ShippingProvider;
 use App\Services\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,9 +24,19 @@ class CheckoutController extends Controller
             return redirect()->route('cart');
         }
 
+        // Способи доставки й оплати керуються з адмінки (Налаштування → Доставка / Оплата)
         return Inertia::render('Checkout', [
-            'deliveryMethods' => Order::DELIVERY_METHODS,
-            'paymentMethods'  => Order::PAYMENT_METHODS,
+            'deliveryMethods' => ShippingProvider::available()->map(fn(ShippingProvider $p) => [
+                'id'              => $p->id,
+                'name'            => $p->name,
+                'hint'            => $p->description,
+                'requiresAddress' => $p->requiresAddress(),
+            ]),
+            'paymentMethods' => PaymentProvider::availableFor(auth()->user())->map(fn(PaymentProvider $p) => [
+                'id'   => $p->id,
+                'name' => $p->name,
+                'hint' => $p->description,
+            ]),
         ]);
     }
 
@@ -40,15 +53,19 @@ class CheckoutController extends Controller
         // Доставка й оплата потрібні лише для звичайного замовлення (передзамовлення — без них, ТЗ)
         $needsShipping = $regular->isNotEmpty();
 
+        $shipping = ShippingProvider::available();
+        $payment  = PaymentProvider::availableFor($request->user());
+        $selectedShipping = $shipping->firstWhere('id', (int) $request->input('delivery'));
+
         $data = $request->validate([
             'name'     => ['required', 'string', 'max:255'],
             'phone'    => ['required', 'string', 'max:50', 'regex:/^[0-9+()\-\s]{9,20}$/'],
             'email'    => ['required', 'email', 'max:255'],
             'company'  => ['nullable', 'string', 'max:255'],
-            'delivery' => [Rule::requiredIf($needsShipping), 'nullable', Rule::in(array_keys(Order::DELIVERY_METHODS))],
-            'city'     => [Rule::requiredIf($needsShipping && $request->input('delivery') !== 'pickup'), 'nullable', 'string', 'max:255'],
+            'delivery' => ['bail', Rule::requiredIf($needsShipping), 'nullable', 'integer', Rule::in($shipping->pluck('id')->all())],
+            'city'     => [Rule::requiredIf($needsShipping && ($selectedShipping?->requiresAddress() ?? true)), 'nullable', 'string', 'max:255'],
             'address'  => ['nullable', 'string', 'max:255'],
-            'payment'  => [Rule::requiredIf($needsShipping), 'nullable', Rule::in(array_keys(Order::PAYMENT_METHODS))],
+            'payment'  => ['bail', Rule::requiredIf($needsShipping), 'nullable', 'integer', Rule::in($payment->pluck('id')->all())],
             'comment'  => ['nullable', 'string', 'max:2000'],
         ], [
             'phone.regex' => 'Вкажіть телефон у форматі +380 XX XXX XX XX.',
@@ -80,11 +97,12 @@ class CheckoutController extends Controller
             return redirect()->route('home');
         }
 
-        $orders = Order::with('items')->whereIn('number', $numbers)->get()->map(fn(Order $o) => [
+        $orders = Order::with(['items', 'shippingProvider.translations', 'paymentProvider.translations'])
+            ->whereIn('number', $numbers)->get()->map(fn(Order $o) => [
             'number'   => $o->number,
             'type'     => $o->type,
-            'delivery' => Order::DELIVERY_METHODS[$o->delivery_method] ?? null,
-            'payment'  => Order::PAYMENT_METHODS[$o->payment_method] ?? null,
+            'delivery' => $o->shippingProvider?->name,
+            'payment'  => $o->paymentProvider?->name,
             'total'    => (float) $o->total,
             'items'    => $o->items->map(fn($i) => [
                 'name'     => $i->name,
@@ -102,17 +120,18 @@ class CheckoutController extends Controller
         $isPreorder = $type === 'preorder';
 
         $order = Order::create([
+            'user_id'          => auth()->id(),
             'number'           => 'tmp-' . uniqid('', true),
             'type'             => $type,
-            'status'           => 'new',
+            'order_status_id'  => OrderStatus::initialId(),
             'customer_name'    => $data['name'],
             'customer_phone'   => $data['phone'],
             'customer_email'   => $data['email'],
             'customer_company' => $data['company'] ?? null,
-            'delivery_method'  => $isPreorder ? null : $data['delivery'],
+            'shipping_provider_id' => $isPreorder ? null : $data['delivery'],
             'delivery_city'    => $isPreorder ? null : ($data['city'] ?? null),
             'delivery_address' => $isPreorder ? null : ($data['address'] ?? null),
-            'payment_method'   => $isPreorder ? null : $data['payment'],
+            'payment_provider_id'  => $isPreorder ? null : $data['payment'],
             'comment'          => $data['comment'] ?? null,
             'total'            => round($items->sum('total'), 2),
             'locale'           => app()->getLocale(),

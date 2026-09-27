@@ -2,6 +2,10 @@
 
 return [
     'fields' => [
+        'driver'           => 'Driver (code)',
+        'is_final'         => 'Final',
+        'requires_address' => 'Requires city and branch',
+        'available_roles'  => 'Only for roles',
         'preorder_days' => 'Pre-order lead time, days',
         'replaced_by'   => 'Replacement product',
         'warning_text'  => 'Product page warning',
@@ -21,6 +25,11 @@ return [
         'translations' => 'Translations',
     ],
     'hints' => [
+        'status_key'       => 'Latin, e.g. awaiting_payment. The "pending" status is assigned to new orders.',
+        'is_final'         => 'The order is finished (completed or cancelled) and can no longer be changed by the customer.',
+        'driver'           => 'Technical code for integration: nova_poshta, liqpay, invoice_vat…',
+        'requires_address' => 'Turn off for pickup — the customer will not enter a city.',
+        'available_roles'  => 'Nothing selected — available to everyone, including guests.',
         'slug'          => 'Latin letters, digits and hyphens only. Leave empty to generate from the name.',
         'slug_format'   => 'The slug may contain only lowercase Latin letters, digits and hyphens.',
         'preorder_days' => 'Shown for on-order products as the estimated delivery time.',
@@ -34,6 +43,12 @@ return [
         'settings'     => 'Settings',
     ],
     'resources' => [
+        'order_status'   => 'Order status',
+        'order_statuses' => 'Order statuses',
+        'shipping_provider'  => 'Shipping method',
+        'shipping_providers' => 'Shipping methods',
+        'payment_provider'   => 'Payment method',
+        'payment_providers'  => 'Payment methods',
         'order'        => 'Order',
         'orders'       => 'Orders',
         'category'     => 'Category',
@@ -57,6 +72,12 @@ return [
         'settings' => 'Settings',
     ],
     'orders' => [
+        'payment_status' => 'Payment status',
+        'payment_statuses' => ['pending' => 'Unpaid', 'paid' => 'Paid', 'refunded' => 'Refunded', 'failed' => 'Payment failed'],
+        'tracking_number' => 'Tracking number',
+        'account' => 'Account',
+        'guest' => 'Guest',
+        'process' => 'Process',
         'status' => 'Status',
         'type' => 'Type',
         'created_at' => 'Created',

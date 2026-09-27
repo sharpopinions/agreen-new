@@ -9,46 +9,45 @@ class Order extends Model
 {
     use BelongsToStore;
 
-    public const DELIVERY_METHODS = [
-        'nova_poshta' => 'Нова Пошта',
-        'ukrposhta'   => 'Укрпошта',
-        'justin'      => 'Justin',
-        'meest'       => 'Meest Express',
-        'pickup'      => 'Самовивіз',
-        'courier'     => "Кур'єр",
-    ];
-
-    public const PAYMENT_METHODS = [
-        'card_transfer'   => 'Оплата на карту',
-        'online'          => 'Онлайн оплата',
-        'invoice_vat'     => 'Рахунок-фактура з ПДВ',
-        'invoice_no_vat'  => 'Рахунок-фактура без ПДВ',
-        'courier_cash'    => "Оплата кур'єру",
-        'cash_on_delivery'=> 'Післяплата',
-    ];
-
-    public const STATUSES = [
-        'new'        => 'Нове',
-        'processing' => 'В обробці',
-        'shipped'    => 'Відправлено',
-        'completed'  => 'Виконано',
-        'cancelled'  => 'Скасовано',
-    ];
-
     protected $fillable = [
-        'store_id', 'number', 'type', 'status',
+        'store_id', 'user_id', 'number', 'type', 'order_status_id',
         'customer_name', 'customer_phone', 'customer_email', 'customer_company',
-        'delivery_method', 'delivery_city', 'delivery_address',
-        'payment_method', 'comment', 'total', 'locale',
+        'shipping_provider_id', 'delivery_city', 'delivery_address', 'tracking_number',
+        'payment_provider_id', 'payment_status',
+        'comment', 'total', 'shipping_cost', 'locale', 'editable_until',
     ];
 
     protected $casts = [
-        'total' => 'decimal:2',
+        'total'          => 'decimal:2',
+        'shipping_cost'  => 'decimal:2',
+        'editable_until' => 'datetime',
     ];
+
+    public const PAYMENT_STATUSES = ['pending', 'paid', 'refunded', 'failed'];
 
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(OrderStatus::class, 'order_status_id');
+    }
+
+    public function shippingProvider()
+    {
+        return $this->belongsTo(ShippingProvider::class);
+    }
+
+    public function paymentProvider()
+    {
+        return $this->belongsTo(PaymentProvider::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function isPreorder(): bool

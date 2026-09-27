@@ -2,6 +2,10 @@
 
 return [
     'fields' => [
+        'driver'           => 'Sterownik (kod)',
+        'is_final'         => 'Końcowy',
+        'requires_address' => 'Wymaga miasta i oddziału',
+        'available_roles'  => 'Tylko dla ról',
         'preorder_days' => 'Czas realizacji zamówienia, dni',
         'replaced_by'   => 'Produkt zastępczy',
         'warning_text'  => 'Ostrzeżenie na karcie produktu',
@@ -21,6 +25,11 @@ return [
         'translations' => 'Tłumaczenia',
     ],
     'hints' => [
+        'status_key'       => 'Łacinką, np. awaiting_payment. Status „pending” otrzymują nowe zamówienia.',
+        'is_final'         => 'Zamówienie zakończone (zrealizowane lub anulowane) — klient nie może go już zmienić.',
+        'driver'           => 'Kod techniczny integracji: nova_poshta, liqpay, invoice_vat…',
+        'requires_address' => 'Wyłącz dla odbioru osobistego — klient nie poda miasta.',
+        'available_roles'  => 'Nic nie wybrano — dostępne dla wszystkich, także gości.',
         'slug'          => 'Tylko litery łacińskie, cyfry i myślniki. Puste — zostanie wygenerowane z nazwy.',
         'slug_format'   => 'Slug może zawierać tylko małe litery łacińskie, cyfry i myślniki.',
         'preorder_days' => 'Wyświetlany dla produktów na zamówienie jako szacowany czas dostawy.',
@@ -34,6 +43,12 @@ return [
         'settings'     => 'Ustawienia',
     ],
     'resources' => [
+        'order_status'   => 'Status zamówienia',
+        'order_statuses' => 'Statusy zamówień',
+        'shipping_provider'  => 'Metoda dostawy',
+        'shipping_providers' => 'Metody dostawy',
+        'payment_provider'   => 'Metoda płatności',
+        'payment_providers'  => 'Metody płatności',
         'order'        => 'Zamówienie',
         'orders'       => 'Zamówienia',
         'category'     => 'Kategoria',
@@ -57,6 +72,12 @@ return [
         'settings' => 'Ustawienia',
     ],
     'orders' => [
+        'payment_status' => 'Status płatności',
+        'payment_statuses' => ['pending' => 'Nieopłacone', 'paid' => 'Opłacone', 'refunded' => 'Zwrócone', 'failed' => 'Błąd płatności'],
+        'tracking_number' => 'Numer przesyłki',
+        'account' => 'Konto',
+        'guest' => 'Gość',
+        'process' => 'Obsłuż',
         'status' => 'Status',
         'type' => 'Typ',
         'created_at' => 'Utworzono',

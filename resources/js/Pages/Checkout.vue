@@ -56,17 +56,17 @@
                     <div v-show="step === 2" class="checkout-step">
                         <h2 class="checkout-step__title">Доставка</h2>
                         <div class="choice-list" role="radiogroup" aria-label="Спосіб доставки">
-                            <label v-for="(label, key) in deliveryMethods" :key="key" class="choice" :class="{ 'choice--active': form.delivery === key }">
-                                <input v-model="form.delivery" type="radio" name="delivery" :value="key" class="visually-hidden" />
+                            <label v-for="m in deliveryMethods" :key="m.id" class="choice" :class="{ 'choice--active': form.delivery === m.id }">
+                                <input v-model="form.delivery" type="radio" name="delivery" :value="m.id" class="visually-hidden" />
                                 <span class="choice__radio"></span>
                                 <span>
-                                    <span class="choice__title">{{ label }}</span>
-                                    <span v-if="deliveryHints[key]" class="choice__hint">{{ deliveryHints[key] }}</span>
+                                    <span class="choice__title">{{ m.name }}</span>
+                                    <span v-if="m.hint" class="choice__hint">{{ m.hint }}</span>
                                 </span>
                             </label>
                         </div>
                         <p v-if="form.errors.delivery" class="field__error">{{ form.errors.delivery }}</p>
-                        <div v-if="form.delivery !== 'pickup'" class="checkout-grid">
+                        <div v-if="needsAddress" class="checkout-grid">
                             <Field v-model="form.city" label="Місто" required placeholder="Київ" autocomplete="address-level2" :error="form.errors.city" />
                             <Field v-model="form.address" label="Відділення / адреса" placeholder="Відділення №5" autocomplete="street-address" :error="form.errors.address" />
                         </div>
@@ -80,10 +80,13 @@
                     <div v-show="step === 3" class="checkout-step">
                         <h2 class="checkout-step__title">Оплата</h2>
                         <div class="choice-list" role="radiogroup" aria-label="Спосіб оплати">
-                            <label v-for="(label, key) in paymentMethods" :key="key" class="choice" :class="{ 'choice--active': form.payment === key }">
-                                <input v-model="form.payment" type="radio" name="payment" :value="key" class="visually-hidden" />
+                            <label v-for="m in paymentMethods" :key="m.id" class="choice" :class="{ 'choice--active': form.payment === m.id }">
+                                <input v-model="form.payment" type="radio" name="payment" :value="m.id" class="visually-hidden" />
                                 <span class="choice__radio"></span>
-                                <span class="choice__title">{{ label }}</span>
+                                <span>
+                                    <span class="choice__title">{{ m.name }}</span>
+                                    <span v-if="m.hint" class="choice__hint">{{ m.hint }}</span>
+                                </span>
                             </label>
                         </div>
                         <p v-if="form.errors.payment" class="field__error">{{ form.errors.payment }}</p>
@@ -127,9 +130,9 @@ import Field from '@/Components/Form/Field.vue';
 import { useCart } from '@/composables/useCart';
 import { formatPrice as fmt } from '@/utils/format';
 
-defineProps({
-    deliveryMethods: Object,
-    paymentMethods:  Object,
+const props = defineProps({
+    deliveryMethods: { type: Array, default: () => [] },
+    paymentMethods:  { type: Array, default: () => [] },
 });
 
 const { cart } = useCart();
@@ -138,20 +141,17 @@ const hasPreorder  = computed(() => cart.value.items.some(i => i.preorder));
 const onlyPreorder = computed(() => cart.value.items.length > 0 && cart.value.items.every(i => i.preorder));
 const steps = computed(() => onlyPreorder.value ? ['Контактні дані'] : ['Контактні дані', 'Доставка', 'Оплата']);
 
-const deliveryHints = {
-    nova_poshta: '1–3 дні · за тарифами перевізника',
-    ukrposhta:   '3–7 днів',
-    pickup:      'Київ, вул. Крайня 1',
-    courier:     'По Києву · наступний день',
-};
-
 const step = ref(1);
 
 const form = useForm({
     name: '', phone: '', email: '', company: '',
-    delivery: 'nova_poshta', city: '', address: '',
-    payment: 'card_transfer', comment: '',
+    delivery: props.deliveryMethods[0]?.id ?? null, city: '', address: '',
+    payment: props.paymentMethods[0]?.id ?? null, comment: '',
 });
+
+// Для самовивозу місто й відділення не потрібні
+const needsAddress = computed(() =>
+    props.deliveryMethods.find(m => m.id === form.delivery)?.requiresAddress ?? true);
 
 // Клієнтська перевірка кроку перед переходом далі (сервер перевіряє все ще раз)
 function validateStep(n) {
@@ -162,7 +162,9 @@ function validateStep(n) {
         if (!/^[0-9+()\-\s]{9,20}$/.test(form.phone.trim())) e.phone = 'Вкажіть телефон у форматі +380 XX XXX XX XX.';
         if (!/^\S+@\S+\.\S+$/.test(form.email.trim())) e.email = 'Вкажіть коректний email.';
     }
-    if (n === 2 && form.delivery !== 'pickup' && !form.city.trim()) e.city = 'Вкажіть місто.';
+    if (n === 2 && !form.delivery) e.delivery = 'Оберіть спосіб доставки.';
+    if (n === 2 && needsAddress.value && !form.city.trim()) e.city = 'Вкажіть місто.';
+    if (n === 3 && !form.payment) e.payment = 'Оберіть спосіб оплати.';
     form.setError(e);
     return Object.keys(e).length === 0;
 }

@@ -59,3 +59,5 @@ UNIQUE(category_id, locale)
 - `payment_providers` — оплата (`driver`: liqpay, wayforpay, invoice_vat, postpay)
 
 **Специфічні налаштування** (API ключі, реквізити) — в JSON полі `settings`. Жодного hardcode в коді.
+
+**Як працює зараз (замовлення):** оформлення бере активні способи з `shipping_providers` / `payment_providers` (назва й підказка — з `_translations`, керуються в адмінці «Продажі → Способи доставки / оплати»). `settings.requires_address = false` — місто й відділення не потрібні (самовивіз). `settings.roles` — спосіб оплати доступний лише цим ролям (відстрочка — `business_client`, `business_partner`). Статуси — таблиця `order_statuses` (ключ, колір, `is_final`); нове замовлення отримує статус `pending`. Типові записи для магазину створює `App\Support\StoreDefaults::install()`.
