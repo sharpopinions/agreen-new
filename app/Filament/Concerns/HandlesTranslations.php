@@ -4,6 +4,7 @@ namespace App\Filament\Concerns;
 
 use App\Models\Language;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 trait HandlesTranslations
 {
@@ -62,10 +63,46 @@ trait HandlesTranslations
                 $translationData[$field] = $this->data[$lang->code . '_' . $field] ?? '';
             }
 
+            if (array_key_exists('slug', $translationData)) {
+                $translationData['slug'] = $this->resolveSlug($lang->id, $translationData['slug'], $translationData['name'] ?? '');
+            }
+
             $this->record->translations()->updateOrCreate(
                 ['language_id' => $lang->id],
                 $translationData
             );
         }
+    }
+
+    /**
+     * Порожній slug → генеруємо з назви; немає назви → NULL (не '').
+     * Згенерований slug робимо унікальним у межах мови (-2, -3 …).
+     */
+    private function resolveSlug(int $languageId, ?string $slug, ?string $name): ?string
+    {
+        $slug = trim((string) $slug);
+        if ($slug !== '') {
+            return $slug;
+        }
+
+        $base = Str::slug((string) $name);
+        if ($base === '') {
+            return null;
+        }
+
+        $translations = $this->record->translations();
+        $foreignKey   = $translations->getForeignKeyName();
+        $model        = $translations->getRelated();
+
+        $candidate = $base;
+        for ($i = 2; $model->newQuery()
+            ->where('language_id', $languageId)
+            ->where('slug', $candidate)
+            ->where($foreignKey, '!=', $this->record->getKey())
+            ->exists(); $i++) {
+            $candidate = "{$base}-{$i}";
+        }
+
+        return $candidate;
     }
 }

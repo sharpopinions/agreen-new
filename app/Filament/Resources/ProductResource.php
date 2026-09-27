@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Concerns\RestrictedToRoles;
+use App\Filament\Support\SlugField;
 use App\Filament\Actions\TranslateAction;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Badge;
@@ -112,10 +113,7 @@ class ProductResource extends Resource
                                 ->label(__('admin.fields.name') . ' (' . $lang->code . ')')
                                 ->required($lang->is_default)
                                 ->maxLength(255),
-                            Forms\Components\TextInput::make($lang->code . '_slug')
-                                ->label(__('admin.fields.slug') . ' (' . $lang->code . ')')
-                                ->required($lang->is_default)
-                                ->maxLength(255),
+                            SlugField::make($lang, 'product_translations', 'product_id'),
                             Forms\Components\Textarea::make($lang->code . '_description')
                                 ->label(__('admin.fields.description') . ' (' . $lang->code . ')')
                                 ->rows(4),

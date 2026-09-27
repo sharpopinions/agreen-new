@@ -21,6 +21,8 @@ return [
         'translations' => 'Translations',
     ],
     'hints' => [
+        'slug'          => 'Latin letters, digits and hyphens only. Leave empty to generate from the name.',
+        'slug_format'   => 'The slug may contain only lowercase Latin letters, digits and hyphens.',
         'preorder_days' => 'Shown for on-order products as the estimated delivery time.',
         'replaced_by'   => 'If the product is discontinued, choose its modern replacement. The site shows a notice and an “Available replacement” button.',
         'warning_text'  => 'E.g. “This dispenser only works with Activator X”. Shown as a yellow notice above the add-to-cart button.',

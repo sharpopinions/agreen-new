@@ -21,6 +21,8 @@ return [
         'translations' => 'Tłumaczenia',
     ],
     'hints' => [
+        'slug'          => 'Tylko litery łacińskie, cyfry i myślniki. Puste — zostanie wygenerowane z nazwy.',
+        'slug_format'   => 'Slug może zawierać tylko małe litery łacińskie, cyfry i myślniki.',
         'preorder_days' => 'Wyświetlany dla produktów na zamówienie jako szacowany czas dostawy.',
         'replaced_by'   => 'Jeśli produkt został wycofany, wybierz jego nowoczesny zamiennik. Na stronie pojawi się komunikat i przycisk „Dostępny zamiennik”.',
         'warning_text'  => 'Np. „Ten dozownik działa tylko z Aktywatorem X”. Wyświetlany jako żółty komunikat nad przyciskiem koszyka.',

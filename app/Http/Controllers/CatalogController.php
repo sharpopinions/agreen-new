@@ -37,7 +37,7 @@ class CatalogController extends Controller
         ])
             ->where('store_id', 1)
             ->where('is_active', true)
-            ->whereHas('translations', fn($q) => $q->where('slug', $slug))
+            ->whereHas('translations', fn($q) => $q->where('slug', $slug)->where('language_id', $langId))
             ->firstOrFail();
 
         return $this->listing($request, $langId, $category, 'CatalogCategory');
