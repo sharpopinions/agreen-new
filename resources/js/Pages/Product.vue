@@ -178,7 +178,7 @@
                     <div>
                         <h3 class="product-tabs__title">Опис товару</h3>
                         <!-- HTML очищено на сервері (App\Support\Html) -->
-                        <div v-if="product.description" class="product-tabs__text product-tabs__text--rich" v-html="product.description"></div>
+                        <div v-if="product.description" class="product-tabs__text product-tabs__text--rich rich-text" v-html="product.description"></div>
                         <p v-else class="product-tabs__empty">Опис не заповнено.</p>
                     </div>
                     <div class="product-desc__img">

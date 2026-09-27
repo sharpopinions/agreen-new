@@ -17,7 +17,7 @@
 
             <!-- Заголовок -->
             <h1 class="cat-page__title">{{ title }}</h1>
-            <p class="cat-page__subtitle">Оберіть категорію або скористайтесь пошуком. Для партнерів — гнучка система знижок!</p>
+            <p class="cat-page__subtitle">{{ category?.shortDescription || 'Оберіть категорію або скористайтесь пошуком. Для партнерів — гнучка система знижок!' }}</p>
 
             <!-- Пошук -->
             <div class="cat-page__search-wrap">
@@ -40,6 +40,9 @@
                 />
                 <CatalogResults :base-url="baseUrl" :products="products" :filters="filters" />
             </div>
+
+            <!-- SEO-текст категорії з адмінки (HTML очищено на сервері) -->
+            <section v-if="category?.description" class="cat-page__seo rich-text" v-html="category.description"></section>
         </div>
     </AppLayout>
 </template>

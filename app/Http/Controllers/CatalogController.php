@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
 use App\Presenters\ProductCard;
+use App\Support\Html;
 use App\Support\Seo;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
@@ -108,6 +109,9 @@ class CatalogController extends Controller
                 'id'     => $category->id,
                 'name'   => $category->translations->first()?->name ?? '',
                 'slug'   => $category->translations->first()?->slug ?? '',
+                'shortDescription' => $category->translations->first()?->short_description ?: null,
+                // SEO-текст — лише на першій сторінці без фільтрів
+                'description' => $filtered ? null : (Html::clean($category->translations->first()?->description) ?: null),
                 'parent' => $category->parent ? [
                     'name' => $category->parent->translations->first()?->name ?? '',
                     'slug' => $category->parent->translations->first()?->slug ?? '',

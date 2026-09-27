@@ -1,0 +1,16 @@
+// Текст із редактора адмінки (опис товару, SEO-текст категорії)
+.rich-text {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--color-text-2);
+
+    > * + * { margin-top: var(--space-3); }
+    h2, h3, h4 { color: var(--color-text); font-weight: 600; line-height: 1.4; }
+    h2 { font-size: 18px; }
+    h3 { font-size: 16px; }
+    ul, ol { padding-left: 1.25em; }
+    ul { list-style: disc; }
+    ol { list-style: decimal; }
+    a { color: var(--color-text); text-decoration: underline; }
+    strong, b { color: var(--color-text); }
+}

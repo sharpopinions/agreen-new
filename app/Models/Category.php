@@ -16,6 +16,19 @@ class Category extends Model
     ];
 
 
+    /** ID усіх нащадків (щоб не зробити категорію дочірньою самій собі). */
+    public function descendantIds(): array
+    {
+        $ids = [];
+        $level = [$this->id];
+        while ($level) {
+            $level = static::whereIn('parent_id', $level)->pluck('id')->all();
+            $ids = [...$ids, ...$level];
+        }
+
+        return $ids;
+    }
+
     public function parent()
     {
         return $this->belongsTo(Category::class, 'parent_id');

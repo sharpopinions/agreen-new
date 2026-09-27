@@ -12,5 +12,5 @@ class CreateCategory extends CreateRecord
 
     protected static string $resource = CategoryResource::class;
 
-    protected array $translationFields = ['name', 'slug', 'description'];
+    protected array $translationFields = ['name', 'slug', 'short_description', 'description', 'meta_title', 'meta_description'];
 }

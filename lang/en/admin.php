@@ -2,6 +2,10 @@
 
 return [
     'fields' => [
+        'parent_category'   => 'Parent category',
+        'root_category'     => '— Root category —',
+        'short_description' => 'Subtitle',
+        'seo_text'          => 'SEO text below products',
         'sku'              => 'SKU',
         'show_on_site'     => 'Show on site',
         'price'            => 'Price',
@@ -35,6 +39,10 @@ return [
         'translations' => 'Translations',
     ],
     'hints' => [
+        'category_image'             => 'Used for link previews (og:image) and banners.',
+        'category_short_description' => 'One line under the category title. Empty — default text.',
+        'category_description'       => 'Shown at the bottom of the category page, below the products.',
+        'meta_title_category'        => 'Title in Google results. Empty — category name.',
         'show_on_site'     => 'Turn off to hide the product from the catalog without deleting it.',
         'old_price'        => 'Fill in to show the product on sale with a crossed-out price.',
         'stock_quantity'   => 'Empty — unknown (stock status is used). 0 — "On order".',
@@ -163,6 +171,7 @@ return [
         'hide_from_site' => 'Hide from site',
     ],
     'filters' => [
+        'root_only' => 'Root only',
         'in_stock' => 'In stock',
         'sale'     => 'With old price (sale)',
         'no_photo' => 'Without photo',

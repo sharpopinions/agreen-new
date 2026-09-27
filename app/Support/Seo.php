@@ -27,7 +27,9 @@ class Seo
     /** Текст без HTML, стиснутий до ~160 символів. */
     public static function excerpt(?string $text, int $limit = 160): ?string
     {
-        $plain = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $text))));
+        // Пробіл замість тегів, щоб «</h2><p>» не зліплювало слова
+        $plain = strip_tags(preg_replace('/<[^>]+>/', ' $0', (string) $text));
+        $plain = trim(preg_replace('/\s+/u', ' ', html_entity_decode($plain)));
 
         return $plain === '' ? null : Str::limit($plain, $limit);
     }

@@ -2,6 +2,10 @@
 
 return [
     'fields' => [
+        'parent_category'   => 'Kategoria nadrzędna',
+        'root_category'     => '— Kategoria główna —',
+        'short_description' => 'Podtytuł',
+        'seo_text'          => 'Tekst SEO pod produktami',
         'sku'              => 'SKU',
         'show_on_site'     => 'Pokaż na stronie',
         'price'            => 'Cena',
@@ -35,6 +39,10 @@ return [
         'translations' => 'Tłumaczenia',
     ],
     'hints' => [
+        'category_image'             => 'Do podglądu linku (og:image) i banerów.',
+        'category_short_description' => 'Jedna linia pod tytułem kategorii. Puste — tekst domyślny.',
+        'category_description'       => 'Wyświetlany na dole strony kategorii, pod produktami.',
+        'meta_title_category'        => 'Tytuł w wynikach Google. Puste — nazwa kategorii.',
         'show_on_site'     => 'Wyłącz, aby ukryć produkt w katalogu bez usuwania.',
         'old_price'        => 'Wypełnij, aby pokazać produkt w promocji z przekreśloną ceną.',
         'stock_quantity'   => 'Puste — nieznany (używany jest status dostępności). 0 — „Na zamówienie”.',
@@ -163,6 +171,7 @@ return [
         'hide_from_site' => 'Ukryj ze strony',
     ],
     'filters' => [
+        'root_only' => 'Tylko główne',
         'in_stock' => 'Na magazynie',
         'sale'     => 'Ze starą ceną (promocja)',
         'no_photo' => 'Bez zdjęcia',
