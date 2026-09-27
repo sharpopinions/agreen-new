@@ -121,7 +121,8 @@ Query-параметри: `q` (назва або артикул), `brand[]`, `ca
 Референс: `docs/design/claude-design/project/prototype/` (`pages.jsx`, `components.jsx`, `extra-pages*.jsx`).
 
 - [x] Головна (`MainPage`): усі 8 блоків. Контент блоків 5–8 тимчасово лежить у `resources/js/data/home.js`.
-- [ ] Мегаменю хедера і Cmd+K (`mega-menus.jsx`, `command-palette.jsx`)
+- [x] Мегаменю хедера (`mega-menus.jsx`): категорії й бренди з бази через спільні дані Inertia (`HandleInertiaRequests::shareOnce`)
+- [ ] Пошук Cmd+K (`command-palette.jsx`)
 - [ ] Сторінка товару: 5 варіантів
 - [ ] Кошик, оформлення замовлення, сторінки подяки
 - [ ] Інші сторінки (`extra-pages*.jsx`)

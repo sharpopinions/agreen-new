@@ -174,54 +174,6 @@
     margin-bottom: var(--space-4);
 }
 
-// Buttons (Claude Design: Btn, size md)
-.btn {
-    @extend %btn-reset;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 9px 20px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-sm);
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.43;
-    white-space: nowrap;
-    transition: all 0.15s ease;
-
-    &--primary {
-        background: var(--color-inv-bg);
-        border-color: var(--color-inv-bg);
-        color: var(--color-inv-text);
-        &:hover { opacity: 0.85; }
-    }
-
-    &--secondary {
-        background: var(--color-surface);
-        border-color: var(--color-border);
-        color: var(--color-text);
-        &:hover { background: var(--color-bg-alt); }
-    }
-
-    &--outline {
-        background: transparent;
-        color: var(--color-text);
-        border-color: var(--color-border);
-        &:hover { background: var(--color-muted); }
-    }
-
-    &--ghost {
-        background: transparent;
-        color: var(--color-text-2);
-        padding: 6px 14px;
-        font-size: 13px;
-        &:hover { background: var(--color-muted); color: var(--color-text); }
-    }
-
-    &--full { width: 100%; }
-}
-
 // Brands bar
 .home-brands {
     padding: 0 var(--space-8) var(--space-12);
