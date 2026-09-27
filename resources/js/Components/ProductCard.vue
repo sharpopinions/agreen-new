@@ -1,7 +1,9 @@
 <template>
     <!-- Режим список -->
     <div v-if="mode === 'list'" class="product-card product-card--list">
-        <Link :href="`/p/${product.slug}`" class="product-card__img-sm"></Link>
+        <Link :href="`/p/${product.slug}`" class="product-card__img-sm">
+            <img v-if="product.image" :src="product.image" :alt="product.name" class="product-card__photo" loading="lazy" />
+        </Link>
         <div class="product-card__body">
             <div class="product-card__sku">Арт: {{ product.sku }}</div>
             <Link :href="`/p/${product.slug}`" class="product-card__name">{{ product.name }}</Link>
@@ -33,7 +35,8 @@
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
             </button>
-            <span class="product-card__img-label">ФОТО ТОВАРУ</span>
+            <img v-if="product.image" :src="product.image" :alt="product.name" class="product-card__photo" loading="lazy" />
+            <span v-else class="product-card__img-label">ФОТО ТОВАРУ</span>
         </Link>
         <div class="product-card__body">
             <div class="product-card__sku">Арт: {{ product.sku }}</div>

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <SeoHead />
         <TheHeader />
         <main>
             <slot />
@@ -12,6 +13,7 @@
 </template>
 
 <script setup>
+    import SeoHead from '@/Components/Layout/SeoHead.vue';
     import TheHeader from '@/Components/Layout/TheHeader.vue';
     import TheFooter from '@/Components/Layout/TheFooter.vue';
     import CommandPalette from '@/Components/Layout/CommandPalette.vue';

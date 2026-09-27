@@ -555,6 +555,8 @@
 }
 
 .product-card__img-sm {
+    position: relative;
+    overflow: hidden;
     width: 100px;
     height: 80px;
     background: #f5f5f4;

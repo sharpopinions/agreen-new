@@ -16,6 +16,7 @@ class Product extends Model
         'sku',
         'price',
         'old_price',
+        'stock_quantity',
         'preorder_days',
         'replaced_by_id',
         'sort_order',
@@ -58,14 +59,15 @@ class Product extends Model
         return $this->hasMany(ProductTranslation::class);
     }
 
+    /** Фото за порядком; перше — головне (картка товару, og:image). */
     public function images()
     {
-        return $this->hasMany(ProductImage::class);
+        return $this->hasMany(ProductImage::class)->orderBy('sort_order')->orderBy('id');
     }
 
     public function videos()
     {
-        return $this->hasMany(ProductVideo::class);
+        return $this->hasMany(ProductVideo::class)->orderBy('sort_order');
     }
 
     public function categories()

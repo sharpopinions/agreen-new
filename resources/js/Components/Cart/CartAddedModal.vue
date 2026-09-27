@@ -46,7 +46,8 @@
                     <div class="cart-modal__label">Супутні товари</div>
                     <div class="cart-modal__recs-grid">
                         <Link v-for="p in recommendations" :key="p.id" :href="`/p/${p.slug}`" class="cart-rec" @click="close">
-                            <ImgPlaceholder :h="60" label="" :seed="p.sku" />
+                            <img v-if="p.image" :src="p.image" :alt="p.name" class="cart-rec__img" loading="lazy" />
+                            <ImgPlaceholder v-else :h="60" label="" :seed="p.sku" />
                             <span class="cart-rec__name">{{ p.name }}</span>
                             <span class="cart-rec__price">{{ fmt(p.price) }}</span>
                         </Link>

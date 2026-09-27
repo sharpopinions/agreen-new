@@ -2,6 +2,16 @@
 
 return [
     'fields' => [
+        'sku'              => 'SKU',
+        'show_on_site'     => 'Show on site',
+        'price'            => 'Price',
+        'old_price'        => 'Old price',
+        'stock_quantity'   => 'Stock, pcs',
+        'photos'           => 'Photos',
+        'alt'              => 'Photo description (alt)',
+        'videos'           => 'YouTube videos',
+        'meta_title'       => 'Meta title',
+        'meta_description' => 'Meta description',
         'driver'           => 'Driver (code)',
         'is_final'         => 'Final',
         'requires_address' => 'Requires city and branch',
@@ -25,6 +35,14 @@ return [
         'translations' => 'Translations',
     ],
     'hints' => [
+        'show_on_site'     => 'Turn off to hide the product from the catalog without deleting it.',
+        'old_price'        => 'Fill in to show the product on sale with a crossed-out price.',
+        'stock_quantity'   => 'Empty — unknown (stock status is used). 0 — "On order".',
+        'stock_status'     => 'Used when the stock quantity is empty.',
+        'photos'           => 'Drag to reorder. The first photo is the main one (catalog card).',
+        'youtube_invalid'  => 'This does not look like a YouTube link.',
+        'meta_title'       => 'Title in Google results. Empty — product name.',
+        'meta_description' => 'Search snippet, up to ~160 characters. Empty — start of description.',
         'status_key'       => 'Latin, e.g. awaiting_payment. The "pending" status is assigned to new orders.',
         'is_final'         => 'The order is finished (completed or cancelled) and can no longer be changed by the customer.',
         'driver'           => 'Technical code for integration: nova_poshta, liqpay, invoice_vat…',
@@ -37,6 +55,8 @@ return [
         'warning_text'  => 'E.g. “This dispenser only works with Activator X”. Shown as a yellow notice above the add-to-cart button.',
     ],
     'sections' => [
+        'price_stock'  => 'Price & stock',
+        'texts_seo'    => 'Texts & SEO',
         'main'         => 'General',
         'media'        => 'Media',
         'translations' => 'Translations',
@@ -133,5 +153,18 @@ return [
         'footer_text'      => 'Company description in the footer',
         'socials'          => 'Social networks',
         'saved'            => 'Settings saved',
+    ],
+    'actions' => [
+        'add_photo'      => 'Add photo',
+        'add_video'      => 'Add video',
+        'view_on_site'   => 'On site',
+        'duplicate'      => 'Duplicate',
+        'show_on_site'   => 'Show on site',
+        'hide_from_site' => 'Hide from site',
+    ],
+    'filters' => [
+        'in_stock' => 'In stock',
+        'sale'     => 'With old price (sale)',
+        'no_photo' => 'Without photo',
     ],
 ];

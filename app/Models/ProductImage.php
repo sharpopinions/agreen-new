@@ -12,6 +12,12 @@ class ProductImage extends Model
         'is_main' => 'boolean',
     ];
 
+    /** Публічний URL файлу (диск public). */
+    public function getUrlAttribute(): string
+    {
+        return \Illuminate\Support\Facades\Storage::disk('public')->url($this->path);
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);

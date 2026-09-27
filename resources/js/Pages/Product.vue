@@ -23,7 +23,7 @@
                         <img v-if="images.length" :src="images[activeImg].url" :alt="images[activeImg].alt || product.name" class="product-gallery__img" />
                         <ImgPlaceholder v-else :h="340" :label="`фото товару ${activeImg + 1}`" :seed="`${product.sku}-${activeImg}`" />
                     </div>
-                    <div class="product-gallery__thumbs">
+                    <div v-if="thumbs.length" class="product-gallery__thumbs">
                         <button
                             v-for="(thumb, i) in thumbs"
                             :key="i"
@@ -177,7 +177,8 @@
                 <div v-if="tab === 'desc'" class="product-desc">
                     <div>
                         <h3 class="product-tabs__title">Опис товару</h3>
-                        <p v-if="product.description" class="product-tabs__text">{{ product.description }}</p>
+                        <!-- HTML очищено на сервері (App\Support\Html) -->
+                        <div v-if="product.description" class="product-tabs__text product-tabs__text--rich" v-html="product.description"></div>
                         <p v-else class="product-tabs__empty">Опис не заповнено.</p>
                     </div>
                     <div class="product-desc__img">
@@ -260,7 +261,10 @@ const tabPanel = ref(null);
 
 const images = computed(() => props.product.images ?? []);
 // Завжди 4 мініатюри, як у дизайні: фото або заглушки
-const thumbs = computed(() => Array.from({ length: Math.max(4, images.value.length) }, (_, i) => images.value[i] ?? null));
+// Є фото — лише вони (мініатюри від двох фото); немає — 4 заглушки як у дизайні
+const thumbs = computed(() => images.value.length
+    ? (images.value.length > 1 ? images.value : [])
+    : Array.from({ length: 4 }, () => null));
 
 const isModified = computed(() => !!props.product.replacement);
 

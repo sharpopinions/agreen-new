@@ -20,6 +20,16 @@
         radial-gradient(ellipse 38% 35% at 62% 62%, rgba(144, 195, 155, 0.28) 100%, transparent 100%);
     @include flex-center;
     position: relative;
+    overflow: hidden;
+}
+
+.product-card__photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: var(--color-surface, #fff);
 }
 
 .product-card__img-label {
@@ -31,6 +41,7 @@
 
 .product-card__badge {
     position: absolute;
+    z-index: 1;
     top: var(--space-2);
     left: var(--space-2);
     padding: 2px var(--space-2);
@@ -60,6 +71,7 @@
 .product-card__wish {
     @extend %btn-reset;
     position: absolute;
+    z-index: 1;
     top: var(--space-2);
     right: var(--space-2);
     width: 32px;

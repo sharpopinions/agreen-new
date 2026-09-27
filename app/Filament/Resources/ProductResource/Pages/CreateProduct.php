@@ -12,5 +12,5 @@ class CreateProduct extends CreateRecord
 
     protected static string $resource = ProductResource::class;
 
-    protected array $translationFields = ['name', 'slug', 'description', 'warning_text'];
+    protected array $translationFields = ['name', 'slug', 'description', 'warning_text', 'meta_title', 'meta_description'];
 }

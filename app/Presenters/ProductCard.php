@@ -21,6 +21,7 @@ class ProductCard
             'translations'        => $tr,
             'brand.translations'  => $tr,
             'badges.translations' => $tr,
+            'images',
         ];
     }
 
@@ -34,6 +35,7 @@ class ProductCard
             'name'     => $translation?->name ?? '',
             'slug'     => $translation?->slug ?? '',
             'sku'      => $p->sku,
+            'image'    => $p->images->first()?->url,
             'price'    => (float) $p->price,
             'oldPrice' => $p->old_price ? (float) $p->old_price : null,
             'brand'    => $p->brand?->translations->first()?->name,

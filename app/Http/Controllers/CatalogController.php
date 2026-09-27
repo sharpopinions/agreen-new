@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
 use App\Presenters\ProductCard;
+use App\Support\Seo;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -87,7 +89,21 @@ class CatalogController extends Controller
 
         $prices = $base()->selectRaw('MIN(price) as min, MAX(price) as max')->reorder()->first();
 
+        $categoryTr = $category?->translations->first();
+        // Результати пошуку й комбінації фільтрів не індексуємо — лише «чисті» сторінки категорій
+        $filtered = $filters['q'] !== '' || $filters['brand'] || $filters['category'] || $filters['availability']
+            || $filters['sale'] || $filters['min_price'] !== null || $filters['max_price'] !== null || $request->filled('page');
+
         return Inertia::render($page, [
+            'seo' => $category
+                ? Seo::make(
+                    $categoryTr?->meta_title ?: ($categoryTr?->name ?? ''),
+                    $categoryTr?->meta_description ?: $categoryTr?->description,
+                    $category->image ? Storage::disk('public')->url($category->image) : null,
+                    noindex: $filtered,
+                    raw: (bool) $categoryTr?->meta_title,
+                )
+                : Seo::make($page === 'Catalog' ? 'Каталог' : 'Усі товари', noindex: $filtered),
             'category'   => $category ? [
                 'id'     => $category->id,
                 'name'   => $category->translations->first()?->name ?? '',

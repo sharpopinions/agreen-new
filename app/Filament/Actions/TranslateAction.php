@@ -18,6 +18,9 @@ class TranslateAction
         'name'        => 'Назва',
         'slug'        => 'Slug',
         'description' => 'Опис',
+        'warning_text'     => 'Попередження',
+        'meta_title'       => 'Meta title',
+        'meta_description' => 'Meta description',
     ];
 
     /**

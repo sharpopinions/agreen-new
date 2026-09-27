@@ -13,7 +13,7 @@ class ProductCardTest extends TestCase
 
     protected bool $seed = true;
 
-    private const KEYS = ['id', 'name', 'slug', 'sku', 'price', 'oldPrice', 'brand', 'badge', 'rating', 'reviews', 'stock'];
+    private const KEYS = ['id', 'name', 'slug', 'sku', 'image', 'price', 'oldPrice', 'brand', 'badge', 'rating', 'reviews', 'stock'];
 
     public function test_card_shape_is_the_same_everywhere(): void
     {

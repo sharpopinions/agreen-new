@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
 use App\Presenters\ProductCard;
+use App\Support\Seo;
+use App\Support\SiteSettings;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -52,6 +54,13 @@ class HomeController extends Controller
             Product::query()->forCard()->orderBy('sort_order')->get()
         );
 
-        return Inertia::render('Home', compact('categories', 'brands', 'products'));
+        return Inertia::render('Home', [
+            ...compact('categories', 'brands', 'products'),
+            'seo' => Seo::make(
+                'A-green — матеріали для кузовного ремонту та промисловості',
+                SiteSettings::forFrontend()['footerText'],
+                raw: true,
+            ),
+        ]);
     }
 }

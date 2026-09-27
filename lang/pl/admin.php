@@ -2,6 +2,16 @@
 
 return [
     'fields' => [
+        'sku'              => 'SKU',
+        'show_on_site'     => 'Pokaż na stronie',
+        'price'            => 'Cena',
+        'old_price'        => 'Stara cena',
+        'stock_quantity'   => 'Stan, szt.',
+        'photos'           => 'Zdjęcia',
+        'alt'              => 'Opis zdjęcia (alt)',
+        'videos'           => 'Filmy YouTube',
+        'meta_title'       => 'Meta title',
+        'meta_description' => 'Meta description',
         'driver'           => 'Sterownik (kod)',
         'is_final'         => 'Końcowy',
         'requires_address' => 'Wymaga miasta i oddziału',
@@ -25,6 +35,14 @@ return [
         'translations' => 'Tłumaczenia',
     ],
     'hints' => [
+        'show_on_site'     => 'Wyłącz, aby ukryć produkt w katalogu bez usuwania.',
+        'old_price'        => 'Wypełnij, aby pokazać produkt w promocji z przekreśloną ceną.',
+        'stock_quantity'   => 'Puste — nieznany (używany jest status dostępności). 0 — „Na zamówienie”.',
+        'stock_status'     => 'Używany, gdy stan nie jest podany.',
+        'photos'           => 'Przeciągnij, aby zmienić kolejność. Pierwsze zdjęcie jest główne.',
+        'youtube_invalid'  => 'To nie wygląda na link YouTube.',
+        'meta_title'       => 'Tytuł w wynikach Google. Puste — nazwa produktu.',
+        'meta_description' => 'Opis w wynikach, do ~160 znaków. Puste — początek opisu.',
         'status_key'       => 'Łacinką, np. awaiting_payment. Status „pending” otrzymują nowe zamówienia.',
         'is_final'         => 'Zamówienie zakończone (zrealizowane lub anulowane) — klient nie może go już zmienić.',
         'driver'           => 'Kod techniczny integracji: nova_poshta, liqpay, invoice_vat…',
@@ -37,6 +55,8 @@ return [
         'warning_text'  => 'Np. „Ten dozownik działa tylko z Aktywatorem X”. Wyświetlany jako żółty komunikat nad przyciskiem koszyka.',
     ],
     'sections' => [
+        'price_stock'  => 'Cena i dostępność',
+        'texts_seo'    => 'Teksty i SEO',
         'main'         => 'Ogólne',
         'media'        => 'Media',
         'translations' => 'Tłumaczenia',
@@ -133,5 +153,18 @@ return [
         'footer_text'      => 'Opis firmy w stopce',
         'socials'          => 'Media społecznościowe',
         'saved'            => 'Ustawienia zapisane',
+    ],
+    'actions' => [
+        'add_photo'      => 'Dodaj zdjęcie',
+        'add_video'      => 'Dodaj film',
+        'view_on_site'   => 'Na stronie',
+        'duplicate'      => 'Kopiuj',
+        'show_on_site'   => 'Pokaż na stronie',
+        'hide_from_site' => 'Ukryj ze strony',
+    ],
+    'filters' => [
+        'in_stock' => 'Na magazynie',
+        'sale'     => 'Ze starą ceną (promocja)',
+        'no_photo' => 'Bez zdjęcia',
     ],
 ];

@@ -6,7 +6,8 @@ use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
 use App\Presenters\ProductCard;
-use Illuminate\Support\Facades\Storage;
+use App\Support\Html;
+use App\Support\Seo;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,8 +28,8 @@ class ProductController extends Controller
             'attributeValues.attributeDefinition.translations' => $tr,
             'stockStatus',
             'replacedBy.translations'                          => $tr,
-            'images'                                           => fn($q) => $q->orderByDesc('is_main')->orderBy('sort_order'),
-            'videos'                                           => fn($q) => $q->orderBy('sort_order'),
+            'images',
+            'videos',
         ])
             ->where('is_active', true)
             ->whereHas('translations', fn($q) => $q->where('slug', $slug)->where('language_id', $langId))
@@ -45,7 +46,15 @@ class ProductController extends Controller
 
         $replacement = $product->replacedBy?->is_active ? $product->replacedBy : null;
 
+        $mainImage = $product->images->first();
+
         return Inertia::render('Product', [
+            'seo' => Seo::make(
+                $translation?->meta_title ?: ($translation?->name ?? $product->sku),
+                $translation?->meta_description ?: $translation?->description,
+                $mainImage?->url,
+                raw: (bool) $translation?->meta_title,
+            ),
             'product' => [
                 'id'           => $product->id,
                 'name'         => $translation?->name ?? '',
@@ -55,7 +64,7 @@ class ProductController extends Controller
                 'oldPrice'     => $product->old_price ? (float) $product->old_price : null,
                 // Персональна ціна бізнес-клієнта — з'явиться разом з авторизацією та цінами з 1С
                 'partnerPrice' => null,
-                'description'  => $translation?->description ?? '',
+                'description'  => Html::clean($translation?->description),
                 'warning'      => trim((string) ($translation?->warning_text ?? '')) ?: null,
                 'rating'       => (float) $product->rating,
                 'reviews'      => $product->reviews_count,
@@ -68,7 +77,7 @@ class ProductController extends Controller
                     'sku'  => $replacement->sku,
                 ] : null,
                 'images'       => $product->images->map(fn($i) => [
-                    'url' => Storage::url($i->path),
+                    'url' => $i->url,
                     'alt' => $i->alt ?? '',
                 ])->values(),
                 'videos'       => $product->videos->pluck('youtube_id')->values(),

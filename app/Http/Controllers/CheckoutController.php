@@ -7,6 +7,7 @@ use App\Models\OrderStatus;
 use App\Models\PaymentProvider;
 use App\Models\ShippingProvider;
 use App\Services\Cart;
+use App\Support\Seo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,7 @@ class CheckoutController extends Controller
 
         // Способи доставки й оплати керуються з адмінки (Налаштування → Доставка / Оплата)
         return Inertia::render('Checkout', [
+            'seo' => Seo::make('Оформлення замовлення', noindex: true),
             'deliveryMethods' => ShippingProvider::available()->map(fn(ShippingProvider $p) => [
                 'id'              => $p->id,
                 'name'            => $p->name,
@@ -112,7 +114,10 @@ class CheckoutController extends Controller
             ]),
         ]);
 
-        return Inertia::render('OrderThanks', ['orders' => $orders]);
+        return Inertia::render('OrderThanks', [
+            'orders' => $orders,
+            'seo'    => Seo::make('Дякуємо за замовлення', noindex: true),
+        ]);
     }
 
     private function createOrder(string $type, $items, array $data): string

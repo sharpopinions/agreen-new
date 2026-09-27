@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Language;
 use App\Models\Product;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Storage;
 
 /**
  * Кошик у сесії: [product_id => quantity].
@@ -100,7 +99,7 @@ class Cart
                     'total'    => round((float) $p->price * $qty, 2),
                     'preorder' => ! $inStock,
                     'stock'    => $inStock ? $p->stock_quantity : null,
-                    'image'    => $image ? Storage::url($image->path) : null,
+                    'image'    => $image?->url,
                 ];
             })
             ->values();

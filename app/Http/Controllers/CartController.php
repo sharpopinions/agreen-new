@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Presenters\ProductCard;
+use App\Support\Seo;
 use App\Services\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ class CartController extends Controller
         $summary = $this->cart->summary();
 
         return Inertia::render('Cart', [
+            'seo'         => Seo::make('Кошик', noindex: true),
             // ТЗ: у порожньому кошику — блок із 3 товарів
             'suggestions' => $summary['count'] === 0 ? $this->popular(3) : [],
         ]);
