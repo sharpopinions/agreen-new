@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToStore;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use BelongsToStore;
+
     protected $fillable = [
         'store_id',
         'brand_id',
@@ -25,10 +28,6 @@ class Product extends Model
         'is_active' => 'boolean',
     ];
 
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
 
     public function brand()
     {

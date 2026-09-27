@@ -21,7 +21,6 @@ class SearchController extends Controller
         $langId = Language::currentId();
 
         $products = Product::with(['translations' => fn($t) => $t->where('language_id', $langId)])
-            ->where('store_id', 1)
             ->where('is_active', true)
             ->where(fn($w) => $w
                 ->whereLike('sku', '%' . $q . '%')

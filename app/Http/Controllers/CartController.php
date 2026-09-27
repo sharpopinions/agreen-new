@@ -66,7 +66,6 @@ class CartController extends Controller
     private function findProduct(int $id): Product
     {
         return Product::with('stockStatus')
-            ->where('store_id', 1)
             ->where('is_active', true)
             ->findOrFail($id);
     }
@@ -102,7 +101,6 @@ class CartController extends Controller
             'translations'        => fn($q) => $q->where('language_id', $langId),
             'badges.translations' => fn($q) => $q->where('language_id', $langId),
         ])
-            ->where('store_id', 1)
             ->where('is_active', true);
     }
 

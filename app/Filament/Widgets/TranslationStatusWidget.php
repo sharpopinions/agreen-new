@@ -20,7 +20,7 @@ class TranslationStatusWidget extends Widget
 
     public function getViewData(): array
     {
-        $languages = Language::where('store_id', 1)->where('is_active', true)->orderBy('id')->get();
+        $languages = Language::query()->where('is_active', true)->orderBy('id')->get();
 
         $entities = [
             'Категорії'        => Category::class,
@@ -33,11 +33,11 @@ class TranslationStatusWidget extends Widget
         $rows = [];
 
         foreach ($entities as $label => $modelClass) {
-            $total = $modelClass::where('store_id', 1)->count();
+            $total = $modelClass::query()->count();
             $row = ['label' => $label, 'total' => $total, 'languages' => []];
 
             foreach ($languages as $lang) {
-                $filled = $modelClass::where('store_id', 1)
+                $filled = $modelClass::query()
                     ->whereHas('translations', fn($q) => $q
                         ->where('language_id', $lang->id)
                         ->where('name', '!=', '')

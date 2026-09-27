@@ -35,7 +35,6 @@ class CatalogController extends Controller
             'parent.translations'   => fn($q) => $q->where('language_id', $langId),
             'children.translations' => fn($q) => $q->where('language_id', $langId),
         ])
-            ->where('store_id', 1)
             ->where('is_active', true)
             ->whereHas('translations', fn($q) => $q->where('slug', $slug)->where('language_id', $langId))
             ->firstOrFail();
@@ -128,7 +127,6 @@ class CatalogController extends Controller
             'brand.translations'  => fn($q) => $q->where('language_id', $langId),
             'badges.translations' => fn($q) => $q->where('language_id', $langId),
         ])
-            ->where('store_id', 1)
             ->where('is_active', true);
     }
 
@@ -138,8 +136,7 @@ class CatalogController extends Controller
             'translations'          => fn($q) => $q->where('language_id', $langId),
             'children.translations' => fn($q) => $q->where('language_id', $langId),
         ])
-            ->withCount(['products' => fn($q) => $q->where('store_id', 1)->where('is_active', true)])
-            ->where('store_id', 1)
+            ->withCount(['products' => fn($q) => $q->where('is_active', true)])
             ->where('is_active', true)
             ->whereNull('parent_id')
             ->orderBy('sort_order')
@@ -170,7 +167,6 @@ class CatalogController extends Controller
             ->pluck('cnt', 'brand_id');
 
         return Brand::with(['translations' => fn($q) => $q->where('language_id', $langId)])
-            ->where('store_id', 1)
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->get()

@@ -13,7 +13,6 @@ class CreateUiTranslation extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['store_id'] = 1;
         return $data;
     }
 
@@ -25,7 +24,7 @@ class CreateUiTranslation extends CreateRecord
 
     private function saveValues(): void
     {
-        $languages = Language::where('store_id', 1)->where('is_active', true)->get();
+        $languages = Language::query()->where('is_active', true)->get();
 
         foreach ($languages as $lang) {
             $value = $this->data['value_' . $lang->code] ?? null;

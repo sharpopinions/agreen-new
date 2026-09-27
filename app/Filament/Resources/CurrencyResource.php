@@ -91,6 +91,6 @@ class CurrencyResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()->where('store_id', 1);
+        return parent::getEloquentQuery();
     }
 }

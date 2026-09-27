@@ -40,8 +40,7 @@ class HandleInertiaRequests extends Middleware
         $langId = Language::currentId();
 
         $categories = Category::with(['translations' => fn($q) => $q->where('language_id', $langId)])
-            ->withCount(['products' => fn($q) => $q->where('store_id', 1)->where('is_active', true)])
-            ->where('store_id', 1)
+            ->withCount(['products' => fn($q) => $q->where('is_active', true)])
             ->where('is_active', true)
             ->whereNull('parent_id')
             ->orderBy('sort_order')
@@ -54,7 +53,6 @@ class HandleInertiaRequests extends Middleware
             ]);
 
         $brands = Brand::with(['translations' => fn($q) => $q->where('language_id', $langId)])
-            ->where('store_id', 1)
             ->where('is_active', true)
             ->orderBy('sort_order')
             ->get()

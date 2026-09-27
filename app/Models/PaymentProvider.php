@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToStore;
 use Illuminate\Database\Eloquent\Model;
 
 class PaymentProvider extends Model
 {
+    use BelongsToStore;
+
     protected $fillable = ['store_id', 'driver', 'settings', 'sort_order', 'is_active'];
 
     protected $casts = [
@@ -13,10 +16,6 @@ class PaymentProvider extends Model
         'is_active' => 'boolean',
     ];
 
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
 
     public function translations()
     {

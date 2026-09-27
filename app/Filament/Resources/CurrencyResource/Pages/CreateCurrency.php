@@ -11,7 +11,6 @@ class CreateCurrency extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['store_id'] = 1;
         return $data;
     }
 }

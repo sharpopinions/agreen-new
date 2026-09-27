@@ -48,7 +48,7 @@ class BadgeResource extends Resource
 
             Forms\Components\Tabs::make(__('admin.sections.translations'))
                 ->tabs(
-                    \App\Models\Language::where('store_id', 1)->where('is_active', true)->orderBy('id')->get()
+                    \App\Models\Language::query()->where('is_active', true)->orderBy('id')->get()
                         ->map(fn($lang) => Forms\Components\Tabs\Tab::make($lang->name)->schema([
                             Forms\Components\TextInput::make($lang->code . '_name')
                                 ->label(__('admin.fields.name') . ' (' . $lang->code . ')')
@@ -100,6 +100,6 @@ class BadgeResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()->with('translations')->where('store_id', 1);
+        return parent::getEloquentQuery()->with('translations');
     }
 }

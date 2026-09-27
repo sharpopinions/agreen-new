@@ -29,7 +29,7 @@ class UiTranslationResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $languages = Language::where('store_id', 1)->where('is_active', true)->orderBy('id')->get();
+        $languages = Language::query()->where('is_active', true)->orderBy('id')->get();
 
         return $form->schema([
             Forms\Components\Section::make('Ключ')->schema([
@@ -61,7 +61,7 @@ class UiTranslationResource extends Resource
 
     public static function table(Table $table): Table
     {
-        $languages = Language::where('store_id', 1)->where('is_active', true)->orderBy('id')->get();
+        $languages = Language::query()->where('is_active', true)->orderBy('id')->get();
 
         $columns = [
             Tables\Columns\TextColumn::make('group')
@@ -127,7 +127,7 @@ class UiTranslationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with('values')->where('store_id', 1);
+        return parent::getEloquentQuery()->with('values');
     }
 
     public static function getPages(): array

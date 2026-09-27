@@ -102,7 +102,6 @@ class CheckoutController extends Controller
         $isPreorder = $type === 'preorder';
 
         $order = Order::create([
-            'store_id'         => 1,
             'number'           => 'tmp-' . uniqid('', true),
             'type'             => $type,
             'status'           => 'new',

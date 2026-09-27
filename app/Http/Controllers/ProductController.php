@@ -29,7 +29,6 @@ class ProductController extends Controller
             'images'                                           => fn($q) => $q->orderByDesc('is_main')->orderBy('sort_order'),
             'videos'                                           => fn($q) => $q->orderBy('sort_order'),
         ])
-            ->where('store_id', 1)
             ->where('is_active', true)
             ->whereHas('translations', fn($q) => $q->where('slug', $slug)->where('language_id', $langId))
             ->firstOrFail();
@@ -42,7 +41,6 @@ class ProductController extends Controller
             'brand.translations'  => $tr,
             'badges.translations' => $tr,
         ])
-            ->where('store_id', 1)
             ->where('is_active', true)
             ->where('id', '!=', $product->id)
             ->when($category, fn($q) => $q->whereHas('categories', fn($q2) => $q2->where('categories.id', $category->id)))

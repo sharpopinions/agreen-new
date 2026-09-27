@@ -2,20 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToStore;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    use BelongsToStore;
+
     protected $fillable = ['store_id', 'parent_id', 'image', 'sort_order', 'is_active'];
 
     protected $casts = [
         'is_active' => 'boolean',
     ];
 
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
 
     public function parent()
     {

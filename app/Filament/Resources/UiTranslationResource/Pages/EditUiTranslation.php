@@ -23,7 +23,7 @@ class EditUiTranslation extends EditRecord
     {
         $values = $this->record->values->keyBy('locale');
 
-        $languages = Language::where('store_id', 1)->where('is_active', true)->get();
+        $languages = Language::query()->where('is_active', true)->get();
         foreach ($languages as $lang) {
             $data['value_' . $lang->code] = $values->get($lang->code)?->value ?? '';
         }
@@ -33,7 +33,7 @@ class EditUiTranslation extends EditRecord
 
     protected function afterSave(): void
     {
-        $languages = Language::where('store_id', 1)->where('is_active', true)->get();
+        $languages = Language::query()->where('is_active', true)->get();
 
         foreach ($languages as $lang) {
             $value = $this->data['value_' . $lang->code] ?? null;

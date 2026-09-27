@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToStore;
 use Illuminate\Database\Eloquent\Model;
 
 class Integration extends Model
 {
+    use BelongsToStore;
+
     protected $fillable = ['store_id', 'driver', 'name', 'settings', 'is_active'];
 
     protected $casts = [
@@ -13,10 +16,6 @@ class Integration extends Model
         'is_active' => 'boolean',
     ];
 
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
 
     public function syncLogs()
     {

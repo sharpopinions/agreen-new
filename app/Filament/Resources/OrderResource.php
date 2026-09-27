@@ -30,7 +30,7 @@ class OrderResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $new = Order::where('store_id', 1)->where('status', 'new')->count();
+        $new = Order::query()->where('status', 'new')->count();
 
         return $new ? (string) $new : null;
     }
@@ -134,6 +134,6 @@ class OrderResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()->with('items')->where('store_id', 1);
+        return parent::getEloquentQuery()->with('items');
     }
 }

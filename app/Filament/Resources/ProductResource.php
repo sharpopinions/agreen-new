@@ -42,13 +42,13 @@ class ProductResource extends Resource
                 Forms\Components\Select::make('brand_id')
                     ->label(__('admin.resources.brand'))
                     ->options(fn() => Brand::with(['translations' => fn($q) => $q->where('language_id', \App\Models\Language::currentId())])
-                        ->where('store_id', 1)->get()
+                        ->get()
                         ->mapWithKeys(fn($b) => [$b->id => $b->translations->first()?->name ?? "Brand #{$b->id}"]))
                     ->nullable(),
                 Forms\Components\Select::make('stock_status_id')
                     ->label(__('admin.resources.stock_status'))
                     ->options(fn() => StockStatus::with(['translations' => fn($q) => $q->where('language_id', \App\Models\Language::currentId())])
-                        ->where('store_id', 1)->get()
+                        ->get()
                         ->mapWithKeys(fn($s) => [$s->id => $s->translations->first()?->name ?? "Status #{$s->id}"]))
                     ->nullable(),
                 Forms\Components\TextInput::make('price')
@@ -71,7 +71,6 @@ class ProductResource extends Resource
                     ->label(__('admin.fields.replaced_by'))
                     ->helperText(__('admin.hints.replaced_by'))
                     ->options(fn(?Product $record) => Product::with(['translations' => fn($q) => $q->where('language_id', \App\Models\Language::currentId())])
-                        ->where('store_id', 1)
                         ->when($record, fn($q) => $q->whereKeyNot($record->id))
                         ->orderBy('sku')->get()
                         ->mapWithKeys(fn($p) => [$p->id => $p->sku . ' — ' . ($p->translations->first()?->name ?? '')]))
@@ -92,7 +91,7 @@ class ProductResource extends Resource
                     ->multiple()
                     ->relationship('categories', 'id')
                     ->options(fn() => Category::with(['translations' => fn($q) => $q->where('language_id', \App\Models\Language::currentId())])
-                        ->where('store_id', 1)->get()
+                        ->get()
                         ->mapWithKeys(fn($c) => [$c->id => $c->translations->first()?->name ?? "Category #{$c->id}"]))
                     ->preload(),
                 Forms\Components\Select::make('badges')
@@ -100,14 +99,14 @@ class ProductResource extends Resource
                     ->multiple()
                     ->relationship('badges', 'id')
                     ->options(fn() => Badge::with(['translations' => fn($q) => $q->where('language_id', \App\Models\Language::currentId())])
-                        ->where('store_id', 1)->get()
+                        ->get()
                         ->mapWithKeys(fn($b) => [$b->id => $b->translations->first()?->name ?? "Badge #{$b->id}"]))
                     ->preload(),
             ])->columns(2),
 
             Forms\Components\Tabs::make(__('admin.sections.translations'))
                 ->tabs(
-                    \App\Models\Language::where('store_id', 1)->where('is_active', true)->orderBy('id')->get()
+                    \App\Models\Language::query()->where('is_active', true)->orderBy('id')->get()
                         ->map(fn($lang) => Forms\Components\Tabs\Tab::make($lang->name)->schema([
                             Forms\Components\TextInput::make($lang->code . '_name')
                                 ->label(__('admin.fields.name') . ' (' . $lang->code . ')')
@@ -172,6 +171,6 @@ class ProductResource extends Resource
     {
         return parent::getEloquentQuery()
             ->with(['translations', 'brand.translations'])
-            ->where('store_id', 1);
+            ;
     }
 }

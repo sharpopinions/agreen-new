@@ -12,7 +12,7 @@ trait HandlesTranslations
 
     protected function getActiveLanguages(): Collection
     {
-        return Language::where('store_id', 1)
+        return Language::query()
             ->where('is_active', true)
             ->orderBy('id')
             ->get();
@@ -34,7 +34,6 @@ trait HandlesTranslations
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['store_id'] = 1;
         return $data;
     }
 

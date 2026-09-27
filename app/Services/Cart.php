@@ -73,7 +73,6 @@ class Cart
             'images'       => fn($q) => $q->orderByDesc('is_main')->orderBy('sort_order'),
             'stockStatus',
         ])
-            ->where('store_id', 1)
             ->where('is_active', true)
             ->whereIn('id', array_keys($raw))
             ->get()

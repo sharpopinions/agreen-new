@@ -66,7 +66,7 @@ class TranslateAction
                     : $fields;
 
                 $record     = $livewire->record;
-                $sourceLang = Language::where('store_id', 1)->where('is_default', true)->first();
+                $sourceLang = Language::query()->where('is_default', true)->first();
                 $targetLang = Language::find($data['target_language_id']);
 
                 $sourceTranslation = $record->translations->firstWhere('language_id', $sourceLang->id);
@@ -127,7 +127,7 @@ class TranslateAction
             ->form([
                 Select::make('target_language_id')
                     ->label('Мова перекладу')
-                    ->options(fn() => Language::where('store_id', 1)
+                    ->options(fn() => Language::query()
                         ->where('is_active', true)
                         ->where('is_default', false)
                         ->pluck('name', 'id'))
@@ -158,7 +158,7 @@ class TranslateAction
                     ? $data['selected_fields']
                     : $fields;
 
-                $sourceLang = Language::where('store_id', 1)->where('is_default', true)->first();
+                $sourceLang = Language::query()->where('is_default', true)->first();
                 $targetLang = Language::find($data['target_language_id']);
 
                 $translated = 0;
@@ -211,13 +211,13 @@ class TranslateAction
     private static function getLanguageOptions(?Model $record, array $fields): array
     {
         if (!$record) {
-            return Language::where('store_id', 1)->where('is_active', true)
+            return Language::query()->where('is_active', true)
                 ->where('is_default', false)->pluck('name', 'id')->toArray();
         }
 
         $record->loadMissing('translations');
 
-        return Language::where('store_id', 1)
+        return Language::query()
             ->where('is_active', true)
             ->where('is_default', false)
             ->get()

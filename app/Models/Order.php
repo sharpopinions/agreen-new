@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\BelongsToStore;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use BelongsToStore;
+
     public const DELIVERY_METHODS = [
         'nova_poshta' => 'Нова Пошта',
         'ukrposhta'   => 'Укрпошта',

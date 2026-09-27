@@ -15,6 +15,9 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    // Поточний магазин (SaaS-ready): поки один — A-green
+    'store_id' => (int) env('APP_STORE_ID', 1),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

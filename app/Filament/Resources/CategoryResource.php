@@ -35,7 +35,6 @@ class CategoryResource extends Resource
                 Forms\Components\Select::make('parent_id')
                     ->label('Батьківська категорія')
                     ->options(fn() => Category::with(['translations' => fn($q) => $q->where('language_id', \App\Models\Language::currentId())])
-                        ->where('store_id', 1)
                         ->get()
                         ->mapWithKeys(fn($c) => [$c->id => $c->translations->first()?->name ?? "Категорія #{$c->id}"]))
                     ->placeholder('— Коренева категорія —')
@@ -51,7 +50,7 @@ class CategoryResource extends Resource
 
             Forms\Components\Tabs::make(__('admin.sections.translations'))
                 ->tabs(
-                    \App\Models\Language::where('store_id', 1)->where('is_active', true)->orderBy('id')->get()
+                    \App\Models\Language::query()->where('is_active', true)->orderBy('id')->get()
                         ->map(fn($lang) => Forms\Components\Tabs\Tab::make($lang->name)->schema([
                             Forms\Components\TextInput::make($lang->code . '_name')
                                 ->label(__('admin.fields.name') . ' (' . $lang->code . ')')
@@ -103,7 +102,7 @@ class CategoryResource extends Resource
 
     public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
     {
-        return parent::getEloquentQuery()->with(['translations', 'parent.translations'])->where('store_id', 1);
+        return parent::getEloquentQuery()->with(['translations', 'parent.translations']);
     }
 
     public static function getPages(): array

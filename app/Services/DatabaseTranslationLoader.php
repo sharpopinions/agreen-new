@@ -10,9 +10,8 @@ class DatabaseTranslationLoader
     public function loadIntoTranslator(): void
     {
         try {
-            $groups = Cache::remember('ui_translations', 300, function () {
+            $groups = Cache::remember('ui_translations.' . \App\Support\CurrentStore::id(), 300, function () {
                 return UiTranslation::with('values')
-                    ->where('store_id', 1)
                     ->get()
                     ->groupBy('group');
             });
