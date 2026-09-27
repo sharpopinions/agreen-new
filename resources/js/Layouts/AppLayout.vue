@@ -6,6 +6,8 @@
         </main>
         <TheFooter />
         <CommandPalette />
+        <CartAddedModal />
+        <CartDrawer />
     </div>
 </template>
 
@@ -13,4 +15,6 @@
     import TheHeader from '@/Components/Layout/TheHeader.vue';
     import TheFooter from '@/Components/Layout/TheFooter.vue';
     import CommandPalette from '@/Components/Layout/CommandPalette.vue';
+    import CartAddedModal from '@/Components/Cart/CartAddedModal.vue';
+    import CartDrawer from '@/Components/Cart/CartDrawer.vue';
 </script>

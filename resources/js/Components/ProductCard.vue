@@ -17,7 +17,7 @@
         </div>
         <div class="product-card__right">
             <span class="product-card__price">{{ fmt(product.price) }}</span>
-            <button class="product-card__btn">До кошика</button>
+            <button class="product-card__btn" :disabled="pending" @click="add(product.id)">До кошика</button>
         </div>
     </div>
 
@@ -52,16 +52,20 @@
                 <span class="product-card__price">{{ fmt(product.price) }}</span>
                 <span v-if="product.oldPrice" class="product-card__old-price">{{ fmt(product.oldPrice) }}</span>
             </div>
-            <div v-if="product.stock !== null" class="product-card__stock">
+            <div v-if="product.stock === 0" class="product-card__stock product-card__stock--order">Під замовлення</div>
+            <div v-else-if="product.stock != null" class="product-card__stock">
                 В наявності: {{ product.stock }} шт
             </div>
-            <button class="product-card__btn">До кошика</button>
+            <button class="product-card__btn" :disabled="pending" @click="add(product.id)">До кошика</button>
         </div>
     </div>
 </template>
 
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import { useCart } from '@/composables/useCart';
+
+const { add, pending } = useCart();
 
 defineProps({
     product: Object,

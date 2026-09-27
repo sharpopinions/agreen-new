@@ -63,13 +63,14 @@
                     </svg>
                 </button>
 
-                <button class="header__cart-btn">
+                <button class="header__cart-btn" :class="{ 'header__cart-btn--filled': cart.count > 0 }" @click="openDrawer">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
                         <line x1="3" y1="6" x2="21" y2="6"/>
                         <path d="M16 10a4 4 0 0 1-8 0"/>
                     </svg>
                     Кошик
+                    <span v-if="cart.count > 0" class="header__cart-count">{{ cart.count }}</span>
                 </button>
             </div>
         </div>
@@ -87,6 +88,7 @@ import { Link, usePage, router } from '@inertiajs/vue3';
 import MegaMenu from '@/Components/Layout/MegaMenu.vue';
 import { useTheme } from '@/composables/useTheme';
 import { useCommandPalette } from '@/composables/useCommandPalette';
+import { useCart } from '@/composables/useCart';
 
 const page = usePage();
 
@@ -119,6 +121,7 @@ onBeforeUnmount(() => { removeNavigateListener(); clearTimeout(closeTimer); });
 
 const { isDark, toggleTheme } = useTheme();
 const { openPalette } = useCommandPalette();
+const { cart, openDrawer } = useCart();
 
 const shortcutHint = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K';
 

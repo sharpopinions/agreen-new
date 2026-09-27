@@ -35,6 +35,14 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
+    /** Є залишок на складі (або статус «В наявності», якщо залишок невідомий). */
+    public function isInStock(): bool
+    {
+        return $this->stock_quantity !== null
+            ? $this->stock_quantity > 0
+            : $this->stockStatus?->code === 'in_stock';
+    }
+
     /** Товар, що замінює знятий з виробництва артикул. */
     public function replacedBy()
     {

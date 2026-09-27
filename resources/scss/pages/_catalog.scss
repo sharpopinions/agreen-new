@@ -566,3 +566,17 @@
     text-decoration: none;
     display: block;
 }
+
+// Адаптив для вузьких екранів
+.cat-layout > * { min-width: 0; }
+
+@media (max-width: 768px) {
+    .cat-sidebar { position: static; }
+    .cat-toolbar { flex-wrap: wrap; gap: var(--space-3); }
+    .catalog-landing,
+    .cat-page { padding-inline: var(--space-4); }
+}
+
+@media (max-width: 640px) {
+    .catalog-landing__grid { grid-template-columns: 1fr; }
+}

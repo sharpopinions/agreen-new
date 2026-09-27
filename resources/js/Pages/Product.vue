@@ -134,8 +134,8 @@
                                 <span class="qty__value">{{ qty }}</span>
                                 <button class="qty__btn" :disabled="maxQty !== null && qty >= maxQty" aria-label="Більше" @click="qty++">+</button>
                             </div>
-                            <button v-if="product.availability === 'on_order'" class="btn btn--primary btn--lg btn--full">Замовити</button>
-                            <button v-else class="btn btn--primary btn--lg btn--full">До кошика</button>
+                            <button v-if="product.availability === 'on_order'" class="btn btn--primary btn--lg btn--full" :disabled="pending" @click="add(product.id, qty)">Замовити</button>
+                            <button v-else class="btn btn--primary btn--lg btn--full" :disabled="pending" @click="add(product.id, qty)">До кошика</button>
                             <button class="product-info__icon-btn" aria-label="Додати до порівняння" title="Додати до порівняння">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
                             </button>
@@ -244,6 +244,9 @@ import ProductCard from '@/Components/ProductCard.vue';
 import ImgPlaceholder from '@/Components/ImgPlaceholder.vue';
 import RecentlyViewed from '@/Components/RecentlyViewed.vue';
 import { formatPrice as fmt, pluralUa } from '@/utils/format';
+import { useCart } from '@/composables/useCart';
+
+const { add, pending } = useCart();
 
 const props = defineProps({
     product: Object,

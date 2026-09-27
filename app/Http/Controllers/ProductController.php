@@ -121,9 +121,7 @@ class ProductController extends Controller
      */
     private function availability(Product $product, bool $hasReplacement): string
     {
-        $inStock = $product->stock_quantity !== null
-            ? $product->stock_quantity > 0
-            : $product->stockStatus?->code === 'in_stock';
+        $inStock = $product->isInStock();
 
         if (! $inStock && $hasReplacement) {
             return 'discontinued';

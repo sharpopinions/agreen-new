@@ -183,5 +183,32 @@
         background: var(--color-inv-bg);
         border-color: var(--color-inv-bg);
         color: var(--color-inv-text);
+        box-shadow: var(--shadow-sm);
     }
+}
+
+.header__cart-count {
+    min-width: 20px;
+    padding: 1px 7px;
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    color: var(--color-inv-bg);
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+}
+
+// Мобільного хедера в дизайні немає: на вузьких екранах ховаємо меню й поле
+// пошуку, щоб сторінка не виходила за край (повноцінне мобільне меню — окремо)
+@media (max-width: 1024px) {
+    .header__nav,
+    .header__search-wrap { display: none; }
+    .header__main { padding-inline: var(--space-4); }
+    .header__topbar { padding-inline: var(--space-4); }
+}
+
+@media (max-width: 640px) {
+    .header__topbar > span:first-child { display: none; }
+    .header__topbar { justify-content: flex-end; }
+    .header__logo { margin-right: auto; }
 }

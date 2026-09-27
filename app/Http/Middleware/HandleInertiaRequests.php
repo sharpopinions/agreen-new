@@ -5,12 +5,24 @@ namespace App\Http\Middleware;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Language;
+use App\Services\Cart;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
 {
     protected $rootView = 'app';
+
+    public function share(Request $request): array
+    {
+        return array_merge(parent::share($request), [
+            // Кошик (сесія) — актуальний на кожному запиті
+            'cart'  => fn () => app(Cart::class)->summary(),
+            'flash' => fn () => [
+                'cartAdded' => $request->session()->get('cartAdded'),
+            ],
+        ]);
+    }
 
     /**
      * Дані для мегаменю хедера. Передаються один раз і запам'ятовуються
