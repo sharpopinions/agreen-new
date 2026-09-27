@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
+use App\Presenters\ProductCard;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -60,7 +61,7 @@ class CatalogController extends Controller
             ? $category->children->where('is_active', true)->pluck('id')->push($category->id)->all()
             : null;
 
-        $base = fn() => $this->productQuery($langId)
+        $base = fn() => Product::query()->forCard()
             ->when($scopeIds, fn($q) => $q->whereHas('categories', fn($c) => $c->whereIn('categories.id', $scopeIds)));
 
         $query = $base();
@@ -72,7 +73,7 @@ class CatalogController extends Controller
             default      => $query->orderByDesc('reviews_count')->orderBy('sort_order'),
         };
 
-        $products = $query->paginate(12)->withQueryString()->through(fn($p) => $this->mapProduct($p));
+        $products = $query->paginate(12)->withQueryString()->through(fn($p) => ProductCard::make($p));
 
         // Фільтр «Категорія» / «Підкатегорія»: для категорії — її діти, інакше — кореневі
         $filterCategories = $category
@@ -118,16 +119,6 @@ class CatalogController extends Controller
             ->when(count($f['availability']) === 1, fn($q) => $f['availability'][0] === 'in_stock'
                 ? $q->where('stock_quantity', '>', 0)
                 : $q->where(fn($s) => $s->whereNull('stock_quantity')->orWhere('stock_quantity', 0)));
-    }
-
-    private function productQuery(int $langId): Builder
-    {
-        return Product::with([
-            'translations'        => fn($q) => $q->where('language_id', $langId),
-            'brand.translations'  => fn($q) => $q->where('language_id', $langId),
-            'badges.translations' => fn($q) => $q->where('language_id', $langId),
-        ])
-            ->where('is_active', true);
     }
 
     private function getCategories(int $langId): array
@@ -179,26 +170,4 @@ class CatalogController extends Controller
             ->toArray();
     }
 
-    private function mapProduct(Product $p): array
-    {
-        $badge = $p->badges->first();
-
-        return [
-            'id'       => $p->id,
-            'name'     => $p->translations->first()?->name ?? '',
-            'slug'     => $p->translations->first()?->slug ?? '',
-            'sku'      => $p->sku,
-            'price'    => (float) $p->price,
-            'oldPrice' => $p->old_price ? (float) $p->old_price : null,
-            'brand'    => $p->brand?->translations->first()?->name ?? null,
-            'badge'    => $badge ? [
-                'name'    => $badge->translations->first()?->name ?? '',
-                'color'   => $badge->color,
-                'bgColor' => $badge->bg_color,
-            ] : null,
-            'rating'   => (float) $p->rating,
-            'reviews'  => $p->reviews_count,
-            'stock'    => $p->stock_quantity,
-        ];
-    }
 }

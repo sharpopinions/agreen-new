@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
+use App\Presenters\ProductCard;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -47,29 +48,9 @@ class HomeController extends Controller
                 'name' => $b->translations->first()?->name ?? '',
             ]);
 
-        $products = Product::with([
-            'translations'        => fn($q) => $q->where('language_id', $langId),
-            'badges.translations' => fn($q) => $q->where('language_id', $langId),
-        ])
-            ->where('is_active', true)
-            ->orderBy('sort_order')
-            ->get()
-            ->map(fn($p) => [
-                'id'       => $p->id,
-                'name'     => $p->translations->first()?->name ?? '',
-                'slug'     => $p->translations->first()?->slug ?? '',
-                'sku'      => $p->sku,
-                'price'    => (float) $p->price,
-                'oldPrice' => $p->old_price ? (float) $p->old_price : null,
-                'badge'    => $p->badges->first() ? [
-                    'name'    => $p->badges->first()->translations->first()?->name ?? '',
-                    'color'   => $p->badges->first()->color,
-                    'bgColor' => $p->badges->first()->bg_color,
-                ] : null,
-                'rating'   => (float) $p->rating,
-                'reviews'  => $p->reviews_count,
-                'stock'    => $p->stock_quantity,
-            ]);
+        $products = ProductCard::collection(
+            Product::query()->forCard()->orderBy('sort_order')->get()
+        );
 
         return Inertia::render('Home', compact('categories', 'brands', 'products'));
     }

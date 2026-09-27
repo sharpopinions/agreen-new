@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
+use App\Presenters\ProductCard;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -36,33 +37,11 @@ class ProductController extends Controller
         $translation = $product->translations->first();
         $category    = $product->categories->first();
 
-        $related = Product::with([
-            'translations'        => $tr,
-            'brand.translations'  => $tr,
-            'badges.translations' => $tr,
-        ])
-            ->where('is_active', true)
+        $related = ProductCard::collection(Product::query()->forCard()
             ->where('id', '!=', $product->id)
             ->when($category, fn($q) => $q->whereHas('categories', fn($q2) => $q2->where('categories.id', $category->id)))
             ->limit(8)
-            ->get()
-            ->map(fn($p) => [
-                'id'       => $p->id,
-                'name'     => $p->translations->first()?->name ?? '',
-                'slug'     => $p->translations->first()?->slug ?? '',
-                'sku'      => $p->sku,
-                'price'    => (float) $p->price,
-                'oldPrice' => $p->old_price ? (float) $p->old_price : null,
-                'brand'    => $p->brand?->translations->first()?->name ?? null,
-                'badge'    => $p->badges->first() ? [
-                    'name'    => $p->badges->first()->translations->first()?->name ?? '',
-                    'color'   => $p->badges->first()->color,
-                    'bgColor' => $p->badges->first()->bg_color,
-                ] : null,
-                'rating'   => (float) $p->rating,
-                'reviews'  => $p->reviews_count,
-                'stock'    => $p->stock_quantity,
-            ]);
+            ->get());
 
         $replacement = $product->replacedBy?->is_active ? $product->replacedBy : null;
 

@@ -82,4 +82,10 @@ class Product extends Model
     {
         return $this->belongsToMany(AttributeValue::class, 'product_attribute_values');
     }
+
+    /** Активні товари з усім, що потрібно картці (App\Presenters\ProductCard). */
+    public function scopeForCard($query)
+    {
+        return $query->with(\App\Presenters\ProductCard::relations())->where('is_active', true);
+    }
 }

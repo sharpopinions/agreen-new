@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Language;
 use App\Models\Product;
+use App\Presenters\ProductCard;
 use App\Services\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -74,55 +74,20 @@ class CartController extends Controller
     {
         $categoryIds = $product->categories()->pluck('categories.id');
 
-        return $this->productQuery()
+        return Product::query()->forCard()
             ->where('id', '!=', $product->id)
             ->when($categoryIds->isNotEmpty(), fn($q) => $q->whereHas('categories', fn($c) => $c->whereIn('categories.id', $categoryIds)))
             ->limit($limit)
             ->get()
-            ->map(fn($p) => $this->mapProduct($p))
-            ->all();
+            ->pipe(fn($products) => ProductCard::collection($products));
     }
 
     private function popular(int $limit): array
     {
-        return $this->productQuery()
+        return Product::query()->forCard()
             ->orderByDesc('reviews_count')
             ->limit($limit)
             ->get()
-            ->map(fn($p) => $this->mapProduct($p))
-            ->all();
-    }
-
-    private function productQuery()
-    {
-        $langId = Language::currentId();
-
-        return Product::with([
-            'translations'        => fn($q) => $q->where('language_id', $langId),
-            'badges.translations' => fn($q) => $q->where('language_id', $langId),
-        ])
-            ->where('is_active', true);
-    }
-
-    private function mapProduct(Product $p): array
-    {
-        $badge = $p->badges->first();
-
-        return [
-            'id'       => $p->id,
-            'name'     => $p->translations->first()?->name ?? '',
-            'slug'     => $p->translations->first()?->slug ?? '',
-            'sku'      => $p->sku,
-            'price'    => (float) $p->price,
-            'oldPrice' => $p->old_price ? (float) $p->old_price : null,
-            'badge'    => $badge ? [
-                'name'    => $badge->translations->first()?->name ?? '',
-                'color'   => $badge->color,
-                'bgColor' => $badge->bg_color,
-            ] : null,
-            'rating'   => (float) $p->rating,
-            'reviews'  => $p->reviews_count,
-            'stock'    => $p->stock_quantity,
-        ];
+            ->pipe(fn($products) => ProductCard::collection($products));
     }
 }
