@@ -13,6 +13,8 @@ class Product extends Model
         'sku',
         'price',
         'old_price',
+        'preorder_days',
+        'replaced_by_id',
         'sort_order',
         'is_active',
     ];
@@ -31,6 +33,12 @@ class Product extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    /** Товар, що замінює знятий з виробництва артикул. */
+    public function replacedBy()
+    {
+        return $this->belongsTo(Product::class, 'replaced_by_id');
     }
 
     public function stockStatus()

@@ -2,6 +2,9 @@
 
 return [
     'fields' => [
+        'preorder_days' => 'Pre-order lead time, days',
+        'replaced_by'   => 'Replacement product',
+        'warning_text'  => 'Product page warning',
         'name'        => 'Name',
         'slug'        => 'Slug (URL)',
         'description' => 'Description',
@@ -16,6 +19,11 @@ return [
         'symbol'      => 'Symbol',
         'is_default'  => 'Default',
         'translations' => 'Translations',
+    ],
+    'hints' => [
+        'preorder_days' => 'Shown for on-order products as the estimated delivery time.',
+        'replaced_by'   => 'If the product is discontinued, choose its modern replacement. The site shows a notice and an “Available replacement” button.',
+        'warning_text'  => 'E.g. “This dispenser only works with Activator X”. Shown as a yellow notice above the add-to-cart button.',
     ],
     'sections' => [
         'main'         => 'General',

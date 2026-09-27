@@ -14,7 +14,7 @@ class EditProduct extends EditRecord
 
     protected static string $resource = ProductResource::class;
 
-    protected array $translationFields = ['name', 'slug', 'description'];
+    protected array $translationFields = ['name', 'slug', 'description', 'warning_text'];
 
     protected function getHeaderActions(): array
     {

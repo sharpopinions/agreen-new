@@ -55,6 +55,22 @@ class ProductResource extends Resource
                     ->numeric()
                     ->prefix('₴')
                     ->nullable(),
+                Forms\Components\TextInput::make('preorder_days')
+                    ->label(__('admin.fields.preorder_days'))
+                    ->helperText(__('admin.hints.preorder_days'))
+                    ->numeric()
+                    ->minValue(1)
+                    ->nullable(),
+                Forms\Components\Select::make('replaced_by_id')
+                    ->label(__('admin.fields.replaced_by'))
+                    ->helperText(__('admin.hints.replaced_by'))
+                    ->options(fn(?Product $record) => Product::with(['translations' => fn($q) => $q->where('language_id', \App\Models\Language::currentId())])
+                        ->where('store_id', 1)
+                        ->when($record, fn($q) => $q->whereKeyNot($record->id))
+                        ->orderBy('sku')->get()
+                        ->mapWithKeys(fn($p) => [$p->id => $p->sku . ' — ' . ($p->translations->first()?->name ?? '')]))
+                    ->searchable()
+                    ->nullable(),
                 Forms\Components\TextInput::make('sort_order')
                     ->label(__('admin.fields.sort_order'))
                     ->numeric()
@@ -98,6 +114,10 @@ class ProductResource extends Resource
                             Forms\Components\Textarea::make($lang->code . '_description')
                                 ->label(__('admin.fields.description') . ' (' . $lang->code . ')')
                                 ->rows(4),
+                            Forms\Components\Textarea::make($lang->code . '_warning_text')
+                                ->label(__('admin.fields.warning_text') . ' (' . $lang->code . ')')
+                                ->helperText(__('admin.hints.warning_text'))
+                                ->rows(2),
                         ]))->toArray()
                 )
                 ->columnSpanFull(),
@@ -125,7 +145,7 @@ class ProductResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    TranslateAction::makeBulk(['name', 'slug', 'description']),
+                    TranslateAction::makeBulk(['name', 'slug', 'description', 'warning_text']),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

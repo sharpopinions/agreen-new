@@ -2,6 +2,9 @@
 
 return [
     'fields' => [
+        'preorder_days' => 'Czas realizacji zamówienia, dni',
+        'replaced_by'   => 'Produkt zastępczy',
+        'warning_text'  => 'Ostrzeżenie na karcie produktu',
         'name'        => 'Nazwa',
         'slug'        => 'Slug (URL)',
         'description' => 'Opis',
@@ -16,6 +19,11 @@ return [
         'symbol'      => 'Symbol',
         'is_default'  => 'Domyślny',
         'translations' => 'Tłumaczenia',
+    ],
+    'hints' => [
+        'preorder_days' => 'Wyświetlany dla produktów na zamówienie jako szacowany czas dostawy.',
+        'replaced_by'   => 'Jeśli produkt został wycofany, wybierz jego nowoczesny zamiennik. Na stronie pojawi się komunikat i przycisk „Dostępny zamiennik”.',
+        'warning_text'  => 'Np. „Ten dozownik działa tylko z Aktywatorem X”. Wyświetlany jako żółty komunikat nad przyciskiem koszyka.',
     ],
     'sections' => [
         'main'         => 'Ogólne',
