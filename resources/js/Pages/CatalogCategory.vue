@@ -37,6 +37,7 @@
                     :category-title="category ? 'Підкатегорія' : 'Категорія'"
                     :brands="brands"
                     :price-range="priceRange"
+                    :attribute-filters="attributeFilters"
                 />
                 <CatalogResults :base-url="baseUrl" :products="products" :filters="filters" />
             </div>
@@ -61,6 +62,7 @@ const props = defineProps({
     products:   Object,
     filters:    Object,
     priceRange: Object,
+    attributeFilters: { type: Array, default: () => [] },
 });
 
 const title   = computed(() => props.category?.name ?? 'Усі товари');

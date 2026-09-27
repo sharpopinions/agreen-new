@@ -8,9 +8,16 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateProduct extends CreateRecord
 {
-    use HandlesTranslations;
+    use HandlesTranslations { afterCreate as saveTranslationsAfterCreate; }
+    use SyncsProductAttributes;
 
     protected static string $resource = ProductResource::class;
 
     protected array $translationFields = ['name', 'slug', 'description', 'warning_text', 'meta_title', 'meta_description'];
+
+    protected function afterCreate(): void
+    {
+        $this->saveTranslationsAfterCreate();
+        $this->syncAttributeRows();
+    }
 }

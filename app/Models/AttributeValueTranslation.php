@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AttributeValueTranslation extends Model
 {
-    protected $fillable = ['attribute_value_id', 'language_id', 'value'];
+    protected $fillable = ['attribute_value_id', 'language_id', 'name', 'value'];
 
     public function attributeValue()
     {

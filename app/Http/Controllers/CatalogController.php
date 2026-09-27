@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Language;
 use App\Models\Product;
 use App\Presenters\ProductCard;
+use App\Services\Catalog\AttributeFilters;
 use App\Support\Html;
 use App\Support\Seo;
 use Illuminate\Support\Facades\Storage;
@@ -67,8 +68,13 @@ class CatalogController extends Controller
         $base = fn() => Product::query()->forCard()
             ->when($scopeIds, fn($q) => $q->whereHas('categories', fn($c) => $c->whereIn('categories.id', $scopeIds)));
 
+        // Характеристики (EAV): набір фільтрів задає категорія в адмінці
+        $attributes = new AttributeFilters($category, $request);
+        $filters['attr'] = (object) $attributes->selected();
+
         $query = $base();
         $this->applyFilters($query, $filters);
+        $attributes->apply($query);
 
         match ($filters['sort']) {
             'price_asc'  => $query->orderBy('price'),
@@ -93,7 +99,8 @@ class CatalogController extends Controller
         $categoryTr = $category?->translations->first();
         // Результати пошуку й комбінації фільтрів не індексуємо — лише «чисті» сторінки категорій
         $filtered = $filters['q'] !== '' || $filters['brand'] || $filters['category'] || $filters['availability']
-            || $filters['sale'] || $filters['min_price'] !== null || $filters['max_price'] !== null || $request->filled('page');
+            || $filters['sale'] || $filters['min_price'] !== null || $filters['max_price'] !== null || $request->filled('page')
+            || $attributes->isActive();
 
         return Inertia::render($page, [
             'seo' => $category
@@ -119,6 +126,7 @@ class CatalogController extends Controller
             ] : null,
             'categories' => $filterCategories,
             'brands'     => $this->getBrands($langId, $base()),
+            'attributeFilters' => $attributes->facets(fn() => tap($base(), fn($q) => $this->applyFilters($q, $filters))),
             'products'   => $products,
             'filters'    => $filters,
             'priceRange' => ['min' => (float) ($prices->min ?? 0), 'max' => (float) ($prices->max ?? 0)],

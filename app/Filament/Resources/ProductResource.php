@@ -6,6 +6,8 @@ use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Support\SlugField;
 use App\Filament\Actions\TranslateAction;
 use App\Filament\Resources\ProductResource\Pages;
+use App\Models\AttributeDefinition;
+use App\Models\AttributeValue;
 use App\Models\Badge;
 use App\Models\Brand;
 use App\Models\Category;
@@ -120,6 +122,42 @@ class ProductResource extends Resource
                     ])->columns(2),
                 ]),
 
+                Forms\Components\Tabs\Tab::make(__('admin.resources.attributes'))->icon('heroicon-o-adjustments-horizontal')->schema([
+                    Forms\Components\Repeater::make('attribute_rows')
+                        ->hiddenLabel()
+                        ->helperText(__('admin.attributes.product_hint'))
+                        ->schema([
+                            Forms\Components\Select::make('attribute_definition_id')
+                                ->label(__('admin.resources.attribute'))
+                                ->options(fn() => AttributeDefinition::with('translations')->where('is_active', true)->orderBy('sort_order')->get()
+                                    ->mapWithKeys(fn($d) => [$d->id => $d->name]))
+                                ->required()
+                                ->searchable()
+                                ->live()
+                                ->distinct()
+                                ->afterStateUpdated(fn(Forms\Set $set) => $set('value_ids', [])),
+                            Forms\Components\Select::make('value_ids')
+                                ->label(__('admin.attributes.value_s'))
+                                ->multiple()
+                                ->required()
+                                ->searchable()
+                                ->options(fn(Forms\Get $get) => $get('attribute_definition_id')
+                                    ? AttributeValue::with('translations')->where('attribute_definition_id', $get('attribute_definition_id'))
+                                        ->orderBy('sort_order')->get()->mapWithKeys(fn($v) => [$v->id => $v->name])->all()
+                                    : [])
+                                ->createOptionForm([
+                                    Forms\Components\TextInput::make('name')->label(__('admin.fields.name'))->required()->maxLength(255),
+                                    Forms\Components\TextInput::make('raw')->label(__('admin.attributes.number') . ' / HEX')->maxLength(50),
+                                ])
+                                ->createOptionUsing(fn(array $data, Forms\Get $get) => self::createAttributeValue((int) $get('attribute_definition_id'), $data))
+                                ->disabled(fn(Forms\Get $get) => ! $get('attribute_definition_id')),
+                        ])
+                        ->columns(2)
+                        ->defaultItems(0)
+                        ->reorderable(false)
+                        ->addActionLabel(__('admin.attributes.add_attribute')),
+                ]),
+
                 Forms\Components\Tabs\Tab::make(__('admin.sections.media'))->icon('heroicon-o-photo')->schema([
                     Forms\Components\Repeater::make('images')
                         ->label(__('admin.fields.photos'))
@@ -198,6 +236,18 @@ class ProductResource extends Resource
                 ]),
             ]),
         ]);
+    }
+
+    /** Нове значення характеристики прямо з форми товару (однакова назва для всіх мов, потім можна перекласти). */
+    public static function createAttributeValue(int $definitionId, array $data): int
+    {
+        $definition = AttributeDefinition::findOrFail($definitionId);
+        $value = $definition->values()->create(['sort_order' => (int) $definition->values()->max('sort_order') + 1]);
+        foreach (Language::query()->where('is_active', true)->pluck('id') as $langId) {
+            $value->translations()->create(['language_id' => $langId, 'name' => $data['name'], 'value' => $data['raw'] ?? null]);
+        }
+
+        return $value->id;
     }
 
     /** Категорії з підкатегоріями у вигляді «Батьківська › Дочірня». */

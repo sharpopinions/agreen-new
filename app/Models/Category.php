@@ -51,6 +51,8 @@ class Category extends Model
 
     public function attributeDefinitions()
     {
-        return $this->belongsToMany(AttributeDefinition::class, 'category_attribute_definitions');
+        return $this->belongsToMany(AttributeDefinition::class, 'category_attribute_definitions')
+            ->withPivot(['display_type', 'sort_order'])
+            ->orderByPivot('sort_order');
     }
 }

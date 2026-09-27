@@ -91,10 +91,16 @@ class ProductController extends Controller
                     'color'   => $b->color,
                     'bgColor' => $b->bg_color,
                 ])->values(),
-                'attributes'   => $product->attributeValues->map(fn($av) => [
-                    'name'  => $av->attributeDefinition->translations->first()?->name ?? '',
-                    'value' => $av->translations->first()?->value ?? '',
-                ])->filter(fn($a) => $a['name'] && $a['value'])->values(),
+                // Характеристики: кілька значень однієї характеристики — через кому
+                'attributes'   => $product->attributeValues
+                    ->filter(fn($av) => $av->attributeDefinition?->is_active)
+                    ->groupBy('attribute_definition_id')
+                    ->sortBy(fn($values) => $values->first()->attributeDefinition->sort_order)
+                    ->map(fn($values) => [
+                        'name'  => $values->first()->attributeDefinition->name,
+                        'value' => $values->sortBy('sort_order')->map->name->implode(', '),
+                    ])
+                    ->filter(fn($a) => $a['name'] && $a['value'])->values(),
                 'breadcrumbs'  => $category ? $this->categoryTrail($category) : [],
             ],
             'related' => $related,

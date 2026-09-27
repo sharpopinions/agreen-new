@@ -6,6 +6,7 @@ use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Support\SlugField;
 use App\Filament\Actions\TranslateAction;
 use App\Filament\Resources\CategoryResource\Pages;
+use App\Models\AttributeDefinition;
 use App\Models\Category;
 use App\Models\Language;
 use Filament\Forms;
@@ -58,6 +59,35 @@ class CategoryResource extends Resource
                     ->default(true)
                     ->inline(false),
             ])->columns(2),
+
+            Forms\Components\Section::make(__('admin.attributes.filters'))
+                ->description(__('admin.attributes.filters_hint'))
+                ->schema([
+                    Forms\Components\Repeater::make('filter_rows')
+                        ->hiddenLabel()
+                        ->schema([
+                            Forms\Components\Select::make('attribute_definition_id')
+                                ->label(__('admin.resources.attribute'))
+                                ->options(fn() => AttributeDefinition::with('translations')->where('is_filterable', true)->orderBy('sort_order')->get()
+                                    ->mapWithKeys(fn($d) => [$d->id => $d->name]))
+                                ->required()
+                                ->searchable()
+                                ->distinct()
+                                ->live()
+                                ->afterStateUpdated(fn($state, Forms\Set $set) => $set('display_type',
+                                    AttributeDefinition::DEFAULT_DISPLAY[AttributeDefinition::find($state)?->type] ?? 'checkbox')),
+                            Forms\Components\Select::make('display_type')
+                                ->label(__('admin.attributes.display'))
+                                ->options(collect(AttributeDefinition::DISPLAY_TYPES)->mapWithKeys(fn($t) => [$t => __('admin.attributes.displays.' . $t)]))
+                                ->default('checkbox')
+                                ->required(),
+                        ])
+                        ->columns(2)
+                        ->defaultItems(0)
+                        ->reorderable()
+                        ->addActionLabel(__('admin.attributes.add_filter')),
+                ])
+                ->collapsible(),
 
             Forms\Components\Tabs::make(__('admin.sections.translations'))
                 ->tabs(

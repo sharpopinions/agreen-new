@@ -10,11 +10,26 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditCategory extends EditRecord
 {
-    use HandlesTranslations;
+    use HandlesTranslations {
+        mutateFormDataBeforeFill as fillTranslations;
+        afterSave as saveTranslationsAfterSave;
+    }
+    use SyncsCategoryFilters;
 
     protected static string $resource = CategoryResource::class;
 
     protected array $translationFields = ['name', 'slug', 'short_description', 'description', 'meta_title', 'meta_description'];
+
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+        return $this->fillFilterRows($this->fillTranslations($data));
+    }
+
+    protected function afterSave(): void
+    {
+        $this->saveTranslationsAfterSave();
+        $this->syncFilterRows();
+    }
 
     protected function getHeaderActions(): array
     {
