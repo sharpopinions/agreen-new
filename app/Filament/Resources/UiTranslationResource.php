@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Resources\UiTranslationResource\Pages;
 use App\Models\Language;
 use App\Models\UiTranslation;
@@ -14,6 +15,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 class UiTranslationResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin', 'content'];
+
     protected static ?string $model = UiTranslation::class;
     protected static ?string $navigationIcon = 'heroicon-o-language';
     protected static ?string $navigationGroup = 'Налаштування';

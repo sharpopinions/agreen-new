@@ -76,4 +76,20 @@ return [
         'order' => 'Zamówienie',
         'types' => ['regular' => 'Zwykłe', 'preorder' => 'Przedsprzedaż'],
     ],
+    'users' => [
+        'single'        => 'Użytkownik',
+        'plural'        => 'Użytkownicy',
+        'role'          => 'Rola',
+        'password'      => 'Hasło',
+        'password_hint' => 'Pozostaw puste, aby nie zmieniać.',
+        'role_hint'     => 'Administrator, menedżer i menedżer treści mają dostęp do panelu.',
+        'roles'         => [
+            'admin' => 'Administrator',
+            'manager' => 'Menedżer',
+            'content' => 'Menedżer treści',
+            'client' => 'Klient',
+            'business_client' => 'Klient biznesowy',
+            'business_partner' => 'Partner biznesowy',
+        ],
+    ],
 ];

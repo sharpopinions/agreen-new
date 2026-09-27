@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Actions\TranslateAction;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Models\Badge;
@@ -17,6 +18,10 @@ use Filament\Tables\Table;
 
 class ProductResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin', 'manager', 'content'];
+
     protected static ?string $model = Product::class;
     protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
     protected static ?int $navigationSort = 4;

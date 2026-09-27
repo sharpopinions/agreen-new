@@ -76,4 +76,20 @@ return [
         'order' => 'Order',
         'types' => ['regular' => 'Regular', 'preorder' => 'Pre-order'],
     ],
+    'users' => [
+        'single'        => 'User',
+        'plural'        => 'Users',
+        'role'          => 'Role',
+        'password'      => 'Password',
+        'password_hint' => 'Leave empty to keep the current password.',
+        'role_hint'     => 'Admins, managers and content managers can access the admin panel.',
+        'roles'         => [
+            'admin' => 'Administrator',
+            'manager' => 'Manager',
+            'content' => 'Content manager',
+            'client' => 'Client',
+            'business_client' => 'Business client',
+            'business_partner' => 'Business partner',
+        ],
+    ],
 ];

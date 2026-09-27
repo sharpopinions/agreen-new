@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Resources\LanguageResource\Pages;
 use App\Models\Language;
 use Filament\Forms;
@@ -12,6 +13,10 @@ use Filament\Tables\Table;
 
 class LanguageResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin'];
+
     protected static ?string $model = Language::class;
     protected static ?string $navigationIcon = 'heroicon-o-language';
     protected static ?int $navigationSort = 1;

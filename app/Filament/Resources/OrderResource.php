@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Resources\OrderResource\Pages;
 use App\Models\Order;
 use Filament\Forms;
@@ -14,6 +15,10 @@ use Filament\Tables\Table;
 
 class OrderResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin', 'manager'];
+
     protected static ?string $model = Order::class;
     protected static ?string $navigationIcon = 'heroicon-o-clipboard-document-list';
     protected static ?int $navigationSort = 1;

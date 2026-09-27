@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Resources\CurrencyResource\Pages;
 use App\Models\Currency;
 use Filament\Forms;
@@ -12,6 +13,10 @@ use Filament\Tables\Table;
 
 class CurrencyResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin'];
+
     protected static ?string $model = Currency::class;
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
     protected static ?int $navigationSort = 2;

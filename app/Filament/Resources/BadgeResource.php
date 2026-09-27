@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Actions\TranslateAction;
 use App\Filament\Resources\BadgeResource\Pages;
 use App\Models\Badge;
@@ -13,6 +14,10 @@ use Filament\Tables\Table;
 
 class BadgeResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin', 'manager', 'content'];
+
     protected static ?string $model = Badge::class;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?int $navigationSort = 3;

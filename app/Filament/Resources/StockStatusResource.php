@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Actions\TranslateAction;
 use App\Filament\Resources\StockStatusResource\Pages;
 use App\Models\StockStatus;
@@ -13,6 +14,10 @@ use Filament\Tables\Table;
 
 class StockStatusResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin', 'manager', 'content'];
+
     protected static ?string $model = StockStatus::class;
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
     protected static ?int $navigationSort = 5;

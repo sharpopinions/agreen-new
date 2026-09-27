@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Actions\TranslateAction;
 use App\Filament\Resources\BrandResource\Pages;
 use App\Models\Brand;
@@ -13,6 +14,10 @@ use Filament\Tables\Table;
 
 class BrandResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin', 'manager', 'content'];
+
     protected static ?string $model = Brand::class;
     protected static ?string $navigationIcon = 'heroicon-o-building-storefront';
     protected static ?int $navigationSort = 2;

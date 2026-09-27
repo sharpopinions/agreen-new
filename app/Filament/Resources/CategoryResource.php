@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Concerns\RestrictedToRoles;
 use App\Filament\Actions\TranslateAction;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Models\Category;
@@ -13,6 +14,10 @@ use Filament\Tables\Table;
 
 class CategoryResource extends Resource
 {
+    use RestrictedToRoles;
+
+    protected static array $roles = ['admin', 'manager', 'content'];
+
     protected static ?string $model = Category::class;
     protected static ?string $navigationIcon = 'heroicon-o-tag';
     protected static ?int $navigationSort = 1;
