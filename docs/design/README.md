@@ -122,7 +122,7 @@ Query-параметри: `q` (назва або артикул), `brand[]`, `ca
 
 - [x] Головна (`MainPage`): усі 8 блоків. Контент блоків 5–8 тимчасово лежить у `resources/js/data/home.js`.
 - [x] Мегаменю хедера (`mega-menus.jsx`): категорії й бренди з бази через спільні дані Inertia (`HandleInertiaRequests::shareOnce`)
-- [ ] Пошук Cmd+K (`command-palette.jsx`)
+- [x] Пошук Cmd+K / Ctrl+K (`command-palette.jsx`): сторінки, категорії, бренди, дія «Перемкнути тему», товари через `GET /search?q=`
 - [ ] Сторінка товару: 5 варіантів
 - [ ] Кошик, оформлення замовлення, сторінки подяки
 - [ ] Інші сторінки (`extra-pages*.jsx`)

@@ -109,8 +109,8 @@ class CatalogController extends Controller
     {
         $query
             ->when($f['q'] !== '', fn($q) => $q->where(fn($w) => $w
-                ->where('sku', 'like', '%' . $f['q'] . '%')
-                ->orWhereHas('translations', fn($t) => $t->where('name', 'like', '%' . $f['q'] . '%'))))
+                ->whereLike('sku', '%' . $f['q'] . '%')
+                ->orWhereHas('translations', fn($t) => $t->whereLike('name', '%' . $f['q'] . '%'))))
             ->when($f['brand'], fn($q) => $q->whereIn('brand_id', $f['brand']))
             ->when($f['category'], fn($q) => $q->whereHas('categories', fn($c) => $c->whereIn('categories.id', $f['category'])))
             ->when($f['min_price'] !== null, fn($q) => $q->where('price', '>=', $f['min_price']))

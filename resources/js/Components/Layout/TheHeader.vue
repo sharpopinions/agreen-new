@@ -42,13 +42,13 @@
                 </Link>
             </nav>
 
-            <div class="header__search-wrap">
+            <button class="header__search-wrap" type="button" aria-label="Пошук (Ctrl+K)" @click="openPalette">
                 <svg class="header__search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                 </svg>
-                <input class="header__search" type="text" placeholder="Пошук..." />
-                <span class="header__search-hint">⌘К</span>
-            </div>
+                <span class="header__search">Пошук...</span>
+                <span class="header__search-hint">{{ shortcutHint }}</span>
+            </button>
 
             <div class="header__actions">
                 <button class="header__icon-btn" aria-label="Вішліст">
@@ -85,6 +85,8 @@
 import { ref, onBeforeUnmount } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
 import MegaMenu from '@/Components/Layout/MegaMenu.vue';
+import { useTheme } from '@/composables/useTheme';
+import { useCommandPalette } from '@/composables/useCommandPalette';
 
 const page = usePage();
 
@@ -115,12 +117,10 @@ function onFocusOut(e) {
 const removeNavigateListener = router.on('navigate', closeMega);
 onBeforeUnmount(() => { removeNavigateListener(); clearTimeout(closeTimer); });
 
-const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark');
+const { isDark, toggleTheme } = useTheme();
+const { openPalette } = useCommandPalette();
 
-function toggleTheme() {
-    isDark.value = !isDark.value;
-    document.documentElement.setAttribute('data-theme', isDark.value ? 'dark' : 'light');
-}
+const shortcutHint = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘K' : 'Ctrl K';
 
 const navLinks = [
     { label: 'Каталог',   key: 'catalog',  href: '/catalog',  mega: 'catalog'  },
