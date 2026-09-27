@@ -6,10 +6,18 @@
                     <div class="footer__logo-mark">AG</div>
                     <span class="footer__logo-name">A-green</span>
                 </div>
-                <p class="footer__description">
-                    Широкий асортимент продукції для промислових підприємств та кузовного ремонту.
-                </p>
-                <span class="footer__email">info@a-green.com.ua</span>
+                <p class="footer__description">{{ site.footerText }}</p>
+                <a v-if="site.emails[0]" :href="`mailto:${site.emails[0]}`" class="footer__email">{{ site.emails[0] }}</a>
+                <div v-if="site.socials.length" class="footer__socials">
+                    <a
+                        v-for="s in site.socials"
+                        :key="s.key"
+                        :href="s.url"
+                        class="footer__social"
+                        target="_blank"
+                        rel="noopener"
+                    >{{ socialLabels[s.key] ?? s.key }}</a>
+                </div>
             </div>
 
             <div class="footer__cols">
@@ -28,13 +36,22 @@
         </div>
 
         <div class="footer__bottom">
-            <span>© 2026 A-green. Всі права захищені.</span>
-            <span>02660, м. Київ, вул. Крайня 1</span>
+            <span>© {{ year }} A-green. Всі права захищені.</span>
+            <span>{{ site.address }}</span>
         </div>
     </footer>
 </template>
 
 <script setup>
+    import { useSite } from '@/composables/useSite';
+
+    const site = useSite();
+    const year = new Date().getFullYear();
+    const socialLabels = {
+        instagram: 'Instagram', facebook: 'Facebook', telegram: 'Telegram', viber: 'Viber',
+        youtube: 'YouTube', tiktok: 'TikTok', linkedin: 'LinkedIn',
+    };
+
     const cols = [
         {
             title: 'Каталог',

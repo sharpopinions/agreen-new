@@ -1,7 +1,9 @@
 <template>
     <header class="header" @keydown.esc="closeMega" @focusout="onFocusOut">
         <div class="header__topbar">
-            <span>Пн–Пт 9:00–18:00 · +380 44 123-45-67</span>
+            <span>
+                {{ site.scheduleShort }}<template v-if="site.phone"> · <a :href="site.phone.href" class="header__topbar-phone">{{ site.phone.label }}</a></template>
+            </span>
             <div class="header__topbar-actions">
                 <a href="#">Особистий кабінет</a>
                 <span>·</span>
@@ -89,8 +91,10 @@ import MegaMenu from '@/Components/Layout/MegaMenu.vue';
 import { useTheme } from '@/composables/useTheme';
 import { useCommandPalette } from '@/composables/useCommandPalette';
 import { useCart } from '@/composables/useCart';
+import { useSite } from '@/composables/useSite';
 
 const page = usePage();
+const site = useSite();
 
 // Мегаменю: відкривається при наведенні/фокусі, закривається з невеликою
 // затримкою, щоб встигнути перевести курсор з пункту меню на панель

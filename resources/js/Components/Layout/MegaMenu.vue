@@ -89,17 +89,17 @@
             </div>
             <div class="mega__promo mega__promo--contacts">
                 <div class="mega__label">Контакти</div>
-                <div class="mega__contact">
+                <div v-if="site.phone" class="mega__contact">
                     <span class="mega__contact-label">Телефон</span>
-                    <a href="tel:+380670757170" class="mega__contact-value">+380 67 075-71-70</a>
+                    <a :href="site.phone.href" class="mega__contact-value">{{ site.phone.label }}</a>
                 </div>
-                <div class="mega__contact">
+                <div v-if="site.emails[0]" class="mega__contact">
                     <span class="mega__contact-label">Email</span>
-                    <a href="mailto:info@a-green.ua" class="mega__contact-value">info@a-green.ua</a>
+                    <a :href="`mailto:${site.emails[0]}`" class="mega__contact-value">{{ site.emails[0] }}</a>
                 </div>
-                <div class="mega__contact">
+                <div v-if="site.scheduleShort" class="mega__contact">
                     <span class="mega__contact-label">Графік</span>
-                    <span class="mega__contact-value">Пн–Пт · 9:00–18:00</span>
+                    <span class="mega__contact-value">{{ site.scheduleShort }}</span>
                 </div>
             </div>
         </template>
@@ -110,6 +110,7 @@
 import { h } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { pluralUa } from '@/utils/format';
+import { useSite } from '@/composables/useSite';
 
 defineProps({
     kind: { type: String, required: true },
@@ -137,4 +138,6 @@ const aboutLinks = [
 
 const ArrowIcon = () => h('svg', { width: 12, height: 12, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': 2 },
     [h('path', { d: 'M5 12h14M13 5l7 7-7 7' })]);
+
+const site = useSite();
 </script>

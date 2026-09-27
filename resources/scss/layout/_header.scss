@@ -16,6 +16,12 @@
     color: var(--color-text-3);
 }
 
+.header__topbar-phone {
+    color: inherit;
+
+    &:hover { color: var(--color-text); }
+}
+
 .header__topbar-actions {
     display: flex;
     align-items: center;

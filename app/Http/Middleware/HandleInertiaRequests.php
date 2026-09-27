@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Language;
 use App\Services\Cart;
+use App\Support\SiteSettings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -31,7 +32,9 @@ class HandleInertiaRequests extends Middleware
     public function shareOnce(Request $request): array
     {
         return [
-            'nav' => fn () => $this->navigation(),
+            'nav'  => fn () => $this->navigation(),
+            // Контакти, графік, соцмережі (адмінка → Налаштування → Сайт і контакти)
+            'site' => fn () => SiteSettings::forFrontend(),
         ];
     }
 
