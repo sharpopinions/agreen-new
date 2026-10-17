@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\VacancyController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -42,6 +43,7 @@ Route::delete('/cart/{product}', [CartController::class, 'destroy'])->whereNumbe
 Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('throttle:10,1');
+Route::get('/vacancies', [VacancyController::class, 'index'])->name('vacancies');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
 // Заявки з форм сайту (контакти, швидке замовлення, партнерство…)
 Route::post('/forms/{type}', [LeadController::class, 'store'])->name('forms.store')->middleware('throttle:5,1');

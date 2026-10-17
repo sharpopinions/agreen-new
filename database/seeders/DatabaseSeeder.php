@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             PromotionSeeder::class,
             BlogSeeder::class,
             ServiceSeeder::class,
+            VacancySeeder::class,
         ]);
     }
 }

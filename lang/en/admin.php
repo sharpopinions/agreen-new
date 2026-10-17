@@ -358,4 +358,15 @@ return [
         'text'   => 'Text',
         'rating' => 'Rating',
     ],
+    'vacancies' => [
+        'single'       => 'Vacancy',
+        'plural'       => 'Vacancies',
+        'open'         => 'Open (on site)',
+        'title'        => 'Position',
+        'department'   => 'Department',
+        'city'         => 'City',
+        'employment'   => 'Employment',
+        'description'  => 'About the job',
+        'requirements' => 'Requirements',
+    ],
 ];

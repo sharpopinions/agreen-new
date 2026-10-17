@@ -324,3 +324,145 @@
     .course-list__row { grid-template-columns: 1fr; }
     .course-list__price { text-align: left; }
 }
+
+// Вакансії (Claude Design → VacanciesPage)
+
+.vacancies-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+    align-items: start;
+}
+
+.vacancies-intro__title {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+}
+
+.vacancies-intro__text {
+    font-size: var(--font-size-base);
+    line-height: 1.8;
+    color: var(--color-text-2);
+    margin: 0 0 20px;
+}
+
+.vacancies-intro__form-title { margin-bottom: var(--space-4); }
+
+.vacancies-perks {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.vacancies-perks__item {
+    padding: 14px var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.vacancies-perks__title { font-size: 13px; font-weight: 600; color: var(--color-text); margin-bottom: 2px; }
+.vacancies-perks__text { font-size: var(--font-size-sm); color: var(--color-text-2); }
+
+.vacancy-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 60px;
+}
+
+.vacancy {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: border-color 0.2s;
+
+    &--open { border-color: var(--color-border-2); }
+}
+
+.vacancy__head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    width: 100%;
+    padding: 18px var(--space-6);
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    > span { flex: 1; }
+}
+
+.vacancy__title {
+    display: block;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.vacancy__meta { font-size: var(--font-size-sm); color: var(--color-text-2); }
+
+.vacancy__chevron {
+    flex-shrink: 0;
+    color: var(--color-text-3);
+    transition: transform 0.2s;
+
+    .vacancy--open & { transform: rotate(180deg); }
+}
+
+.vacancy__body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    padding: 20px var(--space-6);
+    border-top: 1px solid var(--color-border);
+}
+
+.vacancy__subtitle {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 10px;
+}
+
+.vacancy__text {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--color-text-2);
+    margin: 0 0 var(--space-4);
+}
+
+.vacancy__req {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+        display: flex;
+        gap: var(--space-2);
+        margin-bottom: 6px;
+        font-size: 13px;
+        color: var(--color-text-2);
+
+        &::before { content: '—'; color: var(--color-text-3); }
+    }
+}
+
+@media (max-width: 900px) {
+    .vacancies-intro,
+    .vacancy__body { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+    .vacancies-perks { grid-template-columns: 1fr; }
+    .vacancies-intro__title { font-size: 24px; }
+}

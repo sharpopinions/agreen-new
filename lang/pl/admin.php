@@ -358,4 +358,15 @@ return [
         'text'   => 'Treść',
         'rating' => 'Ocena',
     ],
+    'vacancies' => [
+        'single'       => 'Wakat',
+        'plural'       => 'Wakaty',
+        'open'         => 'Otwarty (na stronie)',
+        'title'        => 'Stanowisko',
+        'department'   => 'Dział',
+        'city'         => 'Miasto',
+        'employment'   => 'Wymiar pracy',
+        'description'  => 'O stanowisku',
+        'requirements' => 'Wymagania',
+    ],
 ];

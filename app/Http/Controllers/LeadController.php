@@ -122,15 +122,7 @@ class LeadController extends Controller
                 'name'    => ['required', 'string', 'max:255'],
                 'phone'   => ['required', ...self::PHONE],
                 'email'   => ['nullable', 'email', 'max:255'],
-                // Реєстрація на подію з блогу
-            'event' => [
-                'name'    => ['required', 'string', 'max:255'],
-                'phone'   => ['required', ...self::PHONE],
-                'email'   => ['required', 'email', 'max:255'],
-                'company' => ['nullable', 'string', 'max:255'],
-                'post_id' => ['required', 'integer', Rule::exists(BlogPost::class, 'id')->where('type', 'event')->where('is_active', true)],
-            ],
-            'vacancy' => ['nullable', 'string', 'max:255'],
+                'vacancy' => ['nullable', 'string', 'max:255'],
                 'message' => ['nullable', 'string', 'max:3000'],
             ],
         };

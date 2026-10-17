@@ -358,4 +358,15 @@ return [
         'text'   => 'Текст відгуку',
         'rating' => 'Оцінка',
     ],
+    'vacancies' => [
+        'single'       => 'Вакансія',
+        'plural'       => 'Вакансії',
+        'open'         => 'Відкрита (на сайті)',
+        'title'        => 'Посада',
+        'department'   => 'Відділ',
+        'city'         => 'Місто',
+        'employment'   => 'Зайнятість',
+        'description'  => 'Про вакансію',
+        'requirements' => 'Вимоги',
+    ],
 ];
