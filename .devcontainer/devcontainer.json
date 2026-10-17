@@ -1,0 +1,19 @@
+{
+    // GitHub Codespaces / Dev Containers: PHP 8.4 з розширеннями intl і zip (потрібні Filament), Node 22, SQLite.
+    // Після змін тут: Cmd+Shift+P → «Codespaces: Rebuild Container».
+    "name": "A-green",
+    "image": "mcr.microsoft.com/devcontainers/php:1-8.4-bookworm",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": { "version": "22" }
+    },
+    "forwardPorts": [8000],
+    "portsAttributes": {
+        "8000": { "label": "Сайт A-green", "onAutoForward": "notify" }
+    },
+    "postCreateCommand": "bash .devcontainer/setup.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": ["Vue.volar", "bmewburn.vscode-intelephense-client"]
+        }
+    }
+}

@@ -63,7 +63,9 @@ class AdminPanelProvider extends PanelProvider
     public function boot(): void
     {
         LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
-            $switch->locales(['uk', 'en', 'pl']);
+            // Назви задані явно — без них плагін бере їх з ext-intl (locale_get_display_name)
+            $switch->locales(['uk', 'en', 'pl'])
+                ->labels(['uk' => 'Українська', 'en' => 'English', 'pl' => 'Polski']);
         });
     }
 }
