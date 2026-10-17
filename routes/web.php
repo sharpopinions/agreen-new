@@ -4,10 +4,10 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
@@ -25,4 +25,10 @@ Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('throttle:10,1');
 Route::get('/order/thanks', [CheckoutController::class, 'thanks'])->name('order.thanks');
 
-Route::get('/about', fn() => Inertia::render('About'))->name('about');
+// Інформаційні сторінки (адмінка → Контент → Сторінки). Останнім — щоб не перехоплювати інші адреси.
+Route::get('/{slug}', [PageController::class, 'show'])
+    ->where('slug', '[a-z0-9]+(?:-[a-z0-9]+)*')
+    ->name('page');
+
+// Невідомі адреси з кількох сегментів — 404 через web-middleware (сесія, кошик, меню доступні)
+Route::fallback(fn() => abort(404));

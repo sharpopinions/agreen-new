@@ -25,15 +25,28 @@ trait HandlesTranslations
         foreach ($this->getActiveLanguages() as $lang) {
             $t = $translations->get($lang->id);
             foreach ($this->translationFields as $field) {
-                $data[$lang->code . '_' . $field] = $t?->$field ?? '';
+                // Масиви (блоки сторінки) — порожній список, а не ''
+                $data[$lang->code . '_' . $field] = $t?->$field ?? (in_array($field, ['blocks'], true) ? [] : '');
             }
         }
 
         return $data;
     }
 
+    /** Перевірені й підготовлені дані форми (dehydrated): файли — шляхами, а не тимчасовими обʼєктами. */
+    protected ?array $translationState = null;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        $this->translationState = $data;
+
+        return $data;
+    }
+
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $this->translationState = $data;
+
         return $data;
     }
 
@@ -59,11 +72,15 @@ trait HandlesTranslations
         foreach ($this->getActiveLanguages() as $lang) {
             $translationData = [];
             foreach ($this->translationFields as $field) {
-                $translationData[$field] = $this->data[$lang->code . '_' . $field] ?? '';
+                $state = $this->translationState ?? $this->data;
+                $translationData[$field] = $state[$lang->code . '_' . $field] ?? '';
+                if ($field === 'blocks') {
+                    $translationData[$field] = array_values((array) ($translationData[$field] ?: []));
+                }
             }
 
             if (array_key_exists('slug', $translationData)) {
-                $translationData['slug'] = $this->resolveSlug($lang->id, $translationData['slug'], $translationData['name'] ?? '');
+                $translationData['slug'] = $this->resolveSlug($lang->id, $translationData['slug'], $translationData['name'] ?? $translationData['title'] ?? '');
             }
 
             $this->record->translations()->updateOrCreate(

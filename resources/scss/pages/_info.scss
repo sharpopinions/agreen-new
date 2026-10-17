@@ -1,0 +1,398 @@
+// Інформаційні сторінки з блоками (Claude Design → extra-pages.jsx: AboutPage, DeliveryPage, StaticPage)
+
+.info-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 28px var(--space-6) var(--space-12);
+
+    .breadcrumbs { margin-bottom: var(--space-6); }
+}
+
+.info-page__title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    margin: 0 0 40px;
+
+    &--center {
+        font-size: 32px;
+        letter-spacing: -0.03em;
+        text-align: center;
+    }
+}
+
+.info-page--document .info-page__title {
+    font-size: 28px;
+    margin-bottom: var(--space-8);
+}
+
+.block-heading {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin: 0 0 var(--space-6);
+}
+
+// Документ зі змістом
+
+.info-doc {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--space-8);
+    align-items: start;
+}
+
+.info-doc__toc {
+    position: sticky;
+    top: 80px;
+    padding: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.info-doc__toc-title {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+}
+
+.info-doc__toc-link {
+    display: block;
+    padding: 6px 0;
+    font-size: 13px;
+    color: var(--color-text-2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    transition: color var(--transition-fast);
+
+    &:last-child { border-bottom: 0; }
+    &:hover { color: var(--color-text); }
+}
+
+.block-section {
+    margin-bottom: var(--space-8);
+    scroll-margin-top: 90px;
+
+    .rich-text { line-height: 1.85; }
+}
+
+.block-section__title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    margin: 0 0 var(--space-3);
+}
+
+.block-text {
+    max-width: 860px;
+    margin-bottom: 48px;
+}
+
+// Фото
+
+.block-image {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 48px;
+
+    img {
+        display: block;
+        width: 100%;
+        max-height: 420px;
+        object-fit: cover;
+    }
+}
+
+// Текст і цифри
+
+.block-intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 56px;
+
+    .block-heading { margin-bottom: var(--space-4); }
+}
+
+.block-intro__stats {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.block-stat {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 24px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.block-stat__value {
+    min-width: 80px;
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--color-text);
+}
+
+.block-stat__label {
+    font-size: 13px;
+    color: var(--color-text-2);
+}
+
+// Переваги
+
+.block-features { margin-bottom: 56px; }
+
+.block-features__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.block-feature {
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        border-color: var(--color-border-2);
+        box-shadow: var(--shadow-md);
+    }
+}
+
+.block-feature__n {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-text-3);
+    margin-bottom: var(--space-3);
+}
+
+.block-feature__title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+}
+
+.block-feature__text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--color-text-2);
+}
+
+// Колонки зі списками
+
+.block-columns {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 2), 1fr);
+    gap: var(--space-8);
+    margin-bottom: 40px;
+}
+
+.block-column {
+    padding: 28px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.block-column__title {
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 20px;
+}
+
+.block-column__item {
+    padding-bottom: var(--space-4);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.block-column__item-title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.block-column__item-text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--color-text-2);
+}
+
+// Бренди
+
+.block-brands { margin-bottom: 56px; }
+
+.block-brands__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-3);
+}
+
+.block-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:hover {
+        border-color: var(--color-border-2);
+        box-shadow: var(--shadow-md);
+    }
+}
+
+.block-brand__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-sm);
+    background: var(--color-muted);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-text-3);
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+}
+
+.block-brand__name {
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+// Заклик до дії
+
+.block-cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-6);
+    padding: 40px 48px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.block-cta__title {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin: 0 0 var(--space-2);
+}
+
+.block-cta__text {
+    font-size: var(--font-size-base);
+    color: var(--color-text-2);
+    margin: 0;
+}
+
+.block-cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+// Сторінка 404
+
+.not-found {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px var(--space-6);
+    text-align: center;
+}
+
+.not-found__code {
+    font-size: 120px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.06em;
+    color: var(--color-border-2);
+    margin-bottom: var(--space-6);
+}
+
+.not-found__img {
+    width: 120px;
+    margin-bottom: var(--space-8);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.not-found__title {
+    max-width: 480px;
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    margin: 0 0 var(--space-4);
+}
+
+.not-found__text {
+    max-width: 480px;
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+    color: var(--color-text-2);
+    margin: 0 0 var(--space-8);
+}
+
+.not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+}
+
+@media (max-width: 900px) {
+    .info-doc,
+    .block-intro,
+    .block-columns { grid-template-columns: 1fr; }
+
+    .info-doc__toc { position: static; }
+    .block-features__grid { grid-template-columns: repeat(2, 1fr); }
+    .block-brands__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 640px) {
+    .info-page { padding-inline: var(--space-4); }
+    .block-features__grid { grid-template-columns: 1fr; }
+    .block-brands__grid { grid-template-columns: repeat(2, 1fr); }
+
+    .block-cta {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: var(--space-6);
+    }
+
+    .not-found__code { font-size: 88px; }
+}

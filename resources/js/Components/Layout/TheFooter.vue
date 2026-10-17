@@ -24,12 +24,12 @@
                 <div v-for="col in cols" :key="col.title" class="footer__col">
                     <div class="footer__col-title">{{ col.title }}</div>
                     <div class="footer__col-links">
-                        <a
+                        <Link
                             v-for="link in col.links"
-                            :key="link"
-                            href="#"
+                            :key="link.label"
+                            :href="link.href"
                             class="footer__link"
-                        >{{ link }}</a>
+                        >{{ link.label }}</Link>
                     </div>
                 </div>
             </div>
@@ -43,6 +43,8 @@
 </template>
 
 <script setup>
+    import { computed } from 'vue';
+    import { Link, usePage } from '@inertiajs/vue3';
     import { useSite } from '@/composables/useSite';
 
     const site = useSite();
@@ -52,22 +54,40 @@
         youtube: 'YouTube', tiktok: 'TikTok', linkedin: 'LinkedIn',
     };
 
-    const cols = [
+    // Каталог — перші категорії з меню; решта — сторінки сайту (Claude Design → Footer)
+    const page = usePage();
+    const cols = computed(() => [
         {
             title: 'Каталог',
-            links: ['Витратні матеріали', 'Абразивні матеріали', 'Дозуюче обладнання', 'Лакофарбові матеріали'],
+            links: (page.props.nav?.categories ?? []).slice(0, 4).map(c => ({ label: c.name, href: `/catalog/${c.slug}` })),
         },
         {
             title: 'Послуги',
-            links: ['Навчальний центр', 'Технічна підтримка', 'Проектування', 'Обслуговування'],
+            links: [
+                { label: 'Навчальний центр',   href: '/services' },
+                { label: 'Технічна підтримка', href: '/services' },
+                { label: 'Проектування',       href: '/services' },
+                { label: 'Обслуговування',     href: '/services' },
+            ],
         },
         {
             title: 'Компанія',
-            links: ['Про нас', 'Партнерство', 'Бренди', 'Блог та новини', 'Вакансії'],
+            links: [
+                { label: 'Про нас',        href: '/about' },
+                { label: 'Партнерство',    href: '/partners' },
+                { label: 'Бренди',         href: '/brands' },
+                { label: 'Блог та новини', href: '/blog' },
+                { label: 'Вакансії',       href: '/vacancies' },
+            ],
         },
         {
             title: 'Клієнтам',
-            links: ['Доставка та оплата', 'Повернення та обмін', 'Публічна оферта', 'Конфіденційність'],
+            links: [
+                { label: 'Доставка та оплата', href: '/delivery' },
+                { label: 'Повернення та обмін', href: '/returns' },
+                { label: 'Публічна оферта',    href: '/public-offer' },
+                { label: 'Конфіденційність',   href: '/privacy' },
+            ],
         },
-    ];
+    ]);
 </script>

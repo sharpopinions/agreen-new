@@ -688,6 +688,13 @@
     color: var(--color-text-3);
 }
 
+.checkout-legal__link {
+    color: inherit;
+    text-decoration: underline;
+
+    &:hover { color: var(--color-text); }
+}
+
 .choice-list {
     display: flex;
     flex-direction: column;

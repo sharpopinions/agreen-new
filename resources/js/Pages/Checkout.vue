@@ -42,7 +42,7 @@
                         </div>
                         <template v-if="onlyPreorder">
                             <Field v-model="form.comment" label="Коментар" textarea placeholder="Додаткові побажання..." :error="form.errors.comment" />
-                            <p class="checkout-legal">Натискаючи «Надіслати передзамовлення», ви погоджуєтесь з умовами публічної оферти.</p>
+                            <p class="checkout-legal">Натискаючи «Надіслати передзамовлення», ви погоджуєтесь з умовами <Link href="/public-offer" class="checkout-legal__link">публічної оферти</Link>.</p>
                             <div class="checkout-actions">
                                 <button class="btn btn--primary" type="submit" :disabled="form.processing">Надіслати передзамовлення</button>
                             </div>
@@ -94,7 +94,7 @@
                         <p v-if="hasPreorder" class="checkout-legal">
                             Товари під замовлення буде оформлено окремим передзамовленням — без оплати та доставки.
                         </p>
-                        <p class="checkout-legal">Натискаючи «Підтвердити замовлення», ви погоджуєтесь з умовами публічної оферти.</p>
+                        <p class="checkout-legal">Натискаючи «Підтвердити замовлення», ви погоджуєтесь з умовами <Link href="/public-offer" class="checkout-legal__link">публічної оферти</Link>.</p>
                         <div class="checkout-actions">
                             <button class="btn btn--secondary" type="button" @click="step = 2">← Назад</button>
                             <button class="btn btn--primary" type="submit" :disabled="form.processing">Підтвердити замовлення</button>

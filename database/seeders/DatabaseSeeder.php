@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             BadgeSeeder::class,
             ProductSeeder::class,
             AttributeSeeder::class,
+            PageSeeder::class,
         ]);
     }
 }
