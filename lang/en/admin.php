@@ -288,4 +288,18 @@ return [
         'payload'       => ['quantity' => 'Quantity', 'partner_type' => 'Partnership type', 'service' => 'Service', 'vacancy' => 'Vacancy'],
         'partner_types' => ['dealer' => 'Dealer', 'wholesale' => 'Wholesale buyer', 'installer' => 'Installation partner'],
     ],
+    'promotions' => [
+        'single'            => 'Promotion',
+        'plural'            => 'Promotions',
+        'discount'          => 'Discount',
+        'discount_hint'     => 'For the "−10%" badge. Product prices are set on the products (price and old price).',
+        'starts_at'         => 'Starts',
+        'ends_at'           => 'Valid until',
+        'ends_at_hint'      => 'After this date the promotion disappears from the site automatically.',
+        'products'          => 'Promotion products',
+        'products_hint'     => 'Pick products manually or set a brand / category — then all their products are included.',
+        'selected_products' => 'Selected products',
+        'state'             => 'State',
+        'states'            => ['running' => 'Running', 'scheduled' => 'Scheduled', 'ended' => 'Ended', 'off' => 'Off'],
+    ],
 ];

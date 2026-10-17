@@ -1,0 +1,247 @@
+// Акції (Claude Design → AktsyiiPage, AktsyiaPage)
+
+.promos-page__banner {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 28px;
+}
+
+.promos-page__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-2);
+}
+
+.promos-page__title { margin: 0; }
+
+.promos-page__count {
+    font-size: var(--font-size-base);
+    color: var(--color-text-2);
+
+    strong { color: var(--color-text); }
+}
+
+.promos-page__subtitle {
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-text-2);
+    margin: 0 0 var(--space-6);
+}
+
+.promos-page__layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 20px;
+    align-items: start;
+}
+
+.cat-filter__group-btn--static { cursor: default; }
+
+.promos-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.promos-list__empty {
+    padding: 60px 20px;
+    text-align: center;
+    font-size: var(--font-size-base);
+    color: var(--color-text-2);
+}
+
+.promo-card {
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover { border-color: var(--color-border-2); box-shadow: var(--shadow-md); }
+}
+
+.promo-card__brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    background: var(--color-bg-alt);
+    border-right: 1px solid var(--color-border);
+}
+
+.promo-card__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    background: var(--color-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--color-text-2);
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+}
+
+.promo-card__brand-name {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.promo-card__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: 20px var(--space-6);
+}
+
+.promo-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.promo-tag {
+    padding: 3px 10px;
+    background: var(--color-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text-3);
+
+    &--discount {
+        background: #fef2f2;
+        border-color: #fecaca;
+        font-size: var(--font-size-sm);
+        font-weight: 600;
+        color: #dc2626;
+    }
+}
+
+[data-theme="dark"] .promo-tag--discount {
+    background: #450a0a;
+    border-color: #7f1d1d;
+}
+
+.promo-card__title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-text);
+}
+
+.promo-card__until {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-3);
+}
+
+.promo-card__cta {
+    display: flex;
+    align-items: center;
+    padding: 20px var(--space-6);
+}
+
+// Сторінка акції
+
+.promo-hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--space-8);
+    align-items: center;
+    padding: var(--space-8);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.promo-hero__tags { margin-bottom: 14px; }
+
+.promo-hero__title {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    margin: 0 0 var(--space-3);
+}
+
+.promo-hero__text {
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.promo-hero__facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-6);
+
+    > div + div {
+        padding-left: var(--space-6);
+        border-left: 1px solid var(--color-border);
+    }
+}
+
+.promo-hero__fact-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-3);
+    margin-bottom: 2px;
+}
+
+.promo-hero__fact-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+a.promo-hero__fact-value:hover { text-decoration: underline; }
+
+.promo-hero__visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--color-text-3);
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+@media (max-width: 900px) {
+    .promos-page__layout { grid-template-columns: 1fr; }
+    .promo-card { grid-template-columns: 120px 1fr; }
+    .promo-card__cta { display: none; }
+    .promo-hero { grid-template-columns: 1fr; padding: var(--space-6); }
+    .promo-hero__visual { display: none; }
+}
+
+@media (max-width: 640px) {
+    .promo-card { grid-template-columns: 1fr; }
+    .promo-card__brand { flex-direction: row; justify-content: flex-start; padding: var(--space-3) var(--space-4); border-right: 0; border-bottom: 1px solid var(--color-border); }
+    .promo-card__logo { width: 40px; height: 40px; font-size: 14px; }
+    .promo-card__info { padding: var(--space-4); }
+    .promo-hero__title { font-size: 22px; }
+    .promo-hero__facts > div + div { padding-left: 0; border-left: 0; }
+}

@@ -288,4 +288,18 @@ return [
         'payload'       => ['quantity' => 'Ilość', 'partner_type' => 'Typ partnerstwa', 'service' => 'Usługa', 'vacancy' => 'Wakat'],
         'partner_types' => ['dealer' => 'Dealer', 'wholesale' => 'Hurtownik', 'installer' => 'Partner montażowy'],
     ],
+    'promotions' => [
+        'single'            => 'Promocja',
+        'plural'            => 'Promocje',
+        'discount'          => 'Rabat',
+        'discount_hint'     => 'Do plakietki „−10%”. Ceny produktów ustawia się w produktach (cena i stara cena).',
+        'starts_at'         => 'Początek',
+        'ends_at'           => 'Ważna do',
+        'ends_at_hint'      => 'Po tej dacie promocja sama zniknie ze strony.',
+        'products'          => 'Produkty promocji',
+        'products_hint'     => 'Wybierz produkty ręcznie lub ustaw markę / kategorię — wtedy trafią wszystkie ich produkty.',
+        'selected_products' => 'Wybrane produkty',
+        'state'             => 'Stan',
+        'states'            => ['running' => 'Trwa', 'scheduled' => 'Zaplanowana', 'ended' => 'Zakończona', 'off' => 'Wyłączona'],
+    ],
 ];

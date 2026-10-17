@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,9 @@ Route::get('/brands', [BrandController::class, 'index'])->name('brands');
 Route::get('/brands/{slug}', [BrandController::class, 'show'])->name('brand');
 Route::get('/brands/{slug}/about', [BrandController::class, 'about'])->name('brand.about');
 Route::get('/brands/{slug}/media', [BrandController::class, 'media'])->name('brand.media');
+// Акції
+Route::get('/sale', [PromotionController::class, 'index'])->name('promotions');
+Route::get('/sale/{slug}', [PromotionController::class, 'show'])->name('promotion');
 Route::get('/search', SearchController::class)->name('search')->middleware('throttle:60,1');
 // Кошик і оформлення
 Route::get('/cart', [CartController::class, 'index'])->name('cart');

@@ -85,6 +85,7 @@ const pages = [
     { name: 'Каталог',            icon: '⊞',  href: '/catalog' },
     { name: 'Усі товари',         icon: '📦', href: '/catalog/all' },
     { name: 'Акційні товари',     icon: '🔥', href: '/catalog?sale=1' },
+    { name: 'Акції',              icon: '🏷️', href: '/sale' },
     { name: 'Про нас',            icon: 'ℹ️', href: '/about' },
 ];
 

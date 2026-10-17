@@ -20,9 +20,10 @@ trait RendersProductListing
 {
     /**
      * Список товарів з фільтрами. Спільний для каталогу, категорії й сторінки бренду
-     * ($brand — лише товари бренду; $extra — додаткові props сторінки, напр. дані бренду й seo).
+     * ($brand — лише товари бренду; $scope — довільне обмеження вибірки, напр. акція;
+     * $extra — додаткові props сторінки, напр. дані бренду й seo).
      */
-    protected function listing(Request $request, int $langId, ?Category $category, string $page, ?Brand $brand = null, array $extra = []): Response
+    protected function listing(Request $request, int $langId, ?Category $category, string $page, ?Brand $brand = null, array $extra = [], ?\Closure $scope = null): Response
     {
         $filters = [
             'q'            => trim((string) $request->get('q', '')),
@@ -42,7 +43,9 @@ trait RendersProductListing
 
         $base = fn() => Product::query()->forCard()
             ->when($scopeIds, fn($q) => $q->whereHas('categories', fn($c) => $c->whereIn('categories.id', $scopeIds)))
-            ->when($brand, fn($q) => $q->where('brand_id', $brand->id));
+            ->when($brand, fn($q) => $q->where('brand_id', $brand->id))
+            // Довільне обмеження (напр. товари акції)
+            ->when($scope, fn($q) => $scope($q));
 
         // Характеристики (EAV): набір фільтрів задає категорія в адмінці
         $attributes = new AttributeFilters($category, $request);
@@ -68,7 +71,7 @@ trait RendersProductListing
                 'slug'  => $c->translations->first()?->slug ?? '',
                 'count' => $base()->whereHas('categories', fn($q) => $q->where('categories.id', $c->id))->count(),
             ])->values()->all()
-            : $this->getCategories($langId, $brand ? $base : null);
+            : $this->getCategories($langId, $brand || $scope ? $base : null);
 
         $prices = $base()->selectRaw('MIN(price) as min, MAX(price) as max')->reorder()->first();
 

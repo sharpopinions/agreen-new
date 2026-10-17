@@ -80,6 +80,11 @@ class Product extends Model
         return $this->belongsToMany(Badge::class);
     }
 
+    public function promotions()
+    {
+        return $this->belongsToMany(Promotion::class);
+    }
+
     public function attributeValues()
     {
         return $this->belongsToMany(AttributeValue::class, 'product_attribute_values');
