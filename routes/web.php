@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LeadController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
@@ -29,6 +30,9 @@ Route::delete('/cart/{product}', [CartController::class, 'destroy'])->whereNumbe
 Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
 Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('throttle:10,1');
+Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
+// Заявки з форм сайту (контакти, швидке замовлення, партнерство…)
+Route::post('/forms/{type}', [LeadController::class, 'store'])->name('forms.store')->middleware('throttle:5,1');
 Route::get('/order/thanks', [CheckoutController::class, 'thanks'])->name('order.thanks');
 
 // Інформаційні сторінки (адмінка → Контент → Сторінки). Останнім — щоб не перехоплювати інші адреси.

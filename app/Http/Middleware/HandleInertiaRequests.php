@@ -21,6 +21,7 @@ class HandleInertiaRequests extends Middleware
             'cart'  => fn () => app(Cart::class)->summary(),
             'flash' => fn () => [
                 'cartAdded' => $request->session()->get('cartAdded'),
+                'leadSent'  => $request->session()->get('leadSent'),
             ],
         ]);
     }

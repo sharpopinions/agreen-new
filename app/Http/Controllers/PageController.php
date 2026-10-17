@@ -47,6 +47,14 @@ class PageController extends Controller
         ]);
     }
 
+    /** Контакти: дані з «Сайт і контакти» (спільний prop site) + форма зворотного звʼязку. */
+    public function contacts(): Response
+    {
+        return Inertia::render('Contacts', [
+            'seo' => Seo::make('Контакти', \App\Support\SiteSettings::forFrontend()['address'] ?: null),
+        ]);
+    }
+
     /** Дані блока для фронтенду: HTML очищено, файли — URL, «бренди» — з бази. */
     private function block(string $type, array $data): ?array
     {

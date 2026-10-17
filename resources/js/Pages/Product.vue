@@ -145,9 +145,9 @@
                         </div>
                         <p v-if="maxQty !== null && qty >= maxQty" class="product-info__hint">На складі лише {{ maxQty }} шт.</p>
 
-                        <button v-if="product.availability === 'on_order'" class="btn btn--outline btn--full">🔔 Повідомити про надходження</button>
-                        <button v-else-if="product.partnerPrice" class="btn btn--outline btn--full">📋 Запит на гуртову ціну</button>
-                        <button v-else class="btn btn--outline btn--full">Швидке замовлення</button>
+                        <button v-if="product.availability === 'on_order'" type="button" class="btn btn--outline btn--full" @click="openLead('stock_notify')">🔔 Повідомити про надходження</button>
+                        <button v-else-if="product.partnerPrice" type="button" class="btn btn--outline btn--full" @click="openLead('price_request')">📋 Запит на гуртову ціну</button>
+                        <button v-else type="button" class="btn btn--outline btn--full" @click="openLead('quick_order')">Швидке замовлення</button>
                     </template>
 
                     <!-- Коротко про характеристики -->
@@ -234,6 +234,7 @@
 
             <RecentlyViewed :current="product" />
         </div>
+        <LeadModal v-if="leadType" :key="leadType" v-model:open="leadOpen" :type="leadType" :product="product" />
     </AppLayout>
 </template>
 
@@ -243,6 +244,7 @@ import { Link } from '@inertiajs/vue3';
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ProductCard from '@/Components/ProductCard.vue';
 import ImgPlaceholder from '@/Components/ImgPlaceholder.vue';
+import LeadModal from '@/Components/Form/LeadModal.vue';
 import RecentlyViewed from '@/Components/RecentlyViewed.vue';
 import { formatPrice as fmt, pluralUa } from '@/utils/format';
 import { useCart } from '@/composables/useCart';
@@ -258,6 +260,14 @@ const qty = ref(1);
 const activeImg = ref(0);
 const tab = ref('desc');
 const tabPanel = ref(null);
+
+// Форми заявок зі сторінки товару (адмінка → Продажі → Заявки)
+const leadType = ref(null);
+const leadOpen = ref(false);
+function openLead(type) {
+    leadType.value = type;
+    leadOpen.value = true;
+}
 
 const images = computed(() => props.product.images ?? []);
 // Завжди 4 мініатюри, як у дизайні: фото або заглушки

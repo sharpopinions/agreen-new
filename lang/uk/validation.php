@@ -1,0 +1,88 @@
+<?php
+
+// Повідомлення валідації українською (форми сайту й адмінки)
+return [
+    'accepted'             => 'Потрібно погодитися з полем «:attribute».',
+    'array'                => 'Поле «:attribute» має бути списком.',
+    'between'              => [
+        'numeric' => 'Поле «:attribute» має бути від :min до :max.',
+        'string'  => 'Поле «:attribute» має містити від :min до :max символів.',
+        'array'   => 'Поле «:attribute» має містити від :min до :max елементів.',
+        'file'    => 'Файл «:attribute» має бути від :min до :max КБ.',
+    ],
+    'boolean'              => 'Поле «:attribute» має бути «так» або «ні».',
+    'confirmed'            => 'Значення поля «:attribute» не збігається з підтвердженням.',
+    'date'                 => 'Поле «:attribute» має бути датою.',
+    'decimal'              => 'Поле «:attribute» має містити :decimal знаків після коми.',
+    'different'            => 'Поля «:attribute» і «:other» мають відрізнятися.',
+    'digits'               => 'Поле «:attribute» має містити :digits цифр.',
+    'distinct'             => 'Поле «:attribute» містить значення, що повторюється.',
+    'email'                => 'Вкажіть коректний email.',
+    'exists'               => 'Вибране значення поля «:attribute» не знайдено.',
+    'file'                 => 'Поле «:attribute» має бути файлом.',
+    'gt'                   => [
+        'numeric' => 'Поле «:attribute» має бути більшим за :value.',
+        'string'  => 'Поле «:attribute» має бути довшим за :value символів.',
+    ],
+    'gte'                  => [
+        'numeric' => 'Поле «:attribute» має бути не меншим за :value.',
+    ],
+    'image'                => 'Файл «:attribute» має бути зображенням.',
+    'in'                   => 'Вибране значення поля «:attribute» недопустиме.',
+    'integer'              => 'Поле «:attribute» має бути цілим числом.',
+    'lt'                   => [
+        'numeric' => 'Поле «:attribute» має бути меншим за :value.',
+    ],
+    'max'                  => [
+        'numeric' => 'Поле «:attribute» не може бути більшим за :max.',
+        'string'  => 'Поле «:attribute» не може бути довшим за :max символів.',
+        'array'   => 'Поле «:attribute» не може містити більше :max елементів.',
+        'file'    => 'Файл «:attribute» не може бути більшим за :max КБ.',
+    ],
+    'mimes'                => 'Файл «:attribute» має бути типу: :values.',
+    'mimetypes'            => 'Файл «:attribute» має бути типу: :values.',
+    'min'                  => [
+        'numeric' => 'Поле «:attribute» має бути не меншим за :min.',
+        'string'  => 'Поле «:attribute» має містити щонайменше :min символів.',
+        'array'   => 'Поле «:attribute» має містити щонайменше :min елементів.',
+        'file'    => 'Файл «:attribute» має бути не меншим за :min КБ.',
+    ],
+    'not_in'               => 'Вибране значення поля «:attribute» недопустиме.',
+    'numeric'              => 'Поле «:attribute» має бути числом.',
+    'present'              => 'Поле «:attribute» має бути присутнім.',
+    'regex'                => 'Поле «:attribute» має неправильний формат.',
+    'required'             => 'Заповніть поле «:attribute».',
+    'required_if'          => 'Заповніть поле «:attribute».',
+    'required_unless'      => 'Заповніть поле «:attribute».',
+    'required_with'        => 'Заповніть поле «:attribute».',
+    'required_without'     => 'Заповніть поле «:attribute» або «:values».',
+    'required_without_all' => 'Заповніть хоча б одне з полів: :values.',
+    'same'                 => 'Поля «:attribute» і «:other» мають збігатися.',
+    'size'                 => [
+        'numeric' => 'Поле «:attribute» має дорівнювати :size.',
+        'string'  => 'Поле «:attribute» має містити :size символів.',
+    ],
+    'string'               => 'Поле «:attribute» має бути текстом.',
+    'unique'               => 'Таке значення поля «:attribute» вже існує.',
+    'uploaded'             => 'Не вдалося завантажити файл «:attribute».',
+    'url'                  => 'Поле «:attribute» має бути посиланням (https://…).',
+
+    'custom' => [],
+
+    // Назви полів у повідомленнях
+    'attributes' => [
+        'name'       => "ім'я",
+        'phone'      => 'телефон',
+        'email'      => 'email',
+        'company'    => 'компанія',
+        'message'    => 'повідомлення',
+        'comment'    => 'коментар',
+        'city'       => 'місто',
+        'address'    => 'адреса',
+        'delivery'   => 'спосіб доставки',
+        'payment'    => 'спосіб оплати',
+        'quantity'   => 'кількість',
+        'product_id' => 'товар',
+        'password'   => 'пароль',
+    ],
+];
