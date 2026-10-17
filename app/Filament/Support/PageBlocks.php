@@ -44,6 +44,43 @@ class PageBlocks
                         FileUpload::make('path')->hiddenLabel()->disk('public')->directory('pages')->image()->imageEditor()->maxSize(5120),
                         TextInput::make('alt')->label(__('admin.fields.alt'))->maxLength(255),
                     ]),
+                Block::make('split')
+                    ->label(__('admin.pages.block.split'))
+                    ->icon('heroicon-o-rectangle-group')
+                    ->schema([
+                        TextInput::make('heading')->label(__('admin.pages.heading'))->maxLength(255),
+                        RichEditor::make('html')->label(__('admin.pages.text'))->toolbarButtons(self::RICH_TOOLBAR),
+                        TextInput::make('list_heading')->label(__('admin.pages.list_heading'))->maxLength(255),
+                        Repeater::make('items')->label(__('admin.pages.checklist'))->simple(
+                            TextInput::make('text')->required()->maxLength(255),
+                        )->defaultItems(0)->addActionLabel(__('admin.pages.add_item')),
+                        FileUpload::make('path')->label(__('admin.fields.image'))->disk('public')->directory('pages')->image()->imageEditor()->maxSize(5120),
+                        TextInput::make('alt')->label(__('admin.fields.alt'))->maxLength(255),
+                    ]),
+                Block::make('lead_form')
+                    ->label(__('admin.pages.block.lead_form'))
+                    ->icon('heroicon-o-inbox-arrow-down')
+                    ->schema([
+                        Select::make('form')->label(__('admin.pages.form_type'))
+                            ->options([
+                                'partner' => __('admin.leads.types.partner'),
+                                'service' => __('admin.leads.types.service'),
+                                'contact' => __('admin.leads.types.contact'),
+                            ])
+                            ->default('partner')->required(),
+                        TextInput::make('heading')->label(__('admin.pages.heading'))->maxLength(255),
+                        TextInput::make('options_heading')->label(__('admin.pages.options_heading'))->maxLength(255),
+                        Repeater::make('options')->label(__('admin.pages.form_options'))
+                            ->helperText(__('admin.pages.form_options_hint'))
+                            ->schema([
+                                TextInput::make('label')->label(__('admin.pages.heading'))->required()->maxLength(100),
+                                Textarea::make('text')->label(__('admin.pages.text'))->rows(2)->maxLength(500),
+                            ])->columns(2)->defaultItems(0)->collapsible()->addActionLabel(__('admin.pages.add_item')),
+                        TextInput::make('perks_heading')->label(__('admin.pages.list_heading'))->maxLength(255),
+                        Repeater::make('perks')->label(__('admin.pages.checklist'))->simple(
+                            TextInput::make('text')->required()->maxLength(255),
+                        )->defaultItems(0)->addActionLabel(__('admin.pages.add_item')),
+                    ]),
                 Block::make('intro_stats')
                     ->label(__('admin.pages.block.intro_stats'))
                     ->icon('heroicon-o-chart-bar')

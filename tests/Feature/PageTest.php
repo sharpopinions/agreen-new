@@ -89,4 +89,22 @@ class PageTest extends TestCase
         $this->actingAs(User::factory()->create(['role' => 'manager']))
             ->get('/admin/pages')->assertForbidden();
     }
+
+    public function test_partners_page_with_lead_form(): void
+    {
+        \Illuminate\Support\Facades\Notification::fake();
+
+        $this->get('/partners')->assertOk()->assertInertia(fn($page) => $page
+            ->where('page.blocks.0.type', 'split')
+            ->where('page.blocks.1.type', 'lead_form')
+            ->where('page.blocks.1.form', 'partner')
+            ->has('page.blocks.1.options', 3));
+
+        $this->post('/forms/partner', [
+            'company' => 'ТОВ Тест', 'name' => 'Іван', 'phone' => '+380671112233', 'email' => 'i@t.com',
+            'partner_type' => 'Оптовий покупець',
+        ])->assertSessionHas('leadSent', 'partner');
+
+        $this->assertSame(['partner_type' => 'Оптовий покупець'], \App\Models\Lead::firstOrFail()->payload);
+    }
 }

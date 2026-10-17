@@ -14,6 +14,27 @@
         <ImgPlaceholder v-else :h="320" :label="block.alt || 'фото'" :seed="block.alt || 'page'" />
     </div>
 
+    <!-- Текст, фото й список з галочками -->
+    <section v-else-if="block.type === 'split'" class="block-split">
+        <div>
+            <component :is="asTitle ? 'h1' : 'h2'" v-if="block.heading" class="block-heading block-split__title">{{ block.heading }}</component>
+            <div v-if="block.html" class="rich-text" v-html="block.html"></div>
+            <template v-if="block.items.length">
+                <div v-if="block.listHeading" class="block-lead__perks-title">{{ block.listHeading }}</div>
+                <ul class="check-list">
+                    <li v-for="item in block.items" :key="item" class="check-list__item">{{ item }}</li>
+                </ul>
+            </template>
+        </div>
+        <div class="block-split__media">
+            <img v-if="block.image" :src="block.image" :alt="block.alt" loading="lazy" />
+            <ImgPlaceholder v-else :h="420" :label="block.alt || 'фото'" :seed="block.heading || 'split'" />
+        </div>
+    </section>
+
+    <!-- Форма заявки -->
+    <LeadFormBlock v-else-if="block.type === 'lead_form'" :block="block" />
+
     <!-- Текст і цифри -->
     <section v-else-if="block.type === 'intro_stats'" class="block-intro">
         <div>
@@ -86,9 +107,11 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import ImgPlaceholder from '@/Components/ImgPlaceholder.vue';
+import LeadFormBlock from '@/Components/Blocks/LeadFormBlock.vue';
 
 defineProps({
     block:  { type: Object, required: true },
     number: { type: Number, default: null },
+    asTitle: { type: Boolean, default: false },
 });
 </script>

@@ -21,8 +21,9 @@
 
             <!-- Блоки (Про нас, Доставка та оплата) -->
             <template v-else>
-                <h1 class="info-page__title" :class="{ 'info-page__title--center': hasHero }">{{ page.title }}</h1>
-                <PageBlock v-for="(block, i) in page.blocks" :key="i" :block="block" />
+                <!-- Якщо сторінка починається з «Текст, фото й список» — його заголовок і є H1 (як у дизайні «Партнерам») -->
+                <h1 v-if="!splitTitle" class="info-page__title" :class="{ 'info-page__title--center': hasHero }">{{ page.title }}</h1>
+                <PageBlock v-for="(block, i) in page.blocks" :key="i" :block="block" :as-title="i === 0 && splitTitle" />
             </template>
         </div>
     </AppLayout>
@@ -40,6 +41,7 @@ const props = defineProps({
 
 // Заголовок по центру, як у дизайні «Про компанію», коли сторінка починається з фото
 const hasHero = computed(() => props.page.blocks[0]?.type === 'image');
+const splitTitle = computed(() => props.page.blocks[0]?.type === 'split' && !!props.page.blocks[0]?.heading);
 
 // Номер розділу документа — серед блоків «section»
 function sectionNumber(index) {

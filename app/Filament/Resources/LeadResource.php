@@ -105,7 +105,7 @@ class LeadResource extends Resource
                 Infolists\Components\KeyValueEntry::make('payload_view')
                     ->label(__('admin.leads.details'))
                     ->getStateUsing(fn(Lead $record) => collect((array) $record->payload)
-                        ->mapWithKeys(fn($v, $k) => [__('admin.leads.payload.' . $k) => $k === 'partner_type' ? __('admin.leads.partner_types.' . $v) : $v])
+                        ->mapWithKeys(fn($v, $k) => [__('admin.leads.payload.' . $k) => $v])
                         ->all())
                     ->hidden(fn(Lead $record) => empty($record->payload)),
                 Infolists\Components\TextEntry::make('message')->label(__('admin.orders.comment'))->placeholder('—')->columnSpanFull(),

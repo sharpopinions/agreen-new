@@ -590,3 +590,152 @@
 @media (max-width: 640px) {
     .contacts-page__form { padding: var(--space-5); }
 }
+
+// Текст, фото й список (Claude Design → PartnersPopupPage)
+
+.block-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 48px;
+    align-items: start;
+}
+
+.block-split__title {
+    font-size: 28px;
+    letter-spacing: -0.025em;
+    line-height: 1.25;
+}
+
+.block-split__media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+
+    img { display: block; width: 100%; max-height: 460px; object-fit: cover; }
+}
+
+.check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.check-list__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--font-size-base);
+    color: var(--color-text-2);
+
+    &::before {
+        content: '';
+        flex-shrink: 0;
+        width: 14px;
+        height: 14px;
+        background: currentColor;
+        color: var(--color-text);
+        mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / contain no-repeat;
+    }
+}
+
+.block-lead__perks-title {
+    margin: var(--space-6) 0 var(--space-3);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+// Форма заявки з картками вибору
+
+.block-lead { margin-bottom: 48px; scroll-margin-top: 90px; }
+
+.block-lead__options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+}
+
+.block-lead__option {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 28px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover { border-color: var(--color-border-2); box-shadow: var(--shadow-md); }
+    &--active { border-color: var(--color-text); }
+
+    .btn { margin-top: auto; pointer-events: none; }
+}
+
+.block-lead__option-title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.block-lead__option-text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--color-text-2);
+    margin-bottom: var(--space-3);
+}
+
+.block-lead__box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding: 40px 48px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    scroll-margin-top: 90px;
+}
+
+.segmented {
+    display: flex;
+    gap: 6px;
+    padding: 3px;
+    background: var(--color-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.segmented__item {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font: inherit;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-2);
+    cursor: pointer;
+    transition: all 0.12s;
+
+    &--active {
+        background: var(--color-surface);
+        border-color: var(--color-border);
+        box-shadow: var(--shadow-sm);
+        font-weight: 600;
+        color: var(--color-text);
+    }
+}
+
+@media (max-width: 900px) {
+    .block-split,
+    .block-lead__box { grid-template-columns: 1fr; }
+    .block-lead__options { grid-template-columns: 1fr; }
+    .block-lead__box { padding: var(--space-6); }
+}

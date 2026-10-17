@@ -97,7 +97,8 @@ class LeadController extends Controller
                 'name'         => ['required', 'string', 'max:255'],
                 'phone'        => ['required', ...self::PHONE],
                 'email'        => ['required', 'email', 'max:255'],
-                'partner_type' => ['nullable', Rule::in(['dealer', 'wholesale', 'installer'])],
+                // Тип партнерства — назва з карток на сторінці (налаштовуються в адмінці)
+                'partner_type' => ['nullable', 'string', 'max:100'],
                 'message'      => ['nullable', 'string', 'max:2000'],
             ],
             'service' => [

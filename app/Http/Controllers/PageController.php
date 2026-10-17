@@ -64,6 +64,12 @@ class PageController extends Controller
             'section'     => ['type' => $type, 'title' => $data['title'] ?? '', 'html' => $clean($data['html'] ?? '')],
             'text'        => ['type' => $type, 'html' => $clean($data['html'] ?? '')],
             'image'       => ['type' => $type, 'url' => ! empty($data['path']) ? Storage::disk('public')->url($data['path']) : null, 'alt' => $data['alt'] ?? ''],
+            'split'       => ['type' => $type, 'heading' => $data['heading'] ?? '', 'html' => $clean($data['html'] ?? ''),
+                'listHeading' => $data['list_heading'] ?? '', 'items' => $this->strings($data['items'] ?? []),
+                'image' => ! empty($data['path']) ? Storage::disk('public')->url($data['path']) : null, 'alt' => $data['alt'] ?? ''],
+            'lead_form'   => ['type' => $type, 'form' => $data['form'] ?? 'contact', 'heading' => $data['heading'] ?? '',
+                'optionsHeading' => $data['options_heading'] ?? '', 'options' => array_values($data['options'] ?? []),
+                'perksHeading' => $data['perks_heading'] ?? '', 'perks' => $this->strings($data['perks'] ?? [])],
             'intro_stats' => ['type' => $type, 'heading' => $data['heading'] ?? '', 'html' => $clean($data['html'] ?? ''), 'stats' => array_values($data['stats'] ?? [])],
             'features'    => ['type' => $type, 'heading' => $data['heading'] ?? '', 'items' => array_values($data['items'] ?? [])],
             'columns'     => ['type' => $type, 'columns' => collect($data['columns'] ?? [])->values()
@@ -72,6 +78,12 @@ class PageController extends Controller
             'cta'         => ['type' => $type, 'heading' => $data['heading'] ?? '', 'text' => $data['text'] ?? '', 'buttons' => array_values($data['buttons'] ?? [])],
             default       => null,
         };
+    }
+
+    /** Простий список рядків з repeater->simple() (елементи — рядки або ['text' => …]). */
+    private function strings(array $items): array
+    {
+        return collect($items)->map(fn($i) => is_array($i) ? ($i['text'] ?? '') : (string) $i)->filter()->values()->all();
     }
 
     private function brands(): array
