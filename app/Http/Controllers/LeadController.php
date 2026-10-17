@@ -35,7 +35,7 @@ class LeadController extends Controller
             'email.required_without' => 'Вкажіть телефон або email.',
         ]);
 
-        $payload = collect($data)->only(['quantity', 'partner_type', 'service', 'vacancy'])->filter()->all();
+        $payload = collect($data)->only(['quantity', 'partner_type', 'service', 'course', 'vacancy'])->filter()->all();
         if (! empty($data['post_id'])) {
             $payload['event'] = BlogPost::find($data['post_id'])?->translations()->value('title');
         }
@@ -107,6 +107,7 @@ class LeadController extends Controller
                 'email'   => ['nullable', 'email', 'max:255'],
                 'company' => ['nullable', 'string', 'max:255'],
                 'service' => ['nullable', 'string', 'max:255'],
+                'course'  => ['nullable', 'string', 'max:255'],
                 'message' => ['nullable', 'string', 'max:2000'],
             ],
             // Реєстрація на подію з блогу

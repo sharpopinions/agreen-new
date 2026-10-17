@@ -50,6 +50,12 @@ const CONFIG = {
         fields: ['name', 'phone', 'email'], required: [],
         successTitle: 'Готово!', successText: 'Ми повідомимо вас, коли товар надійде.',
     },
+    service: {
+        title: 'Замовити послугу', submit: 'Надіслати заявку',
+        hint: 'Наш менеджер звʼяжеться з вами протягом 30 хвилин у робочий час.',
+        fields: ['name', 'phone', 'email', 'message'], required: ['name', 'phone'],
+        successTitle: 'Заявку прийнято!', successText: 'Наш менеджер звʼяжеться з вами найближчим часом.',
+    },
     price_request: {
         title: 'Запит на гуртову ціну', submit: 'Надіслати запит',
         hint: 'Вкажіть потрібну кількість — підготуємо персональну пропозицію.',
@@ -61,6 +67,7 @@ const CONFIG = {
 const props = defineProps({
     type:    { type: String, required: true },
     product: { type: Object, default: null },
+    service: { type: String, default: null },
     open:    { type: Boolean, default: false },
 });
 const emit = defineEmits(['update:open']);
@@ -78,7 +85,9 @@ watch(() => props.open, async (isOpen) => {
 }, { immediate: true });
 
 function send() {
-    submit({ product_id: props.product?.id, quantity: form.quantity || null });
+    submit(props.type === 'service'
+        ? { service: props.service }
+        : { product_id: props.product?.id, quantity: form.quantity || null });
 }
 
 function close() {

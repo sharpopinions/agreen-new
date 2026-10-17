@@ -11,6 +11,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -26,6 +27,9 @@ Route::get('/brands/{slug}/media', [BrandController::class, 'media'])->name('bra
 // Блог
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
 Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.post');
+// Послуги
+Route::get('/services', [ServiceController::class, 'index'])->name('services');
+Route::get('/services/{slug}', [ServiceController::class, 'show'])->name('service');
 // Акції
 Route::get('/sale', [PromotionController::class, 'index'])->name('promotions');
 Route::get('/sale/{slug}', [PromotionController::class, 'show'])->name('promotion');

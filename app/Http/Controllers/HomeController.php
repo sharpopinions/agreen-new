@@ -57,6 +57,15 @@ class HomeController extends Controller
 
         return Inertia::render('Home', [
             ...compact('categories', 'brands', 'products'),
+            // Блок «Послуги» — перші 4 з адмінки
+            'services' => \App\Models\Service::with(['translations' => fn($q) => $q->where('language_id', $langId)])
+                ->where('is_active', true)->orderBy('sort_order')->limit(4)->get()
+                ->map(fn($s, $i) => [
+                    'n'     => str_pad((string) ($i + 1), 2, '0', STR_PAD_LEFT),
+                    'title' => $s->translations->first()?->title ?? '',
+                    'href'  => '/services/' . $s->translations->first()?->slug,
+                    'desc'  => \App\Support\Seo::excerpt($s->translations->first()?->summary, 90),
+                ]),
             // Блок «Блог та новини» — 4 останні записи
             'posts' => BlogController::query()->limit(4)->get()->map(fn($p) => BlogController::card($p)),
             'seo' => Seo::make(

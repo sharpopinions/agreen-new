@@ -66,6 +66,21 @@ class HandleInertiaRequests extends Middleware
                 'slug' => $b->translations->first()?->slug ?? '',
             ]);
 
-        return compact('categories', 'brands');
+        // Послуги для мегаменю й футера (адмінка → Контент → Послуги)
+        $services = \App\Models\Service::with(['translations' => fn($q) => $q->where('language_id', $langId)])
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->limit(8)
+            ->get()
+            ->map(fn($s) => [
+                'icon'  => $s->icon,
+                'title' => $s->translations->first()?->title ?? '',
+                'slug'  => $s->translations->first()?->slug ?? '',
+                'desc'  => \App\Support\Seo::excerpt($s->translations->first()?->summary, 40),
+            ])
+            ->filter(fn($s) => $s['slug'] !== '')
+            ->values();
+
+        return compact('categories', 'brands', 'services');
     }
 }

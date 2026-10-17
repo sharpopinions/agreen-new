@@ -220,13 +220,14 @@
   import ProductCard from '@/Components/ProductCard.vue';
   import CategoryCard from '@/Components/CategoryCard.vue';
   import ImgPlaceholder from '@/Components/ImgPlaceholder.vue';
-  import { services, partnerOffers, dealerPerks, aboutStats, aboutText } from '@/data/home';
+  import { partnerOffers, dealerPerks, aboutStats, aboutText } from '@/data/home';
 
   const props = defineProps({
       categories: Array,
       brands:     Array,
       products:   Array,
       posts:      { type: Array, default: () => [] },
+      services:   { type: Array, default: () => [] },
   });
 
   const slidesCount = 4;

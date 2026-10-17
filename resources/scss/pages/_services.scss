@@ -1,0 +1,326 @@
+// Послуги (Claude Design → ServicesPage, StudyCenterPage)
+
+.services-page__banner {
+    margin-bottom: 40px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.services-page__title { margin-bottom: var(--space-2); }
+
+.services-page__intro {
+    max-width: 680px;
+    font-size: var(--font-size-base);
+    line-height: 1.65;
+    color: var(--color-text-2);
+    margin: 0 0 40px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-4);
+    margin-bottom: 48px;
+}
+
+.service-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 28px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover { border-color: var(--color-border-2); box-shadow: var(--shadow-md); }
+
+    .btn { margin-top: auto; }
+}
+
+.service-card__n {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--space-4);
+    background: var(--color-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-text-3);
+}
+
+.service-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 10px;
+}
+
+.service-card__text {
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--color-text-2);
+    margin: 0 0 var(--space-4);
+}
+
+.service-card__details {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px;
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-size: 13px;
+        color: var(--color-text-2);
+
+        &::before {
+            content: '';
+            flex-shrink: 0;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--color-text-3);
+        }
+    }
+}
+
+.reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 48px;
+}
+
+.review-card {
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.review-card__stars {
+    margin-bottom: var(--space-3);
+    color: #f59e0b;
+    letter-spacing: 2px;
+}
+
+.review-card__star--off { color: var(--color-border-2); }
+
+.review-card__text {
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--color-text-2);
+    margin: 0 0 var(--space-4);
+}
+
+.review-card__author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+// Сторінка послуги
+
+.service-hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+    padding: 48px;
+    margin-bottom: 48px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+
+    &--stats { grid-template-columns: 1fr 320px; }
+}
+
+.service-hero__badge {
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 14px;
+    background: var(--color-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-3);
+}
+
+.service-hero__title {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin: 0 0 14px;
+}
+
+.service-hero__text {
+    max-width: 560px;
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+    color: var(--color-text-2);
+    margin: 0 0 20px;
+}
+
+.service-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+}
+
+.service-hero__stats {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: var(--space-6);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.service-hero__stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child { padding-bottom: 0; border-bottom: 0; }
+}
+
+.service-hero__stat-label { font-size: 13px; color: var(--color-text-2); }
+
+.service-hero__stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+}
+
+.service-benefits {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+    margin-bottom: 48px;
+}
+
+.service-benefit {
+    padding: var(--space-6);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.service-benefit__icon { font-size: 28px; margin-bottom: var(--space-3); }
+
+.service-benefit__title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 6px;
+}
+
+.service-benefit__text {
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    color: var(--color-text-2);
+    margin: 0;
+}
+
+.course-list {
+    margin-bottom: 48px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.course-list__row {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto auto;
+    gap: var(--space-6);
+    align-items: center;
+    padding: 18px var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    transition: background 0.12s;
+
+    &:last-child { border-bottom: 0; }
+    &:hover { background: var(--color-muted); }
+}
+
+.course-list__n {
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-3);
+    margin-bottom: 4px;
+}
+
+.course-list__title {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.course-list__dur { font-size: var(--font-size-sm); color: var(--color-text-2); }
+
+.course-list__price {
+    min-width: 100px;
+    text-align: right;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-text);
+}
+
+.service-page__body {
+    max-width: 860px;
+    margin-bottom: 48px;
+}
+
+.service-page__form { margin-bottom: 60px; }
+
+.service-page__form-text {
+    font-size: var(--font-size-base);
+    line-height: 1.7;
+    color: var(--color-text-2);
+    margin: 0 0 20px;
+}
+
+@media (max-width: 1100px) {
+    .service-benefits { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+    .services-grid,
+    .reviews-grid { grid-template-columns: 1fr; }
+    .service-hero,
+    .service-hero--stats { grid-template-columns: 1fr; padding: var(--space-6); }
+    .course-list__row { grid-template-columns: 1fr auto; gap: var(--space-3); }
+    .course-list__row > .course-list__dur,
+    .course-list__row > .course-list__level { display: none; }
+}
+
+@media (max-width: 640px) {
+    .service-benefits { grid-template-columns: 1fr; }
+    .service-hero__title { font-size: 24px; }
+    .course-list__row { grid-template-columns: 1fr; }
+    .course-list__price { text-align: left; }
+}

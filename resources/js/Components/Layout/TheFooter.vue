@@ -63,12 +63,7 @@
         },
         {
             title: 'Послуги',
-            links: [
-                { label: 'Навчальний центр',   href: '/services' },
-                { label: 'Технічна підтримка', href: '/services' },
-                { label: 'Проектування',       href: '/services' },
-                { label: 'Обслуговування',     href: '/services' },
-            ],
+            links: (page.props.nav?.services ?? []).slice(0, 4).map(s => ({ label: s.title, href: `/services/${s.slug}` })),
         },
         {
             title: 'Компанія',

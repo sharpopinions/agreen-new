@@ -56,7 +56,7 @@
             <div>
                 <div class="mega__label">Що ми робимо</div>
                 <div class="mega__grid mega__grid--2">
-                    <Link v-for="s in services" :key="s.title" href="/services" class="mega__item">
+                    <Link v-for="s in (nav.services ?? []).slice(0, 6)" :key="s.slug" :href="`/services/${s.slug}`" class="mega__item">
                         <span class="mega__icon mega__icon--emoji">{{ s.icon }}</span>
                         <span class="mega__text">
                             <span class="mega__title">{{ s.title }}</span>
@@ -116,16 +116,6 @@ defineProps({
     kind: { type: String, required: true },
     nav:  { type: Object, default: () => ({ categories: [], brands: [] }) },
 });
-
-// Контент із Claude Design (mega-menus.jsx)
-const services = [
-    { icon: '🎓', title: 'Навчальний центр',     desc: 'Курси та сертифікація' },
-    { icon: '🛠️', title: 'Сервісні роботи',       desc: 'Ремонт обладнання' },
-    { icon: '🚚', title: 'Доставка',              desc: 'По Україні та Європі' },
-    { icon: '📋', title: 'Технічна консультація', desc: 'Підбір рішень' },
-    { icon: '🎨', title: 'Підбір кольору',        desc: 'Лабораторія A-green' },
-    { icon: '📦', title: 'Дропшипінг',            desc: 'Для дилерів' },
-];
 
 const aboutLinks = [
     { title: 'Про компанію', desc: 'Історія, місія, цінності', href: '/about'     },
