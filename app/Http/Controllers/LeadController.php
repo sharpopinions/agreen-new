@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BlogPost;
 use App\Models\Lead;
 use App\Models\Product;
 use App\Notifications\NewLead;
@@ -35,6 +36,9 @@ class LeadController extends Controller
         ]);
 
         $payload = collect($data)->only(['quantity', 'partner_type', 'service', 'vacancy'])->filter()->all();
+        if (! empty($data['post_id'])) {
+            $payload['event'] = BlogPost::find($data['post_id'])?->translations()->value('title');
+        }
 
         $lead = Lead::create([
             'type'       => $type,
@@ -104,11 +108,27 @@ class LeadController extends Controller
                 'service' => ['nullable', 'string', 'max:255'],
                 'message' => ['nullable', 'string', 'max:2000'],
             ],
+            // Реєстрація на подію з блогу
+            'event' => [
+                'name'    => ['required', 'string', 'max:255'],
+                'phone'   => ['required', ...self::PHONE],
+                'email'   => ['required', 'email', 'max:255'],
+                'company' => ['nullable', 'string', 'max:255'],
+                'post_id' => ['required', 'integer', Rule::exists(BlogPost::class, 'id')->where('type', 'event')->where('is_active', true)],
+            ],
             'vacancy' => [
                 'name'    => ['required', 'string', 'max:255'],
                 'phone'   => ['required', ...self::PHONE],
                 'email'   => ['nullable', 'email', 'max:255'],
-                'vacancy' => ['nullable', 'string', 'max:255'],
+                // Реєстрація на подію з блогу
+            'event' => [
+                'name'    => ['required', 'string', 'max:255'],
+                'phone'   => ['required', ...self::PHONE],
+                'email'   => ['required', 'email', 'max:255'],
+                'company' => ['nullable', 'string', 'max:255'],
+                'post_id' => ['required', 'integer', Rule::exists(BlogPost::class, 'id')->where('type', 'event')->where('is_active', true)],
+            ],
+            'vacancy' => ['nullable', 'string', 'max:255'],
                 'message' => ['nullable', 'string', 'max:3000'],
             ],
         };

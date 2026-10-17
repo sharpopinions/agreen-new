@@ -191,15 +191,16 @@
               </div>
           </section>
 
-          <!-- 8. Блог та новини -->
-          <section class="home-section">
+          <!-- 8. Блог та новини (адмінка → Контент → Блог) -->
+          <section v-if="posts.length" class="home-section">
               <div class="section-header">
                   <h2 class="section-header__title">Блог та новини</h2>
                   <Link href="/blog" class="btn btn--ghost">Дивитись всі новини →</Link>
               </div>
-              <div class="home-blog">
-                  <Link v-for="(post, i) in posts" :key="i" href="/blog" class="home-blog__card">
-                      <ImgPlaceholder :h="140" label="фото новини" :seed="`${post.title}-${i * 7}`" />
+              <div v-if="posts.length" class="home-blog">
+                  <Link v-for="post in posts" :key="post.id" :href="`/blog/${post.slug}`" class="home-blog__card">
+                      <img v-if="post.image" :src="post.image" :alt="post.title" class="home-blog__img" loading="lazy" />
+                      <ImgPlaceholder v-else :h="140" label="фото новини" :seed="post.slug" />
                       <div class="home-blog__body">
                           <div class="home-blog__date">{{ post.date }}</div>
                           <div class="home-blog__title">{{ post.title }}</div>
@@ -219,12 +220,13 @@
   import ProductCard from '@/Components/ProductCard.vue';
   import CategoryCard from '@/Components/CategoryCard.vue';
   import ImgPlaceholder from '@/Components/ImgPlaceholder.vue';
-  import { services, partnerOffers, dealerPerks, aboutStats, aboutText, posts } from '@/data/home';
+  import { services, partnerOffers, dealerPerks, aboutStats, aboutText } from '@/data/home';
 
   const props = defineProps({
       categories: Array,
       brands:     Array,
       products:   Array,
+      posts:      { type: Array, default: () => [] },
   });
 
   const slidesCount = 4;

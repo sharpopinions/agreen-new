@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
@@ -22,6 +23,9 @@ Route::get('/brands', [BrandController::class, 'index'])->name('brands');
 Route::get('/brands/{slug}', [BrandController::class, 'show'])->name('brand');
 Route::get('/brands/{slug}/about', [BrandController::class, 'about'])->name('brand.about');
 Route::get('/brands/{slug}/media', [BrandController::class, 'media'])->name('brand.media');
+// Блог
+Route::get('/blog', [BlogController::class, 'index'])->name('blog');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.post');
 // Акції
 Route::get('/sale', [PromotionController::class, 'index'])->name('promotions');
 Route::get('/sale/{slug}', [PromotionController::class, 'show'])->name('promotion');

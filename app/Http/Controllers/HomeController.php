@@ -57,6 +57,8 @@ class HomeController extends Controller
 
         return Inertia::render('Home', [
             ...compact('categories', 'brands', 'products'),
+            // Блок «Блог та новини» — 4 останні записи
+            'posts' => BlogController::query()->limit(4)->get()->map(fn($p) => BlogController::card($p)),
             'seo' => Seo::make(
                 'A-green — матеріали для кузовного ремонту та промисловості',
                 SiteSettings::forFrontend()['footerText'],

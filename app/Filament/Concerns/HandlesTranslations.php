@@ -34,7 +34,7 @@ trait HandlesTranslations
     }
 
     /** Поля перекладу-масиви (JSON): блоки сторінки, цифри бренду. */
-    private const ARRAY_TRANSLATION_FIELDS = ['blocks', 'stats'];
+    private const ARRAY_TRANSLATION_FIELDS = ['blocks', 'stats', 'program', 'speakers'];
 
     /** Перевірені й підготовлені дані форми (dehydrated): файли — шляхами, а не тимчасовими обʼєктами. */
     protected ?array $translationState = null;
