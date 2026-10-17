@@ -164,7 +164,7 @@ class CategoryResource extends Resource
                 Tables\Actions\EditAction::make(),
                 // Категорію з товарами чи підкатегоріями не видаляємо — спершу перенесіть їх
                 Tables\Actions\DeleteAction::make()
-                    ->hidden(fn(Category $record) => $record->products_count > 0 || $record->children()->exists()),
+                    ->hidden(fn(Category $record) => $record->products()->exists() || $record->children()->exists()),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

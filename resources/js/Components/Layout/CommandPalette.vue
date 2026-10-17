@@ -93,7 +93,7 @@ const fmt = (p) => Number(p).toLocaleString('uk-UA') + ' ₴';
 const staticItems = computed(() => [
     ...pages.map(p => ({ kind: 'Сторінка', ...p })),
     ...(page.props.nav?.categories ?? []).map(c => ({ kind: 'Категорія', name: c.name, icon: '📦', href: `/catalog/${c.slug}` })),
-    ...(page.props.nav?.brands ?? []).map(b => ({ kind: 'Бренд', name: b.name, icon: '🏭', href: `/catalog?brand[]=${b.id}` })),
+    ...(page.props.nav?.brands ?? []).map(b => ({ kind: 'Бренд', name: b.name, icon: '🏭', href: `/brands/${b.slug}` })),
     { kind: 'Дія', name: 'Перемкнути тему', icon: '🌗', action: toggleTheme },
 ]);
 

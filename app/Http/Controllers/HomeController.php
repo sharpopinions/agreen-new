@@ -48,6 +48,7 @@ class HomeController extends Controller
             ->map(fn($b) => [
                 'id'   => $b->id,
                 'name' => $b->translations->first()?->name ?? '',
+                'slug' => $b->translations->first()?->slug ?? '',
             ]);
 
         $products = ProductCard::collection(

@@ -61,7 +61,7 @@
                         <span>Артикул: {{ product.sku }}</span>
                         <template v-if="product.brand">
                             <span>·</span>
-                            <span>Бренд: <Link :href="`/catalog?brand[]=${product.brand.id}`" class="product-info__brand">{{ product.brand.name }}</Link></span>
+                            <span>Бренд: <Link :href="`/brands/${product.brand.slug}`" class="product-info__brand">{{ product.brand.name }}</Link></span>
                         </template>
                         <template v-if="isModified">
                             <span>·</span>

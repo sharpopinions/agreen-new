@@ -6,7 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class BrandTranslation extends Model
 {
-    protected $fillable = ['brand_id', 'language_id', 'name', 'slug', 'description'];
+    protected $fillable = [
+        'brand_id', 'language_id', 'name', 'slug', 'short_description', 'description', 'stats',
+        'meta_title', 'meta_description',
+    ];
+
+    protected $casts = [
+        'stats' => 'array',
+    ];
 
     public function brand()
     {

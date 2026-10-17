@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\CheckoutController;
@@ -14,6 +15,11 @@ Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog');
 Route::get('/catalog/all', [CatalogController::class, 'all'])->name('catalog.all');
 Route::get('/catalog/{slug}', [CatalogController::class, 'show'])->name('catalog.category');
 Route::get('/p/{slug}', [ProductController::class, 'show'])->name('product');
+// Бренди
+Route::get('/brands', [BrandController::class, 'index'])->name('brands');
+Route::get('/brands/{slug}', [BrandController::class, 'show'])->name('brand');
+Route::get('/brands/{slug}/about', [BrandController::class, 'about'])->name('brand.about');
+Route::get('/brands/{slug}/media', [BrandController::class, 'media'])->name('brand.media');
 Route::get('/search', SearchController::class)->name('search')->middleware('throttle:60,1');
 // Кошик і оформлення
 Route::get('/cart', [CartController::class, 'index'])->name('cart');

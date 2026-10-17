@@ -62,6 +62,7 @@ class HandleInertiaRequests extends Middleware
             ->map(fn($b) => [
                 'id'   => $b->id,
                 'name' => $b->translations->first()?->name ?? '',
+                'slug' => $b->translations->first()?->slug ?? '',
             ]);
 
         return compact('categories', 'brands');

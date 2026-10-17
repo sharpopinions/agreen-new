@@ -26,12 +26,15 @@ trait HandlesTranslations
             $t = $translations->get($lang->id);
             foreach ($this->translationFields as $field) {
                 // Масиви (блоки сторінки) — порожній список, а не ''
-                $data[$lang->code . '_' . $field] = $t?->$field ?? (in_array($field, ['blocks'], true) ? [] : '');
+                $data[$lang->code . '_' . $field] = $t?->$field ?? (in_array($field, self::ARRAY_TRANSLATION_FIELDS, true) ? [] : '');
             }
         }
 
         return $data;
     }
+
+    /** Поля перекладу-масиви (JSON): блоки сторінки, цифри бренду. */
+    private const ARRAY_TRANSLATION_FIELDS = ['blocks', 'stats'];
 
     /** Перевірені й підготовлені дані форми (dehydrated): файли — шляхами, а не тимчасовими обʼєктами. */
     protected ?array $translationState = null;
@@ -74,7 +77,7 @@ trait HandlesTranslations
             foreach ($this->translationFields as $field) {
                 $state = $this->translationState ?? $this->data;
                 $translationData[$field] = $state[$lang->code . '_' . $field] ?? '';
-                if ($field === 'blocks') {
+                if (in_array($field, self::ARRAY_TRANSLATION_FIELDS, true)) {
                     $translationData[$field] = array_values((array) ($translationData[$field] ?: []));
                 }
             }

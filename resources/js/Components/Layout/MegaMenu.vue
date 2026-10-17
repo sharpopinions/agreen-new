@@ -32,7 +32,7 @@
             <div>
                 <div class="mega__label">Популярні бренди</div>
                 <div class="mega__grid mega__grid--5">
-                    <Link v-for="brand in nav.brands" :key="brand.id" :href="`/catalog?brand[]=${brand.id}`" class="mega__brand">
+                    <Link v-for="brand in nav.brands" :key="brand.id" :href="`/brands/${brand.slug}`" class="mega__brand">
                         <span class="mega__brand-icon">{{ brand.name.charAt(0) }}</span>
                         <span class="mega__brand-name">{{ brand.name }}</span>
                     </Link>

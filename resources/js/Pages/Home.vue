@@ -72,7 +72,7 @@
                   <Link
                       v-for="brand in brands"
                       :key="brand.id"
-                      :href="`/catalog?brand[]=${brand.id}`"
+                      :href="`/brands/${brand.slug}`"
                       class="home-brands__item"
                   >{{ brand.name }}</Link>
                   <div class="home-brands__all">

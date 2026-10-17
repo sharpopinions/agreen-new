@@ -14,12 +14,12 @@ class EditBrand extends EditRecord
 
     protected static string $resource = BrandResource::class;
 
-    protected array $translationFields = ['name', 'slug', 'description'];
+    protected array $translationFields = ['name', 'slug', 'short_description', 'description', 'stats', 'meta_title', 'meta_description'];
 
     protected function getHeaderActions(): array
     {
         return [
-            TranslateAction::makeForPage($this->translationFields),
+            TranslateAction::makeForPage(['name', 'slug', 'short_description', 'description', 'meta_title', 'meta_description']),
             Actions\DeleteAction::make(),
         ];
     }

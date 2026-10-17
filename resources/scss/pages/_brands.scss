@@ -1,0 +1,407 @@
+// Бренди (Claude Design → BrandsPage, BrandDetailPage, BrandProductsPage)
+
+.brands-page__title { margin-bottom: 6px; }
+
+.brands-page__subtitle {
+    font-size: var(--font-size-base);
+    color: var(--color-text-2);
+    margin: 0 0 var(--space-6);
+}
+
+.brands-page__search { margin-bottom: 20px; }
+
+.brands-page__empty {
+    padding: 60px 20px;
+    text-align: center;
+    font-size: var(--font-size-base);
+    color: var(--color-text-2);
+}
+
+// Вкладки-«пігулки»
+.pill-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: 28px;
+}
+
+.pill-tabs__item {
+    padding: 7px 18px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    font: inherit;
+    font-size: 13px;
+    color: var(--color-text-2);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover { border-color: var(--color-border-2); color: var(--color-text); }
+
+    &--active,
+    &--active:hover {
+        background: var(--color-text);
+        border-color: var(--color-text);
+        color: var(--color-bg);
+        font-weight: 600;
+    }
+}
+
+.brands-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-4);
+}
+
+.brand-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+
+    &:hover {
+        border-color: var(--color-border-2);
+        box-shadow: var(--shadow-md);
+    }
+}
+
+.brand-card__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    margin-bottom: var(--space-4);
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text-2);
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: contain; background: #fff; }
+}
+
+.brand-card__name {
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.brand-card__link {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-3);
+}
+
+// Шапка бренду
+
+.brand-hero {
+    display: grid;
+    grid-template-columns: 160px 1fr auto;
+    gap: var(--space-8);
+    align-items: center;
+    padding: 28px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+
+    &--stats { grid-template-columns: 160px 1fr 280px; }
+}
+
+.brand-hero__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 160px;
+    height: 108px;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    font-size: 48px;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--color-text-2);
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: contain; padding: var(--space-3); background: #fff; }
+}
+
+.brand-hero__title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    margin: 0 0 var(--space-2);
+}
+
+.brand-hero__text {
+    max-width: 640px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--color-text-2);
+    margin: 0;
+}
+
+.brand-hero__stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.brand-hero__stat {
+    padding: 12px 14px;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    text-align: center;
+}
+
+.brand-hero__stat-value {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+}
+
+.brand-hero__stat-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-3);
+    margin-top: 2px;
+}
+
+// Вкладки
+
+.brand-tabs {
+    display: flex;
+    gap: 2px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-4);
+    overflow-x: auto;
+}
+
+.brand-tabs__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 10px 18px;
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent;
+    font-size: var(--font-size-base);
+    color: var(--color-text-2);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--transition-fast);
+
+    &:hover { color: var(--color-text); }
+
+    &--active {
+        border-bottom-color: var(--color-text);
+        color: var(--color-text);
+        font-weight: 600;
+    }
+}
+
+.brand-tabs__count {
+    padding: 1px 8px;
+    background: var(--color-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-text-3);
+}
+
+// Про бренд
+
+.brand-about {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: var(--space-8);
+    margin-bottom: 60px;
+    align-items: start;
+}
+
+.brand-about__subtitle {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-text);
+    margin: var(--space-8) 0 14px;
+}
+
+.brand-about__others {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.brand-chip {
+    padding: 10px 18px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: border-color var(--transition-fast);
+
+    &:hover { border-color: var(--color-border-2); }
+}
+
+.brand-about__stats {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.brand-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+}
+
+.brand-stat-row__label {
+    font-size: 13px;
+    color: var(--color-text-2);
+}
+
+.brand-stat-row__value {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+}
+
+// Медіабанк
+
+.brand-media { margin-bottom: 60px; }
+
+.brand-media__video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    max-height: 480px;
+    margin-bottom: var(--space-6);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--color-bg-alt);
+
+    iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+}
+
+.brand-media__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: var(--space-8);
+}
+
+.media-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    text-decoration: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &:hover { border-color: var(--color-border-2); box-shadow: var(--shadow-md); }
+}
+
+.media-card__img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    background: var(--color-bg-alt);
+}
+
+.media-card__body { padding: 12px 14px; }
+
+.media-card__title {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: 4px;
+}
+
+.media-card__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-3);
+}
+
+.doc-list {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.doc-list__row {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-4);
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--color-border);
+
+    &:last-child { border-bottom: 0; }
+}
+
+.doc-list__icon { color: var(--color-text-2); }
+
+.doc-list__title {
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.doc-list__meta {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-3);
+    margin-top: 2px;
+}
+
+@media (max-width: 1100px) {
+    .brands-grid { grid-template-columns: repeat(4, 1fr); }
+    .brand-hero--stats { grid-template-columns: 120px 1fr; }
+    .brand-hero--stats .brand-hero__stats { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
+}
+
+@media (max-width: 900px) {
+    .brands-grid { grid-template-columns: repeat(3, 1fr); }
+    .brand-about { grid-template-columns: 1fr; }
+    .brand-media__grid { grid-template-columns: repeat(2, 1fr); }
+
+    .brand-hero,
+    .brand-hero--stats { grid-template-columns: 1fr; gap: var(--space-4); }
+    .brand-hero__logo { width: 120px; height: 80px; font-size: 32px; }
+    .brand-hero > .btn { justify-self: start; }
+}
+
+@media (max-width: 640px) {
+    .brands-grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
+    .brand-card { padding: 20px 12px; }
+    .brand-hero__stats,
+    .brand-hero--stats .brand-hero__stats { grid-template-columns: 1fr 1fr; }
+    .doc-list__row { grid-template-columns: auto 1fr; }
+    .doc-list__row .btn { grid-column: 1 / -1; justify-self: start; }
+}
