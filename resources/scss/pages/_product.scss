@@ -241,6 +241,10 @@
     transition: all var(--transition-fast);
 
     &:hover { background: var(--color-muted); color: var(--color-text); }
+
+    &--active { background: var(--color-inv-bg); border-color: var(--color-inv-bg); color: var(--color-inv-text); }
+    &--active:hover { background: var(--color-inv-bg); color: var(--color-inv-text); opacity: 0.9; }
+    &--wish, &--wish:hover { color: var(--color-danger); }
 }
 
 // Лічильник (QtyCtrl)

@@ -87,6 +87,8 @@ const pages = [
     { name: 'Акційні товари',     icon: '🔥', href: '/catalog?sale=1' },
     { name: 'Акції',              icon: '🏷️', href: '/sale' },
     { name: 'Про нас',            icon: 'ℹ️', href: '/about' },
+    { name: 'Обрані товари',      icon: '❤️', href: '/wishlist' },
+    { name: 'Порівняння',         icon: '⚖️', href: '/compare' },
 ];
 
 const fmt = (p) => Number(p).toLocaleString('uk-UA') + ' ₴';

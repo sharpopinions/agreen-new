@@ -2,6 +2,7 @@
 
 return [
     'fields' => [
+        'in_wishlists' => 'In wishlists',
         'parent_category'   => 'Parent category',
         'root_category'     => '— Root category —',
         'short_description' => 'Subtitle',

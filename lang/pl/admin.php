@@ -2,6 +2,7 @@
 
 return [
     'fields' => [
+        'in_wishlists' => 'W ulubionych',
         'parent_category'   => 'Kategoria nadrzędna',
         'root_category'     => '— Kategoria główna —',
         'short_description' => 'Podtytuł',

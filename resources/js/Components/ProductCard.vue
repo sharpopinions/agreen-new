@@ -30,8 +30,14 @@
                 :style="{ color: product.badge.color, backgroundColor: product.badge.bgColor }">
                 {{ product.badge.name }}
             </span>
-            <button class="product-card__wish" aria-label="Вішліст" @click.prevent.stop>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <button
+                class="product-card__wish"
+                :class="{ 'product-card__wish--active': inWishlist(product.id) }"
+                :aria-label="inWishlist(product.id) ? 'Прибрати з обраного' : 'Додати в обране'"
+                :aria-pressed="inWishlist(product.id)"
+                @click.prevent.stop="toggleWishlist(product.id)"
+            >
+                <svg width="16" height="16" viewBox="0 0 24 24" :fill="inWishlist(product.id) ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
             </button>
@@ -67,8 +73,10 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
 import { useCart } from '@/composables/useCart';
+import { useLists } from '@/composables/useLists';
 
 const { add, pending } = useCart();
+const { inWishlist, toggleWishlist } = useLists();
 
 defineProps({
     product: Object,

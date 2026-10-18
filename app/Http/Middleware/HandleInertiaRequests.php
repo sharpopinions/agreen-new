@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Language;
 use App\Services\Cart;
+use App\Services\ProductLists;
 use App\Support\SiteSettings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -19,6 +20,8 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             // Кошик (сесія) — актуальний на кожному запиті
             'cart'  => fn () => app(Cart::class)->summary(),
+            // id товарів у вішлісті й порівнянні (сердечко на картці, лічильники в хедері)
+            'lists' => fn () => app(ProductLists::class)->summary(),
             // Поточний покупець (хедер, кабінет, оформлення замовлення)
             'auth'  => fn () => ($u = $request->user()) ? ['user' => [
                 'id'            => $u->id,

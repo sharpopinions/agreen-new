@@ -136,11 +136,25 @@
                             </div>
                             <button v-if="product.availability === 'on_order'" class="btn btn--primary btn--lg btn--full" :disabled="pending" @click="add(product.id, qty)">Замовити</button>
                             <button v-else class="btn btn--primary btn--lg btn--full" :disabled="pending" @click="add(product.id, qty)">До кошика</button>
-                            <button class="product-info__icon-btn" aria-label="Додати до порівняння" title="Додати до порівняння">
+                            <button
+                                class="product-info__icon-btn"
+                                :class="{ 'product-info__icon-btn--active': inCompare(product.id) }"
+                                :aria-pressed="inCompare(product.id)"
+                                :aria-label="inCompare(product.id) ? 'Прибрати з порівняння' : 'Додати до порівняння'"
+                                :title="inCompare(product.id) ? 'Прибрати з порівняння' : 'Додати до порівняння'"
+                                @click="toggleCompare(product.id)"
+                            >
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
                             </button>
-                            <button class="product-info__icon-btn" aria-label="В обране" title="В обране">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                            <button
+                                class="product-info__icon-btn"
+                                :class="{ 'product-info__icon-btn--wish': inWishlist(product.id) }"
+                                :aria-pressed="inWishlist(product.id)"
+                                :aria-label="inWishlist(product.id) ? 'Прибрати з обраного' : 'В обране'"
+                                :title="inWishlist(product.id) ? 'Прибрати з обраного' : 'В обране'"
+                                @click="toggleWishlist(product.id)"
+                            >
+                                <svg width="16" height="16" viewBox="0 0 24 24" :fill="inWishlist(product.id) ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
                             </button>
                         </div>
                         <p v-if="maxQty !== null && qty >= maxQty" class="product-info__hint">На складі лише {{ maxQty }} шт.</p>
@@ -248,8 +262,10 @@ import LeadModal from '@/Components/Form/LeadModal.vue';
 import RecentlyViewed from '@/Components/RecentlyViewed.vue';
 import { formatPrice as fmt, pluralUa } from '@/utils/format';
 import { useCart } from '@/composables/useCart';
+import { useLists } from '@/composables/useLists';
 
 const { add, pending } = useCart();
+const { inWishlist, inCompare, toggleWishlist, toggleCompare } = useLists();
 
 const props = defineProps({
     product: Object,

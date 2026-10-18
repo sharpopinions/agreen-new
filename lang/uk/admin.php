@@ -2,6 +2,7 @@
 
 return [
     'fields' => [
+        'in_wishlists' => 'В обраному',
         'parent_category'   => 'Батьківська категорія',
         'root_category'     => '— Коренева категорія —',
         'short_description' => 'Підзаголовок',

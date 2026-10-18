@@ -10,6 +10,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProductListController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PromotionController;
 use App\Http\Controllers\SearchController;
@@ -38,6 +39,18 @@ Route::get('/sale', [PromotionController::class, 'index'])->name('promotions');
 Route::get('/sale/{slug}', [PromotionController::class, 'show'])->name('promotion');
 Route::get('/search', SearchController::class)->name('search')->middleware('throttle:60,1');
 // Кошик і оформлення
+// Обрані товари й порівняння (гість — сесія, покупець — профіль)
+Route::controller(ProductListController::class)->group(function () {
+    Route::get('/wishlist', 'wishlist')->name('wishlist');
+    Route::get('/wishlist/preview', 'preview')->name('wishlist.preview');
+    Route::post('/wishlist/to-cart', 'wishlistToCart')->name('wishlist.cart');
+    Route::post('/wishlist/{product}', 'toggleWishlist')->name('wishlist.toggle')->whereNumber('product');
+    Route::delete('/wishlist', 'clearWishlist')->name('wishlist.clear');
+    Route::get('/compare', 'compare')->name('compare');
+    Route::post('/compare/{product}', 'toggleCompare')->name('compare.toggle')->whereNumber('product');
+    Route::delete('/compare', 'clearCompare')->name('compare.clear');
+});
+
 Route::get('/cart', [CartController::class, 'index'])->name('cart');
 Route::post('/cart', [CartController::class, 'store'])->name('cart.add')->middleware('throttle:120,1');
 Route::patch('/cart/{product}', [CartController::class, 'update'])->whereNumber('product')->name('cart.update');

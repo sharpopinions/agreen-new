@@ -24,6 +24,7 @@ use App\Models\User;
 use App\Models\Vacancy;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -108,7 +109,9 @@ class DemoSeeder extends Seeder
         }
 
         if (Product::where('sku', 'like', 'DM-%')->exists()) {
-            $this->command?->warn('Демо-дані вже є — пропускаю.');
+            $this->ukId = Language::where('code', 'uk')->value('id');
+            $this->update();
+            $this->command?->warn('Демо-дані вже є — додано лише нове (вішліст, порівняння).');
 
             return;
         }
@@ -272,7 +275,7 @@ class DemoSeeder extends Seeder
             if ($color) {
                 $ids[] = $attrs['color'][$color] ?? null;
             }
-            $volume = str_contains($variant, '5 л') ? '5 л' : (str_contains($variant, '0,5 л') ? '0,5 л' : '1 л');
+            $volume = str_contains($variant, '0,5 л') ? '0,5 л' : (str_contains($variant, '5 л') ? '5 л' : '1 л');
             $ids[] = $attrs['volume'][$volume] ?? null;
         }
 
@@ -565,6 +568,8 @@ class DemoSeeder extends Seeder
             ]);
         }
 
+        $this->lists($client);
+
         CashbackTransaction::create([
             'user_id' => $client->id, 'amount' => -150, 'description' => 'Списано при оплаті замовлення',
         ]);
@@ -581,6 +586,39 @@ class DemoSeeder extends Seeder
                 'message' => $message, 'payload' => ['request' => $kind],
             ]);
             $lead->forceFill(['created_at' => now()->subDays(40 - $i * 10)])->saveQuietly();
+        }
+    }
+
+    /** Обрані товари й порівняння демо-клієнта (3 шліфувальні диски однієї категорії). */
+    private function lists(User $client): void
+    {
+        $now = now();
+        $rows = fn(string $list, $ids) => $ids->map(fn($id) => [
+            'user_id' => $client->id, 'product_id' => $id, 'list' => $list, 'created_at' => $now, 'updated_at' => $now,
+        ])->all();
+
+        DB::table('product_list_items')->insertOrIgnore($rows('wishlist', Product::where('sku', 'like', 'DM-%')->inRandomOrder()->limit(7)->pluck('id')));
+        DB::table('product_list_items')->insertOrIgnore($rows('compare', Product::whereIn('sku', ['DM-0019', 'DM-0020', 'DM-0022'])->pluck('id')));
+    }
+
+    /** Доповнення для бази, де демо-дані вже є (повторний запуск після оновлень). */
+    private function update(): void
+    {
+        $client = User::where('email', 'client@demo.test')->first();
+        if ($client && ! DB::table('product_list_items')->where('user_id', $client->id)->exists()) {
+            $this->lists($client);
+        }
+
+        // Виправлення: товари «0,5 л» отримували обʼєм «5 л»
+        $attrs = $this->attributeValues();
+        if (isset($attrs['volume']['0,5 л'], $attrs['volume']['5 л'])) {
+            Product::where('sku', 'like', 'DM-%')
+                ->whereHas('translations', fn($q) => $q->where('language_id', $this->ukId)->where('name', 'like', '%0,5 л%'))
+                ->get()
+                ->each(function (Product $p) use ($attrs) {
+                    $p->attributeValues()->detach($attrs['volume']['5 л']);
+                    $p->attributeValues()->syncWithoutDetaching([$attrs['volume']['0,5 л']]);
+                });
         }
     }
 

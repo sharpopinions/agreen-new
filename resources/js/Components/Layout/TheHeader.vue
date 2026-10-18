@@ -54,17 +54,14 @@
             </button>
 
             <div class="header__actions">
-                <button class="header__icon-btn" aria-label="Вішліст">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                    </svg>
-                </button>
+                <WishlistMenu />
 
-                <button class="header__icon-btn" aria-label="Порівняння">
+                <Link href="/compare" class="header__icon-btn header__icon-btn--badge" aria-label="Порівняння товарів">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/>
                     </svg>
-                </button>
+                    <span v-if="compare.length" class="header__badge">{{ compare.length }}</span>
+                </Link>
 
                 <button class="header__cart-btn" :class="{ 'header__cart-btn--filled': cart.count > 0 }" @click="openDrawer">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -94,11 +91,14 @@ import { useCommandPalette } from '@/composables/useCommandPalette';
 import { useCart } from '@/composables/useCart';
 import { useSite } from '@/composables/useSite';
 import { useAuthModal } from '@/composables/useAuthModal';
+import { useLists } from '@/composables/useLists';
+import WishlistMenu from '@/Components/Lists/WishlistMenu.vue';
 
 const page = usePage();
 const site = useSite();
 const user = computed(() => page.props.auth?.user?.verified ? page.props.auth.user : null);
 const { show: showAuth } = useAuthModal();
+const { compare } = useLists();
 
 // Мегаменю: відкривається при наведенні/фокусі, закривається з невеликою
 // затримкою, щоб встигнути перевести курсор з пункту меню на панель

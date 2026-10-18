@@ -313,6 +313,12 @@ class ProductResource extends Resource
                     ->badge()
                     ->color(fn($state) => $state === null ? 'gray' : ($state > 0 ? 'success' : 'warning'))
                     ->sortable(),
+                Tables\Columns\TextColumn::make('wishlisted_by_count')
+                    ->label(__('admin.fields.in_wishlists'))
+                    ->counts('wishlistedBy')
+                    ->icon('heroicon-o-heart')
+                    ->sortable()
+                    ->toggleable(),
                 Tables\Columns\ToggleColumn::make('is_active')
                     ->label(__('admin.fields.show_on_site')),
             ])

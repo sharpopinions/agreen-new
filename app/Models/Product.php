@@ -90,6 +90,12 @@ class Product extends Model
         return $this->belongsToMany(AttributeValue::class, 'product_attribute_values');
     }
 
+    /** Покупці, які додали товар в обране (адмінка: популярність). */
+    public function wishlistedBy()
+    {
+        return $this->belongsToMany(User::class, 'product_list_items')->wherePivot('list', 'wishlist');
+    }
+
     /** Активні товари з усім, що потрібно картці (App\Presenters\ProductCard). */
     public function scopeForCard($query)
     {
