@@ -22,7 +22,7 @@ class LeadController extends Controller
 
     public function store(Request $request, string $type): RedirectResponse
     {
-        abort_unless(in_array($type, Lead::TYPES, true), 404);
+        abort_unless(in_array($type, Lead::TYPES, true) && ! in_array($type, Lead::ACCOUNT_TYPES, true), 404);
 
         // Пастка для ботів: приховане поле має лишитися порожнім. Боту — «успіх», у базу нічого
         if (filled($request->input('website'))) {

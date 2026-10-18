@@ -10,6 +10,7 @@
         <CartAddedModal />
         <CartDrawer />
         <AuthModal />
+        <FlashNotice />
     </div>
 </template>
 
@@ -21,4 +22,5 @@
     import CartAddedModal from '@/Components/Cart/CartAddedModal.vue';
     import CartDrawer from '@/Components/Cart/CartDrawer.vue';
     import AuthModal from '@/Components/Auth/AuthModal.vue';
+    import FlashNotice from '@/Components/FlashNotice.vue';
 </script>

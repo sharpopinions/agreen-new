@@ -11,7 +11,10 @@ class Lead extends Model
     use BelongsToStore;
 
     /** Типи форм. Поля й тексти кожної — в App\Http\Controllers\LeadController. */
-    public const TYPES = ['contact', 'quick_order', 'stock_notify', 'price_request', 'partner', 'service', 'vacancy', 'event'];
+    public const TYPES = ['contact', 'quick_order', 'stock_notify', 'price_request', 'partner', 'service', 'vacancy', 'event', 'support'];
+
+    /** Типи, що приходять лише з кабінету (не через публічну форму). */
+    public const ACCOUNT_TYPES = ['support'];
 
     public const STATUSES = ['new', 'in_progress', 'done', 'spam'];
 

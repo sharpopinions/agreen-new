@@ -42,7 +42,7 @@ class AdminAccessTest extends TestCase
             // розділ            admin  manager content
             '/admin/products'  => [200,  200,    200],
             '/admin/orders'    => [200,  200,    403],
-            '/admin/users'     => [200,  403,    403],
+            '/admin/users'     => [200,  200,    403], // менеджер бачить лише клієнтів
             '/admin/languages' => [200,  403,    403],
             '/admin/order-statuses'     => [200, 403, 403],
             '/admin/shipping-providers' => [200, 403, 403],

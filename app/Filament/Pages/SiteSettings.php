@@ -92,6 +92,25 @@ class SiteSettings extends Page implements HasForms
                 $this->translatable('footer_text', __('admin.site.footer_text'), textarea: true),
             ]),
 
+            Forms\Components\Section::make(__('admin.site.cashback'))
+                ->description(__('admin.site.cashback_hint'))
+                ->schema([
+                    Forms\Components\Repeater::make('cashback_levels')->hiddenLabel()
+                        ->schema([
+                            ...$this->languages()->map(fn(Language $lang) => Forms\Components\TextInput::make("name.{$lang->code}")
+                                ->label(__('admin.site.level_name') . ' (' . $lang->code . ')')
+                                ->required($lang->is_default)->maxLength(50))->all(),
+                            Forms\Components\TextInput::make('from')->label(__('admin.site.level_from'))
+                                ->numeric()->minValue(0)->required()->default(0),
+                            Forms\Components\TextInput::make('percent')->label(__('admin.site.level_percent'))
+                                ->numeric()->minValue(0)->maxValue(100)->required(),
+                        ])
+                        ->columns(3)
+                        ->itemLabel(fn(array $state) => ($state['name']['uk'] ?? '') . (isset($state['percent']) ? " — {$state['percent']}%" : ''))
+                        ->collapsible()
+                        ->defaultItems(0),
+                ])->collapsible(),
+
             Forms\Components\Section::make(__('admin.site.socials'))->schema(
                 collect(Settings::SOCIALS)->map(fn($key) => Forms\Components\TextInput::make("socials.{$key}")
                     ->label(ucfirst($key))->url()->maxLength(255)->placeholder('https://'))->all()

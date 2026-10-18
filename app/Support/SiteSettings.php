@@ -34,6 +34,12 @@ class SiteSettings
         'footer_text'    => ['uk' => 'Широкий асортимент продукції для промислових підприємств та кузовного ремонту.', 'en' => 'A wide range of products for industrial enterprises and body repair.', 'pl' => 'Szeroki asortyment produktów dla przedsiębiorstw przemysłowych i napraw blacharskich.'],
         'socials'        => [],
         'map_url'        => null,
+        // Рівні кешбеку: від якого обороту (сума виконаних замовлень, ₴) і який відсоток
+        'cashback_levels' => [
+            ['name' => ['uk' => 'Базовий', 'en' => 'Basic', 'pl' => 'Podstawowy'], 'from' => 0, 'percent' => 1],
+            ['name' => ['uk' => 'Срібний', 'en' => 'Silver', 'pl' => 'Srebrny'], 'from' => 20000, 'percent' => 3],
+            ['name' => ['uk' => 'Золотий', 'en' => 'Gold', 'pl' => 'Złoty'], 'from' => 100000, 'percent' => 5],
+        ],
     ];
 
     private static function cacheKey(): string
@@ -44,11 +50,10 @@ class SiteSettings
     /** Усі налаштування (сирі, з усіма мовами). */
     public static function all(): array
     {
-        return Cache::rememberForever(self::cacheKey(), function () {
-            $saved = Store::find(CurrentStore::id())?->settings['site'] ?? [];
+        // Значення за замовчуванням — поза кешем, щоб нові ключі зʼявлялися без очищення кешу
+        $saved = Cache::rememberForever(self::cacheKey(), fn() => Store::find(CurrentStore::id())?->settings['site'] ?? []);
 
-            return array_replace(self::DEFAULTS, $saved);
-        });
+        return array_replace(self::DEFAULTS, $saved);
     }
 
     public static function save(array $site): void

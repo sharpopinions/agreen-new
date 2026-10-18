@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\BusinessRoleDecision;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,6 +54,42 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    /** Менеджер підтвердив заявку на бізнес-роль. */
+    public function approveBusinessRole(): void
+    {
+        if (! in_array($this->requested_role, self::BUSINESS_ROLES, true)) {
+            return;
+        }
+        $role = $this->requested_role;
+        $this->forceFill(['role' => $role, 'requested_role' => null, 'role_requested_at' => null])->save();
+        $this->notify(new BusinessRoleDecision($role, true));
+    }
+
+    public function rejectBusinessRole(): void
+    {
+        if (! $this->requested_role) {
+            return;
+        }
+        $role = $this->requested_role;
+        $this->forceFill(['requested_role' => null, 'role_requested_at' => null])->save();
+        $this->notify(new BusinessRoleDecision($role, false));
+    }
+
+    public function documents()
+    {
+        return $this->hasMany(CustomerDocument::class);
+    }
+
+    public function cashbackTransactions()
+    {
+        return $this->hasMany(CashbackTransaction::class);
+    }
+
+    public function supportRequests()
+    {
+        return $this->hasMany(Lead::class)->where('type', 'support');
     }
 
     /** Нормалізований телефон: лише цифри з +380… (для входу за телефоном і унікальності). */

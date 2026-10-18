@@ -133,6 +133,7 @@ import { formatPrice as fmt } from '@/utils/format';
 const props = defineProps({
     deliveryMethods: { type: Array, default: () => [] },
     paymentMethods:  { type: Array, default: () => [] },
+    prefill:         { type: Object, default: null },
 });
 
 const { cart } = useCart();
@@ -143,10 +144,13 @@ const steps = computed(() => onlyPreorder.value ? ['Контактні дані'
 
 const step = ref(1);
 
+// Для залогіненого клієнта — дані й способи за замовчуванням з профілю
+const p = props.prefill ?? {};
+const pick = (list, id) => (list.some(m => m.id === id) ? id : list[0]?.id ?? null);
 const form = useForm({
-    name: '', phone: '', email: '', company: '',
-    delivery: props.deliveryMethods[0]?.id ?? null, city: '', address: '',
-    payment: props.paymentMethods[0]?.id ?? null, comment: '',
+    name: p.name ?? '', phone: p.phone ?? '', email: p.email ?? '', company: p.company ?? '',
+    delivery: pick(props.deliveryMethods, p.delivery), city: p.city ?? '', address: p.address ?? '',
+    payment: pick(props.paymentMethods, p.payment), comment: '',
 });
 
 // Для самовивозу місто й відділення не потрібні

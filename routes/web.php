@@ -70,7 +70,23 @@ Route::middleware('auth')->group(function () {
 
 // Особистий кабінет
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/account', [AccountController::class, 'index'])->name('account');
+    Route::prefix('account')->name('account')->controller(AccountController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::get('/orders', 'orders')->name('.orders');
+        Route::post('/orders/{order}/repeat', 'repeat')->name('.orders.repeat');
+        Route::get('/documents', 'documents')->name('.documents');
+        Route::get('/documents/{document}', 'download')->name('.documents.download');
+        Route::get('/terms', 'terms')->name('.terms');
+        Route::get('/study', 'study')->name('.study');
+        Route::get('/support', 'support')->name('.support');
+        Route::post('/support', 'storeSupport')->name('.support.store')->middleware('throttle:5,1');
+        Route::get('/personal', 'personal')->name('.personal');
+        Route::put('/personal', 'updatePersonal')->name('.personal.update');
+        Route::get('/settings', 'settings')->name('.settings');
+        Route::put('/notifications', 'updateNotifications')->name('.notifications');
+        Route::put('/password', 'updatePassword')->name('.password')->middleware('throttle:6,1');
+        Route::delete('/', 'destroy')->name('.destroy')->middleware('throttle:6,1');
+    });
 });
 
 // Інформаційні сторінки (адмінка → Контент → Сторінки). Останнім — щоб не перехоплювати інші адреси.

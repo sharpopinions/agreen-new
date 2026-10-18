@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\BelongsToStore;
+use App\Services\Cashback;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
@@ -24,6 +25,16 @@ class Order extends Model
     ];
 
     public const PAYMENT_STATUSES = ['pending', 'paid', 'refunded', 'failed'];
+
+    protected static function booted(): void
+    {
+        // Кешбек нараховується, коли замовлення стає «Виконано»
+        static::saved(function (self $order) {
+            if ($order->wasChanged('order_status_id') && $order->status()->value('key') === Cashback::COMPLETED_STATUS) {
+                app(Cashback::class)->accrue($order);
+            }
+        });
+    }
 
     public function items()
     {

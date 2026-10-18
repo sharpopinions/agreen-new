@@ -55,7 +55,7 @@ class AuthTest extends TestCase
 
         $this->post('/auth/role', ['role' => 'client'])->assertRedirect(route('account'));
         $this->get('/account')->assertOk()->assertInertia(fn($page) => $page
-            ->component('Account')
+            ->component('Account/Catalog')
             ->where('auth.user.name', 'Іван')
             ->where('auth.user.verified', true));
     }

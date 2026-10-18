@@ -39,6 +39,17 @@ class CheckoutController extends Controller
                 'name' => $p->name,
                 'hint' => $p->description,
             ]),
+            // Дані з профілю (кабінет → Персональні дані)
+            'prefill' => ($u = auth()->user()) ? [
+                'name'     => $u->fullName(),
+                'phone'    => (string) $u->phone,
+                'email'    => $u->email,
+                'company'  => (string) $u->company,
+                'delivery' => $u->default_shipping_provider_id,
+                'payment'  => $u->default_payment_provider_id,
+                'city'     => (string) $u->default_city,
+                'address'  => (string) $u->default_address,
+            ] : null,
         ]);
     }
 
