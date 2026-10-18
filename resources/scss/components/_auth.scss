@@ -1,0 +1,355 @@
+// Вхід / реєстрація (Claude Design → auth-modal.jsx)
+
+.auth-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 250;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4);
+}
+
+.auth-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+.auth-modal__panel {
+    position: relative;
+    width: 760px;
+    max-width: 100%;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
+
+    &--wide { width: 920px; }
+    &--narrow { width: 440px; }
+
+    > .lead-modal__close { z-index: 1; }
+}
+
+.auth { display: block; }
+
+.auth--split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.auth__main { padding: 40px; }
+
+.auth__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+
+    &--center {
+        align-items: center;
+        text-align: center;
+    }
+}
+
+.auth__title {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    color: var(--color-text);
+    margin: 0;
+}
+
+.auth__text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-2);
+    margin: 0;
+
+    &--left { text-align: left; }
+}
+
+.auth__notice {
+    padding: 10px 14px;
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius-sm);
+    background: #f0fdf4;
+    font-size: 13px;
+    color: #15803d;
+    margin: 0;
+}
+
+.auth__email {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: -8px 0 var(--space-2);
+}
+
+.auth__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+}
+
+.auth__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+
+    &--end { justify-content: flex-end; margin-top: -6px; }
+    &--between { justify-content: space-between; }
+}
+
+.auth__check {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 13px;
+    color: var(--color-text-2);
+    cursor: pointer;
+
+    input { width: 16px; height: 16px; accent-color: var(--color-text); }
+    a { color: var(--color-text); }
+}
+
+.auth__link {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-2);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+
+    &:hover { color: var(--color-text); }
+    &--strong { font-size: 13px; font-weight: 600; color: var(--color-text); }
+}
+
+.auth__switch {
+    text-align: center;
+    font-size: 13px;
+    color: var(--color-text-2);
+    margin: 4px 0 0;
+}
+
+.auth__hint {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-2);
+    margin: 0;
+
+    strong { color: var(--color-text); }
+}
+
+.auth__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-lg);
+    font-size: 22px;
+
+    &--blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #2563eb; }
+    &--green { width: 48px; height: 48px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; }
+}
+
+.auth__code {
+    display: flex;
+    gap: var(--space-2);
+    justify-content: center;
+}
+
+.auth__digit {
+    width: 42px;
+    height: 48px;
+    text-align: center;
+    font: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--color-text);
+    background: var(--color-bg-alt);
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    outline: none;
+
+    &:focus,
+    &--filled { border-color: var(--color-text); }
+}
+
+.auth__aside {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 18px;
+    padding: 40px;
+    background: var(--color-bg-alt);
+    border-left: 1px solid var(--color-border);
+}
+
+.auth__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
+    background: var(--color-text);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-bg);
+}
+
+.auth__aside-title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+}
+
+.auth__aside-text {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--color-text-2);
+    margin: 0;
+}
+
+.auth__benefits {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0;
+
+    li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--color-text);
+
+        &::before {
+            content: '✓';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            background: var(--color-surface);
+            font-size: 11px;
+            font-weight: 700;
+        }
+    }
+}
+
+// Вибір ролі
+
+.role-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+    margin: var(--space-2) 0;
+}
+
+.role-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+
+    &--active { border-color: var(--color-text); box-shadow: var(--shadow-md); }
+}
+
+.role-card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin-bottom: 4px;
+}
+
+.role-card__title {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--color-text);
+}
+
+.role-card__radio {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--color-border-2);
+    border-radius: 50%;
+
+    .role-card--active & {
+        border-color: var(--color-text);
+        background: radial-gradient(circle, var(--color-text) 0 4px, transparent 5px);
+    }
+}
+
+.role-card__feat {
+    display: flex;
+    gap: 6px;
+    font-size: var(--font-size-xs);
+    line-height: 1.4;
+    color: var(--color-text-2);
+
+    &::before { content: '✓'; color: var(--color-text-3); }
+}
+
+// Сторінка /login
+
+.auth-page {
+    display: flex;
+    justify-content: center;
+    padding-top: 48px;
+    padding-bottom: 80px;
+}
+
+.auth-page__card {
+    width: 760px;
+    max-width: 100%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+
+    &--wide { width: 920px; }
+
+    &--narrow {
+        width: 440px;
+        padding: 40px;
+    }
+}
+
+@media (max-width: 900px) {
+    .role-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 640px) {
+    .auth--split { grid-template-columns: 1fr; }
+    .auth__aside { display: none; }
+    .auth__main { padding: 28px 20px; }
+    .auth__grid,
+    .role-grid { grid-template-columns: 1fr; }
+    .auth__digit { width: 38px; height: 44px; }
+}

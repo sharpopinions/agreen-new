@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -12,9 +12,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'locale', 'role'])]
-#[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements FilamentUser
+#[Fillable([
+    'name', 'last_name', 'email', 'phone', 'company', 'company_code', 'password', 'locale', 'role',
+    'requested_role', 'role_requested_at', 'default_shipping_provider_id', 'default_payment_provider_id',
+    'default_city', 'default_address', 'notifications', 'last_login_at',
+])]
+#[Hidden(['password', 'remember_token', 'email_code'])]
+class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -22,8 +26,48 @@ class User extends Authenticatable implements FilamentUser
     /** Ролі персоналу — мають доступ до адмінки. */
     public const STAFF_ROLES = ['admin', 'manager', 'content'];
 
-    /** Ролі покупців (кабінети — фаза 4). */
+    /** Ролі покупців. */
     public const CUSTOMER_ROLES = ['client', 'business_client', 'business_partner'];
+
+    /** Бізнес-ролі: надаються лише після підтвердження заявки менеджером. */
+    public const BUSINESS_ROLES = ['business_client', 'business_partner'];
+
+    /** Сповіщення за замовчуванням (кабінет → Налаштування). */
+    public const DEFAULT_NOTIFICATIONS = ['email_orders' => true, 'sms_orders' => true, 'newsletter' => false];
+
+    public function isBusiness(): bool
+    {
+        return in_array($this->role, self::BUSINESS_ROLES, true);
+    }
+
+    public function fullName(): string
+    {
+        return trim($this->name . ' ' . $this->last_name);
+    }
+
+    public function notificationSettings(): array
+    {
+        return array_replace(self::DEFAULT_NOTIFICATIONS, $this->notifications ?? []);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    /** Нормалізований телефон: лише цифри з +380… (для входу за телефоном і унікальності). */
+    public static function normalizePhone(?string $phone): ?string
+    {
+        $digits = preg_replace('/\D+/', '', (string) $phone);
+        if ($digits === '') {
+            return null;
+        }
+        if (strlen($digits) === 10 && str_starts_with($digits, '0')) {
+            $digits = '38' . $digits;
+        }
+
+        return '+' . $digits;
+    }
 
     public function isStaff(): bool
     {
@@ -48,8 +92,12 @@ class User extends Authenticatable implements FilamentUser
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at'  => 'datetime',
+            'password'           => 'hashed',
+            'notifications'      => 'array',
+            'role_requested_at'  => 'datetime',
+            'email_code_sent_at' => 'datetime',
+            'last_login_at'      => 'datetime',
         ];
     }
 }

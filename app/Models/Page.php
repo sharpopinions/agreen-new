@@ -15,7 +15,7 @@ class Page extends Model
     /** Адреси, зайняті іншими розділами сайту, — сторінці їх не дати. */
     public const RESERVED_SLUGS = [
         'admin', 'catalog', 'p', 'search', 'cart', 'checkout', 'order', 'brands', 'blog', 'sale', 'services',
-        'contacts', 'vacancies', 'login', 'register', 'account', 'storage', 'build', 'livewire', 'up', 'forms',
+        'contacts', 'vacancies', 'login', 'register', 'account', 'auth', 'reset-password', 'email-confirm', 'storage', 'build', 'livewire', 'up', 'forms',
     ];
 
     protected $fillable = ['store_id', 'key', 'layout', 'sort_order', 'is_active'];

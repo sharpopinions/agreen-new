@@ -9,6 +9,7 @@
         <CommandPalette />
         <CartAddedModal />
         <CartDrawer />
+        <AuthModal />
     </div>
 </template>
 
@@ -19,4 +20,5 @@
     import CommandPalette from '@/Components/Layout/CommandPalette.vue';
     import CartAddedModal from '@/Components/Cart/CartAddedModal.vue';
     import CartDrawer from '@/Components/Cart/CartDrawer.vue';
+    import AuthModal from '@/Components/Auth/AuthModal.vue';
 </script>

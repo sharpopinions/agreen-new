@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
@@ -48,6 +50,28 @@ Route::get('/contacts', [PageController::class, 'contacts'])->name('contacts');
 // Заявки з форм сайту (контакти, швидке замовлення, партнерство…)
 Route::post('/forms/{type}', [LeadController::class, 'store'])->name('forms.store')->middleware('throttle:5,1');
 Route::get('/order/thanks', [CheckoutController::class, 'thanks'])->name('order.thanks');
+
+// Вхід, реєстрація, підтвердження email, вибір ролі, скидання пароля
+Route::get('/login', [AuthController::class, 'loginPage'])->name('login');
+Route::get('/email-confirm', fn() => redirect()->route('login'))->name('verification.notice');
+Route::middleware('guest')->group(function () {
+    Route::post('/auth/login', [AuthController::class, 'login'])->name('auth.login')->middleware('throttle:10,1');
+    Route::post('/auth/register', [AuthController::class, 'register'])->name('auth.register')->middleware('throttle:5,1');
+    Route::post('/auth/forgot', [AuthController::class, 'forgot'])->name('auth.forgot')->middleware('throttle:3,1');
+    Route::get('/reset-password/{token}', [AuthController::class, 'resetPage'])->name('password.reset');
+    Route::post('/reset-password', [AuthController::class, 'reset'])->name('password.update')->middleware('throttle:5,1');
+});
+Route::middleware('auth')->group(function () {
+    Route::post('/auth/verify', [AuthController::class, 'verify'])->name('auth.verify')->middleware('throttle:10,1');
+    Route::post('/auth/resend', [AuthController::class, 'resend'])->name('auth.resend')->middleware('throttle:3,1');
+    Route::post('/auth/role', [AuthController::class, 'chooseRole'])->name('auth.role');
+    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+// Особистий кабінет
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/account', [AccountController::class, 'index'])->name('account');
+});
 
 // Інформаційні сторінки (адмінка → Контент → Сторінки). Останнім — щоб не перехоплювати інші адреси.
 Route::get('/{slug}', [PageController::class, 'show'])

@@ -5,7 +5,8 @@
                 {{ site.scheduleShort }}<template v-if="site.phone"> · <a :href="site.phone.href" class="header__topbar-phone">{{ site.phone.label }}</a></template>
             </span>
             <div class="header__topbar-actions">
-                <a href="#">Особистий кабінет</a>
+                <Link v-if="user" :href="user.isStaff ? '/admin' : '/account'" class="header__account">{{ user.name }} · Кабінет</Link>
+                <button v-else type="button" class="header__account" @click="showAuth()">Особистий кабінет</button>
                 <span>·</span>
                 <span>UKR</span>
                 <button class="header__theme-btn" @click="toggleTheme">
@@ -85,16 +86,19 @@
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount } from 'vue';
+import { ref, computed, onBeforeUnmount } from 'vue';
 import { Link, usePage, router } from '@inertiajs/vue3';
 import MegaMenu from '@/Components/Layout/MegaMenu.vue';
 import { useTheme } from '@/composables/useTheme';
 import { useCommandPalette } from '@/composables/useCommandPalette';
 import { useCart } from '@/composables/useCart';
 import { useSite } from '@/composables/useSite';
+import { useAuthModal } from '@/composables/useAuthModal';
 
 const page = usePage();
 const site = useSite();
+const user = computed(() => page.props.auth?.user?.verified ? page.props.auth.user : null);
+const { show: showAuth } = useAuthModal();
 
 // Мегаменю: відкривається при наведенні/фокусі, закривається з невеликою
 // затримкою, щоб встигнути перевести курсор з пункту меню на панель

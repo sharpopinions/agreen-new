@@ -19,9 +19,24 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             // Кошик (сесія) — актуальний на кожному запиті
             'cart'  => fn () => app(Cart::class)->summary(),
+            // Поточний покупець (хедер, кабінет, оформлення замовлення)
+            'auth'  => fn () => ($u = $request->user()) ? ['user' => [
+                'id'            => $u->id,
+                'name'          => $u->name,
+                'lastName'      => $u->last_name,
+                'email'         => $u->email,
+                'phone'         => $u->phone,
+                'company'       => $u->company,
+                'role'          => $u->role,
+                'requestedRole' => $u->requested_role,
+                'verified'      => $u->hasVerifiedEmail(),
+                'isStaff'       => $u->isStaff(),
+                'isBusiness'    => $u->isBusiness(),
+            ]] : ['user' => null],
             'flash' => fn () => [
                 'cartAdded' => $request->session()->get('cartAdded'),
                 'leadSent'  => $request->session()->get('leadSent'),
+                'auth'      => $request->session()->get('auth'),
             ],
         ]);
     }
