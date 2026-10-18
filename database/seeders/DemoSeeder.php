@@ -101,11 +101,20 @@ class DemoSeeder extends Seeder
 
     public function run(): void
     {
-        if (User::where('email', 'admin@demo.test')->exists()) {
+        // Порожня база (не запускали db:seed) — спершу базові дані: магазин, мови, категорії, бренди…
+        if (! Category::exists()) {
+            $this->command?->info('Базових даних немає — запускаю DatabaseSeeder.');
+            $this->call(DatabaseSeeder::class);
+        }
+
+        if (Product::where('sku', 'like', 'DM-%')->exists()) {
             $this->command?->warn('Демо-дані вже є — пропускаю.');
 
             return;
         }
+
+        // Залишки невдалого попереднього запуску (демо-користувачі без товарів) — прибираємо, щоб не було дублів
+        User::where('email', 'like', '%@demo.test')->delete();
 
         mt_srand(2026);
         $this->ukId = Language::where('code', 'uk')->value('id');
