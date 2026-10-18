@@ -19,7 +19,25 @@
         </div>
         <div class="product-card__right">
             <span class="product-card__price">{{ fmt(product.price) }}</span>
-            <button class="product-card__btn" :disabled="pending" @click="add(product.id)">До кошика</button>
+            <div class="product-card__list-actions">
+                <button
+                    class="product-card__icon"
+                    :class="{ 'product-card__icon--wish': inWishlist(product.id) }"
+                    :aria-label="inWishlist(product.id) ? 'Прибрати з обраного' : 'Додати в обране'"
+                    :title="inWishlist(product.id) ? 'Прибрати з обраного' : 'Додати в обране'"
+                    :aria-pressed="inWishlist(product.id)"
+                    @click="toggleWishlist(product.id)"
+                ><svg width="16" height="16" viewBox="0 0 24 24" :fill="inWishlist(product.id) ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+                <button
+                    class="product-card__icon"
+                    :class="{ 'product-card__icon--compare': inCompare(product.id) }"
+                    :aria-label="inCompare(product.id) ? 'Прибрати з порівняння' : 'Додати до порівняння'"
+                    :title="inCompare(product.id) ? 'Прибрати з порівняння' : 'Додати до порівняння'"
+                    :aria-pressed="inCompare(product.id)"
+                    @click="toggleCompare(product.id)"
+                ><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg></button>
+                <button class="product-card__btn" :disabled="pending" @click="add(product.id)">До кошика</button>
+            </div>
         </div>
     </div>
 
@@ -40,6 +58,16 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" :fill="inWishlist(product.id) ? 'currentColor' : 'none'" stroke="currentColor" stroke-width="2">
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
                 </svg>
+            </button>
+            <button
+                class="product-card__wish product-card__compare"
+                :class="{ 'product-card__compare--active': inCompare(product.id) }"
+                :aria-label="inCompare(product.id) ? 'Прибрати з порівняння' : 'Додати до порівняння'"
+                :title="inCompare(product.id) ? 'Прибрати з порівняння' : 'Додати до порівняння'"
+                :aria-pressed="inCompare(product.id)"
+                @click.prevent.stop="toggleCompare(product.id)"
+            >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
             </button>
             <img v-if="product.image" :src="product.image" :alt="product.name" class="product-card__photo" loading="lazy" />
             <span v-else class="product-card__img-label">ФОТО ТОВАРУ</span>
@@ -76,7 +104,7 @@ import { useCart } from '@/composables/useCart';
 import { useLists } from '@/composables/useLists';
 
 const { add, pending } = useCart();
-const { inWishlist, toggleWishlist } = useLists();
+const { inWishlist, inCompare, toggleWishlist, toggleCompare } = useLists();
 
 defineProps({
     product: Object,

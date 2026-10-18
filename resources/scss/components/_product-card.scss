@@ -91,6 +91,50 @@
     }
 }
 
+// Порівняння — під сердечком
+.product-card__compare {
+    top: calc(var(--space-2) + 38px);
+
+    &:hover { color: var(--color-text); }
+
+    &--active,
+    &--active:hover {
+        background: var(--color-inv-bg);
+        border-color: var(--color-inv-bg);
+        color: var(--color-inv-text);
+    }
+}
+
+// Режим «список»: сердечко й порівняння поряд з кнопкою
+.product-card__list-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.product-card__icon {
+    @extend %btn-reset;
+    @include flex-center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-3);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+
+    &:hover { color: var(--color-text); background: var(--color-muted); }
+
+    &--wish, &--wish:hover { color: var(--color-danger); }
+
+    &--compare, &--compare:hover {
+        background: var(--color-inv-bg);
+        border-color: var(--color-inv-bg);
+        color: var(--color-inv-text);
+    }
+}
+
 .product-card__body {
     padding: var(--space-3) var(--space-4);
     display: flex;
