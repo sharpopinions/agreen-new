@@ -167,4 +167,6 @@ Query-параметри: `q` (назва або артикул), `brand[]`, `ca
   - тести: `tests/Feature/AuthTest.php`, `tests/Feature/AccountTest.php`.
   - [ ] Персональні ціни бізнес-клієнтів і відстрочка платежу: потрібна інтеграція з 1С
 
+Демо-дані для перегляду всього сайту й адмінки: `php artisan db:seed --class=DemoSeeder` (після звичайного `db:seed`, повторний запуск нічого не дублює). Додає ~150 товарів, блог, бренди, акції, вакансії, клієнтів із замовленнями, документами, кешбеком і зверненнями, заявки. Входи (пароль `password`): `admin@demo.test`, `manager@demo.test`, `content@demo.test`, `client@demo.test`, `business@demo.test`, `partner@demo.test`.
+
 Заглушка фото `Components/ImgPlaceholder.vue` — порт `Img` з прототипу. Її треба замінити на реальні зображення.

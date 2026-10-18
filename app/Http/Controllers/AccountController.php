@@ -149,7 +149,7 @@ class AccountController extends Controller
         return $this->render('Account/Terms', 'Умови співпраці', [
             'cashback' => $cashback->summary($user),
             'levels'   => $cashback->levels(),
-            'history'  => $user->cashbackTransactions()->latest('id')->limit(30)->get()->map(fn($t) => [
+            'history'  => $user->cashbackTransactions()->latest()->latest('id')->limit(30)->get()->map(fn($t) => [
                 'id'     => $t->id,
                 'amount' => (float) $t->amount,
                 'text'   => $t->description,

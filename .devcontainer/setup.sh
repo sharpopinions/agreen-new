@@ -23,6 +23,7 @@ if [ ! -f database/database.sqlite ]; then
     echo "▶ База SQLite з демо-даними"
     touch database/database.sqlite
     php artisan migrate --seed --force
+    php artisan db:seed --class=DemoSeeder --force
 else
     php artisan migrate --force
 fi
